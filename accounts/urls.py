@@ -8,6 +8,6 @@ urlpatterns = [
     path("logout/", views.logout_view, name="logout"),
     path("register/", views.register_view, name="register"),
 
-    # Password Confirmation Modal Endpoint
+    # Password Confirmation Modal
     path("confirm-action/", views.confirm_sensitive_action, name="confirm_sensitive_action"),
 ]

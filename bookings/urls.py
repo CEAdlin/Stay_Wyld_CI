@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
 
-    # Homepage (optional if you want bookings to handle it)
+    # Homepage
     path("", views.index_view, name="index"),
 
     # Units

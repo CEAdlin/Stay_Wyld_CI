@@ -2,15 +2,19 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='index.html'), name='index'),
-    path('accounts/', include('accounts.urls')),
-    path('bookings/', include('bookings.urls')),
-    path("adminpanel/", include("adminpanel.urls")),
+    # Homepage + all public booking routes
+    path("", include("bookings.urls")),
 
+    # Admin
+    path('admin/', admin.site.urls),
+
+    # Accounts
+    path('accounts/', include('accounts.urls')),
+
+    # Admin panel
+    path("adminpanel/", include("adminpanel.urls")),
 ]
 
 if settings.DEBUG:

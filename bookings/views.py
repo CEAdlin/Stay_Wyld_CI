@@ -8,8 +8,8 @@ from django.contrib.auth.models import User
 
 # Homepage
 def index_view(request):
-    return render(request, "index.html")
-
+    units = Unit.objects.filter(active=True)
+    return render(request, "index.html", {"units": units})
 
 # Units
 def units_list_view(request):

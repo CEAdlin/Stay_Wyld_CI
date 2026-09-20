@@ -447,130 +447,120 @@ section.bg-light {
   margin: 0 auto;
 }
 
-/* HOMEPAGE STAY WITH US */
-#units {
-  scroll-margin-top: 90px;
-  padding: 40px 0;
-  margin: 0;
-  width: 100%;
-  border-radius: 0;
-  text-align: center;
+/* HOMEPAGE - Stay With Us – Full Unit Showcase */
+
+.units-showcase {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 40px;
+  margin-top: 40px;
 }
 
-.units-panel {
-  padding: 15px 15px 15px;
-}
-
-.units-panel .section-heading-home {
-  margin-bottom: 5px;
-}
-
-.units-panel .units-heading {
-  position: relative;
-  display: inline-block;
-  margin: 0;
-  padding-bottom: 2px;
-  color: var(--colour-accent);
-  font-family: var(--font-primary);
-  font-size: 3.2rem;
-  font-weight: 500;
-  letter-spacing: 2px;
-  line-height: 0.8;
-}
-
-.units-panel .units-heading::after {
-  content: "";
-  position: absolute;
-  left: 10%;
-  bottom: 0;
-  width: 80%;
-  height: 3px;
-  background: var(--colour-accent);
-  border-radius: 50%;
-  opacity: 0.85;
-}
-
-.units-panel .units-wrapper {
-  display: flex;
-  justify-content: space-between;
-  gap: 25px;
-  padding: 10px 0 0;
-}
-
-.units-panel .unit-card {
-  flex: 1;
-  width: auto;
-  height: 320px;
+.unit-showcase-card {
+  background: rgba(255,255,255,0.12);
+  border: 2px solid #C1BD88;
   border-radius: 16px;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
-  border: 1px solid var(--colour-accent);
-}
-
-.units-panel .unit-card:hover {
-  transform: translateY(-7px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.30);
-}
-
-.units-panel .unit-overlay {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 25%;
-  padding: 15px 20px;
-  background: rgba(40, 41, 62, 0.90);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-
-.units-panel .unit-overlay h3 {
-  margin: 0 0 5px;
-  padding: 0;
-  color: var(--colour-tertiary);
-  font-family: var(--font-primary);
-  font-size: 1.7rem;
-  font-weight: 500;
-  line-height: 1;
-}
-
-.units-panel .unit-link {
-  padding: 0;
-  color: var(--colour-accent);
+  padding: 30px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18);
   font-family: var(--font-secondary);
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  color: var(--colour-accent);
+}
+
+/* GALLERY */
+.unit-gallery {
+  margin-bottom: 20px;
+}
+
+.unit-main-image {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+}
+
+.unit-thumbnails {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.unit-thumb {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+  border: 2px solid transparent;
+}
+
+.unit-thumb:hover {
+  transform: translateY(-3px);
+  border-color: #C1BD88;
+}
+
+/* SUMMARY */
+.unit-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--colour-accent);
+}
+
+.unit-description {
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* FACILITIES TABLE */
+.unit-facilities-table {
+  width: 100%;
+  margin-bottom: 25px;
+  border-collapse: collapse;
+}
+
+.unit-facilities-table th,
+.unit-facilities-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  font-size: 15px;
+}
+
+/* AVAILABILITY */
+.unit-availability h4 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: var(--colour-accent);
+}
+
+.availability-calendar {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+/* BOOK NOW BUTTON */
+.book-now-btn {
+  display: inline-block;
+  padding: 14px 26px;
+  background: var(--colour-accent);
+  color: var(--colour-blue);
+  font-weight: 700;
+  border-radius: 50px;
   text-decoration: none;
-  transition: color 0.25s ease, transform 0.25s ease;
+  transition: 0.2s;
+  font-family: var(--font-secondary);
 }
 
-.units-panel .unit-link:hover {
-  color: var(--colour-tertiary);
-  text-decoration: none;
-  transform: translateY(-1px);
-}
-
-/* UNIT CARD BACKGROUND IMAGES */
-
-.units-panel .unit-tinkers {
-  background-image: url("../images/tinkers-lodge-int1.png");
-}
-
-.units-panel .unit-keepers {
-  background-image: url("../images/keepers-cottage-int.png");
-}
-
-.units-panel .unit-shepherds {
-  background-image: url("../images/the-shepherds-keep-int2.png");
+.book-now-btn:hover {
+  background: #ffffff;
+  color: var(--colour-blue);
 }
 
 /* HOMEPAGE BANNER_1 SECTION */

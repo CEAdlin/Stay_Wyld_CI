@@ -8,14 +8,26 @@ from django.contrib.auth.models import User
 class Unit(models.Model):
     name = models.CharField(max_length=120)
     slug = models.SlugField(unique=True)
+
+    # Main content
+    short_description = models.CharField(max_length=300, blank=True)
     description = models.TextField(blank=True)
+
+    # Images
+    main_image = models.ImageField(upload_to="unit_main/", blank=True, null=True)
+
+    # Capacity & pricing
     max_guests = models.PositiveIntegerField(default=2)
-    base_price_per_night = models.DecimalField(max_digits=7, decimal_places=2)
-    dog_friendly = models.BooleanField(default=False)
+    price_per_night = models.DecimalField(max_digits=7, decimal_places=2)
+    dog_surcharge = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+
+    # Flags
+    dogs_allowed = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
+
 
 
 class UnitGalleryImage(models.Model):
