@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="booking-page-wrapper">
+
+    <h1>Book {{ unit.name }}</h1>
+
+    <!-- Unit Summary -->
+    <div class="unit-summary">
+        {% if unit.image %}
+            <img src="{{ unit.image.url }}" alt="{{ unit.name }}" class="unit-image">
+        {% endif %}
+
+        <h2>{{ unit.name }}</h2>
+        <p>{{ unit.description }}</p>
+
+        <p><strong>Price per night:</strong> £{{ unit.price_per_night }}</p>
+
+        {% if unit.dogs_allowed %}
+            <p><strong>Dog surcharge:</strong> £{{ unit.dog_surcharge }} per dog</p>
+        {% else %}
+            <p><strong>No dogs allowed</strong></p>
+        {% endif %}
+    </div>
+
+    <!-- Availability Calendar -->
+    <h2>Availability</h2>
+
+    <div id="availability-calendar"
+         data-price="{{ unit.price_per_night }}">
+    </div>
+
+    {{ booked_ranges|json_script:"booked-dates" }}
+
+    <script src="{% static 'js/calendar.js' %}"></script>
+
+    <!-- Booking Button -->
+    <div class="booking-actions">
+        <a href="{% url 'booking_create' unit.slug %}" class="crud-btn">
+            Start Booking
+        </a>
+    </div>
+
+</div>
+{% endblock %}

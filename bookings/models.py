@@ -17,6 +17,18 @@ class Unit(models.Model):
     def __str__(self):
         return self.name
 
+
+class UnitGalleryImage(models.Model):
+    unit = models.ForeignKey(Unit, related_name="gallery_images", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="unit_gallery/")
+    position = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["position"]
+
+    def __str__(self):
+        return f"Gallery image for {self.unit.name}"
+
 # BOOKING MODEL
 
 class Booking(models.Model):

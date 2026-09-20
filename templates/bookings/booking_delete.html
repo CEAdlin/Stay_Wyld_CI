@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="booking-delete-wrapper">
+
+    <h1>Cancel Booking</h1>
+
+    <div class="booking-delete-card">
+
+        <h2>{{ booking.unit.name }}</h2>
+
+        <p><strong>Check-in:</strong> {{ booking.check_in_date }}</p>
+        <p><strong>Check-out:</strong> {{ booking.check_out_date }}</p>
+        <p><strong>Total Price:</strong> £{{ booking.total_price }}</p>
+
+        <p class="warning-text">
+            Are you sure you want to cancel this booking?
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="crud-btn delete-btn">Yes, Cancel Booking</button>
+            <a href="{% url 'booking_detail' booking.pk %}" class="crud-btn">Go Back</a>
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}

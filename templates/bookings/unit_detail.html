@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="unit-detail-wrapper">
+
+    <h1 class="page-title">{{ unit.name }}</h1>
+
+    <!-- Gallery -->
+    <div class="unit-gallery">
+        {% if unit.image %}
+            <img src="{{ unit.image.url }}" alt="{{ unit.name }}" class="gallery-main">
+        {% endif %}
+
+        <div class="gallery-thumbs">
+            {% for photo in unit.gallery_images.all %}
+                <img src="{{ photo.image.url }}" alt="{{ unit.name }} photo" class="thumb">
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Description -->
+    <p class="unit-description">{{ unit.description }}</p>
+
+    <!-- Features -->
+    <div class="unit-features">
+        <h2>Features</h2>
+        <ul>
+            <li>🌿 Private outdoor space</li>
+            <li>🔥 Fire pit</li>
+            <li>🛏️ Luxury double bed</li>
+            <li>✨ Soft ambient lighting</li>
+            <li>🍳 Kitchenette</li>
+            <li>🚿 Hot shower</li>
+            <li>🌌 Stargazing area</li>
+            <li>🐾 {% if unit.dogs_allowed %}Dog friendly{% else %}No dogs allowed{% endif %}</li>
+        </ul>
+    </div>
+
+    <!-- Pricing -->
+    <div class="unit-info">
+        <p><strong>Price per night:</strong> £{{ unit.price_per_night }}</p>
+        <p><strong>Max guests:</strong> {{ unit.max_guests }}</p>
+        {% if unit.dogs_allowed %}
+            <p><strong>Dog surcharge:</strong> £{{ unit.dog_surcharge }} per dog</p>
+        {% endif %}
+    </div>
+
+    <!-- Actions -->
+    <div class="unit-actions">
+        <a href="{% url 'booking_create' unit.slug %}" class="crud-btn">
+            Book This Unit
+        </a>
+
+        <a href="{% url 'availability_calendar' unit.slug %}" class="crud-btn secondary-btn">
+            View Availability
+        </a>
+    </div>
+
+</div>
+{% endblock %}

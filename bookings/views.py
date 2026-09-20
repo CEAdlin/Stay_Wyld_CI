@@ -208,10 +208,16 @@ def booking_update_view(request, pk):
         "booked_ranges": booked_ranges
     })
 
-
+# Booking Delete Requests
 @login_required
 def booking_delete_view(request, pk):
     booking = get_object_or_404(Booking, pk=pk, customer=request.user)
+
+    if request.method == "POST":
+        booking.delete()
+        messages.success(request, "Your booking has been cancelled.")
+        return redirect("my_bookings")
+
     return render(request, "bookings/booking_delete.html", {"booking": booking})
 
 
@@ -219,6 +225,24 @@ def booking_delete_view(request, pk):
 @login_required
 def booking_change_request_view(request, pk):
     booking = get_object_or_404(Booking, pk=pk, customer=request.user)
+
+    if request.method == "POST":
+        message = request.POST.get("message")
+
+        if not message:
+            messages.error(request, "Please describe the change you want to request.")
+            return redirect(request.path)
+
+        BookingChangeRequest.objects.create(
+            booking=booking,
+            customer=request.user,
+            message=message,
+            status="pending"
+        )
+
+        messages.success(request, "Your change request has been submitted.")
+        return redirect("booking_detail", pk=booking.pk)
+
     return render(request, "bookings/booking_change_request.html", {"booking": booking})
 
 
