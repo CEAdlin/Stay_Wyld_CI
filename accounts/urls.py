@@ -2,9 +2,12 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("login/", views.login_view, name="login"),
-    path("register/", views.register_view, name="register"),
-    path("logout/", views.logout_view, name="logout"),
-    path("admin/confirm-action/", views.confirm_sensitive_action, name="confirm_sensitive_action"),
 
+    # Authentication
+    path("login/", views.login_view, name="login"),
+    path("logout/", views.logout_view, name="logout"),
+    path("register/", views.register_view, name="register"),
+
+    # Password Confirmation Modal Endpoint
+    path("confirm-action/", views.confirm_sensitive_action, name="confirm_sensitive_action"),
 ]

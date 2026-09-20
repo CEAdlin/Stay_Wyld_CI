@@ -1010,3 +1010,330 @@ section.bg-light {
   }
 
 }
+
+/* Admin Pages – Global Styles (Used across all 6 admin pages) */
+
+.admin-section {
+  padding: 60px clamp(25px, 6vw, 75px);
+  margin-top: 40px;
+  background: rgba(40, 41, 62, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.admin-section h1 {
+  font-family: var(--font-primary);
+  color: var(--colour-accent);
+  font-size: 3.2rem;
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+/* Admin Tables */
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+  background: rgba(40, 41, 62, 0.82);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+}
+
+.admin-table thead {
+  background: rgba(var(--colour-accent-rgb), 0.25);
+}
+
+.admin-table th {
+  padding: 14px 18px;
+  color: var(--colour-tertiary);
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.admin-table td {
+  padding: 12px 18px;
+  color: var(--colour-tertiary);
+  font-family: var(--font-secondary);
+  font-size: 0.95rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.admin-table tr:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transition: var(--transition-fast);
+}
+
+.admin-table .crud-btn {
+  margin: 0 6px;
+}
+
+/* Status Colours */
+
+.status-vacant {
+  color: var(--colour-accent);
+  font-weight: 600;
+}
+
+.status-occupied {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.status-checkin {
+  color: #4ecdc4;
+  font-weight: 600;
+}
+
+.status-checkout {
+  color: #ffe66d;
+  font-weight: 600;
+}
+
+/* Admin Gallery */
+
+.admin-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.admin-gallery img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: transform var(--transition-medium), opacity var(--transition-medium);
+}
+
+.admin-gallery img:hover {
+  transform: translateY(-4px);
+  opacity: 0.85;
+}
+
+/* Admin Filter Form */
+
+.filter-form {
+  margin-bottom: 25px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-form select,
+.filter-form input[type="date"] {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: var(--colour-blue);
+  font-family: var(--font-secondary);
+  font-size: 0.95rem;
+}
+
+.filter-form button {
+  padding: 10px 20px;
+  border-radius: 50px;
+  background: var(--colour-accent);
+  border: 1px solid var(--colour-accent);
+  color: var(--colour-blue);
+  font-weight: 600;
+  transition: var(--transition-fast);
+}
+
+.filter-form button:hover {
+  background: var(--colour-tertiary);
+  border-color: var(--colour-tertiary);
+}
+
+/* admin_unit_list Page */
+/* (Add page-specific styles here if needed) */
+
+/* admin_unit_detail Page */
+
+.unit-meta {
+  margin-bottom: 25px;
+}
+
+.unit-meta p {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+/* admin_customers_list Page */
+/* (Add page-specific styles here if needed) */
+
+/* admin_customer_detail Page */
+
+.customer-meta {
+  margin-bottom: 25px;
+}
+
+.customer-meta p {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+/* admin_booking_list Page */
+/* (Add page-specific styles here if needed) */
+
+/* admin_booking_detail Page */
+
+.booking-meta {
+  margin-bottom: 25px;
+}
+
+.booking-meta p {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+/* Media Queries */
+
+/* Tablet – max-width 1000px */
+@media (max-width: 1000px) {
+
+  .admin-section {
+    padding: 45px 35px;
+  }
+
+  .admin-section h1 {
+    font-size: 2.8rem;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 12px 14px;
+    font-size: 0.95rem;
+  }
+
+  .filter-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-form select,
+  .filter-form input[type="date"] {
+    width: 100%;
+  }
+
+  .admin-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+
+/* Small Tablet – max-width 768px */
+@media (max-width: 768px) {
+
+  .admin-section {
+    padding: 40px 25px;
+    border-radius: 16px;
+  }
+
+  .admin-section h1 {
+    font-size: 2.5rem;
+  }
+
+  .admin-table {
+    border-radius: 14px;
+  }
+
+  .admin-table th {
+    font-size: 0.9rem;
+  }
+
+  .admin-table td {
+    font-size: 0.85rem;
+  }
+
+  /* Make tables scrollable horizontally */
+  .admin-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .admin-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 15px;
+  }
+
+  .admin-gallery img {
+    height: 140px;
+  }
+
+  .filter-form {
+    gap: 10px;
+  }
+
+  .filter-form button {
+    width: 100%;
+  }
+}
+
+
+/* Mobile – max-width 500px */
+@media (max-width: 500px) {
+
+  .admin-section {
+    padding: 30px 18px;
+  }
+
+  .admin-section h1 {
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+  }
+
+  /* Table readability on mobile */
+  .admin-table th,
+  .admin-table td {
+    padding: 10px 12px;
+  }
+
+  .admin-table {
+    font-size: 0.8rem;
+  }
+
+  /* Buttons stack vertically */
+  .admin-table .crud-btn {
+    display: block;
+    margin: 6px 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Gallery tighter layout */
+  .admin-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
+  }
+
+  .admin-gallery img {
+    height: 120px;
+  }
+
+  /* Filter form full width */
+  .filter-form select,
+  .filter-form input[type="date"],
+  .filter-form button {
+    width: 100%;
+  }
+
+  /* Meta sections */
+  .unit-meta p,
+  .customer-meta p,
+  .booking-meta p {
+    font-size: 0.95rem;
+  }
+}
