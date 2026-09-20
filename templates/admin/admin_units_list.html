@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="admin-section">
+
+    <h1>Units</h1>
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Active</th>
+                <th>Max Guests</th>
+                <th>Base Price</th>
+                <th>Today’s Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for unit in units %}
+            <tr>
+                <td>{{ unit.name }}</td>
+                <td>{{ unit.active }}</td>
+                <td>{{ unit.max_guests }}</td>
+                <td>£{{ unit.base_price }}</td>
+                <td>{{ unit.today_status }}</td>
+
+                <td>
+                    <a href="{% url 'admin_unit_detail' unit.id %}" class="crud-btn">View</a>
+
+                    <button onclick="openPasswordModal('modify_unit', {{ unit.id }})" class="crud-btn">
+                        Modify
+                    </button>
+
+                    <button onclick="openPasswordModal('delete_unit', {{ unit.id }})" class="crud-btn danger-btn">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</section>
+{% endblock %}

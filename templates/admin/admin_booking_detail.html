@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="admin-section">
+
+    <h1>Booking #{{ booking.id }}</h1>
+
+    <p><strong>Customer:</strong> {{ booking.customer.username }}</p>
+    <p><strong>Unit:</strong> {{ booking.unit.name }}</p>
+    <p><strong>Check In:</strong> {{ booking.check_in_date }}</p>
+    <p><strong>Check Out:</strong> {{ booking.check_out_date }}</p>
+    <p><strong>Total Price:</strong> £{{ booking.total_price }}</p>
+    <p><strong>Status:</strong> {{ booking.status }}</p>
+
+    <h2>Actions</h2>
+
+    <button onclick="openPasswordModal('modify_booking', {{ booking.id }})" class="crud-btn">
+        Modify Booking
+    </button>
+
+    <button onclick="openPasswordModal('delete_booking', {{ booking.id }})" class="crud-btn danger-btn">
+        Delete Booking
+    </button>
+
+</section>
+{% endblock %}
