@@ -5,66 +5,75 @@
 
     <div class="admin-card-wrapper">
 
-        <h1 class="admin-dashboard-title">{{ customer.username }}</h1>
-        <p class="admin-dashboard-subtitle">Customer profile and booking history</p>
+        <h2> Customer Name: {{ customer.username }}</h2>
 
         <div class="admin-dashboard-grid">
 
             <!-- FULL-WIDTH CARD -->
             <div class="admin-card" style="grid-column: 1 / -1;">
 
-                <p><strong>Email:</strong> {{ customer.email }}</p>
-                <p><strong>Phone:</strong> {{ customer.profile.phone }}</p>
-                <p><strong>Address:</strong> {{ customer.profile.address }}</p>
+                <!-- CUSTOMER INFO SECTION -->
+                <div class="admin-section-block">
+                    <h2 class="admin-section-title">Customer Information</h2>
 
-                <h2>Bookings</h2>
+                    <div class="admin-info-grid">
+                        <p><strong>Email:</strong> {{ customer.email }}</p>
+                        <p><strong>Phone:</strong> {{ customer.profile.phone }}</p>
+                        <p><strong>Address:</strong> {{ customer.profile.address }}</p>
+                    </div>
+                </div>
 
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Unit</th>
-                            <th>Check In</th>
-                            <th>Check Out</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
+                <!-- BOOKINGS SECTION -->
+                <div class="admin-section-block">
+                    <h2 class="admin-section-title">Bookings</h2>
 
-                    <tbody>
-                        {% for booking in customer.bookings.all %}
-                        <tr>
-                            <td>{{ booking.unit.name }}</td>
-                            <td>{{ booking.check_in_date }}</td>
-                            <td>{{ booking.check_out_date }}</td>
-                            <td>{{ booking.status }}</td>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Unit</th>
+                                <th>Check In</th>
+                                <th>Check Out</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
 
-                            <td>
-                                <a href="{% url 'admin_booking_detail' booking.id %}" class="crud-btn">View</a>
+                        <tbody>
+                            {% for booking in customer.bookings.all %}
+                            <tr>
+                                <td>{{ booking.unit.name }}</td>
+                                <td>{{ booking.check_in_date }}</td>
+                                <td>{{ booking.check_out_date }}</td>
+                                <td>{{ booking.status }}</td>
 
-                                <button onclick="openPasswordModal('modify_booking', {{ booking.id }})"
-                                        class="crud-btn">
-                                    Modify
-                                </button>
+                                <td class="admin-actions-cell">
+                                    <a href="{% url 'admin_booking_detail' booking.id %}" class="crud-btn small">View</a>
+                                    <button onclick="openPasswordModal('modify_booking', {{ booking.id }})"
+                                            class="crud-btn small">Modify</button>
+                                    <button onclick="openPasswordModal('delete_booking', {{ booking.id }})"
+                                            class="crud-btn danger-btn small">Delete</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
 
-                                <button onclick="openPasswordModal('delete_booking', {{ booking.id }})"
-                                        class="crud-btn danger-btn">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <!-- ACTIONS SECTION -->
+                <div class="admin-section-block">
 
-                <h2>Actions</h2>
+                    <div class="admin-actions-row">
+                        <button onclick="openPasswordModal('modify_customer', {{ customer.id }})"
+                                class="crud-btn large">
+                            Modify Customer
+                        </button>
 
-                <button onclick="openPasswordModal('modify_customer', {{ customer.id }})" class="crud-btn">
-                    Modify Customer
-                </button>
-
-                <button onclick="openPasswordModal('delete_customer', {{ customer.id }})" class="crud-btn danger-btn">
-                    Delete Customer
-                </button>
+                        <button onclick="openPasswordModal('delete_customer', {{ customer.id }})"
+                                class="crud-btn danger-btn large">
+                            Delete Customer
+                        </button>
+                    </div>
+                </div>
 
             </div>
 

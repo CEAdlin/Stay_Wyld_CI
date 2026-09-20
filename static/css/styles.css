@@ -1037,7 +1037,7 @@ section.bg-light {
 .admin-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 25px;
+  margin: 25px 0px;
   background: rgba(40, 41, 62, 0.82);
   border-radius: 16px;
   overflow: hidden;
@@ -1455,6 +1455,14 @@ section.bg-light {
 
 /* ADMIN DASHBOARD */
 
+.admin-card-wrapper h2 {
+  font-family: var(--font-secondary);
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--colour-blue);
+  padding-bottom: 25px;
+}
+
 .admin-dashboard-container {
     max-width: 100%;
     margin: 60px auto;
@@ -1469,14 +1477,11 @@ section.bg-light {
     border: 2px solid #C1BD88;
     border-radius: 16px;
     margin: 0 auto;            /* centers the wrapper */
-    padding: 50px 50px;           /* optional spacing */
+    padding: 10px 30px;           /* optional spacing */
 }
 
-.admin-dashboard-title {
-    font-size: 36px;
-    font-weight: 700;
-    color: #314831;
-    margin-bottom: 10px;
+.admin-card-wrapper.wide {
+    width: 95vw;
 }
 
 .admin-dashboard-subtitle {
@@ -1524,4 +1529,184 @@ section.bg-light {
 .admin-card p {
     font-size: 14px;
     color: #555;
+}
+
+/* Admin Wrapper Enhancements */
+
+/* Section blocks inside admin-card */
+.admin-card .admin-section-block {
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+/* Section titles */
+.admin-card .admin-section-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #314831;
+    margin-bottom: 20px;
+}
+
+/* Customer / Unit / Booking info grid */
+.admin-card .admin-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Table action buttons spacing */
+.admin-card .admin-actions-cell {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Smaller buttons inside tables */
+.crud-btn.small {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+/* Larger buttons for main actions */
+.crud-btn.large {
+    padding: 12px 20px;
+    font-size: 15px;
+}
+
+/* Actions row layout */
+.admin-card .admin-actions-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+/* Improve spacing inside admin-card */
+.admin-card {
+    text-align: left;
+    padding: 40px;
+}
+
+/* Improve spacing inside wrapper */
+.admin-card-wrapper {
+    padding: 60px 60px;
+}
+
+/* Wider wrapper for table-heavy pages */
+.admin-card-wrapper.wide {
+    width: 92vw;
+    max-width: 1400px;
+}
+
+/* Customer Bookings Wrapper */
+
+.customer-card-wrapper {
+    width: 80vw;
+    background: rgba(40, 41, 62, 0.82); /* Darker glass layer */
+    border: 2px solid #C1BD88;      /* Thin gold border */
+    border-radius: 16px;
+    margin: 0 auto;
+    padding: 60px 60px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    text-align: center;
+    font-family: var(--font-secondary); /* Secondary font everywhere */
+    color: var(--colour-accent);        /* Accent text everywhere */
+}
+
+/* Wider version for tables */
+.customer-card-wrapper.wide {
+    width: 92vw;
+    max-width: 1400px;
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+
+/* Inner card */
+.customer-card {
+    background: rgba(255, 255, 255, 0.12); /* subtle glass layer */
+    border: 2px solid #C1BD88;
+    padding: 40px;
+    border-radius: 14px;
+    text-align: left;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    font-family: var(--font-secondary);
+    color: var(--colour-accent);
+}
+
+/* Customer Bookings Table Styling */
+
+.customer-bookings-table tbody tr:nth-child(odd) {
+    background: var(--colour-blue); /* main blue */
+}
+
+.customer-bookings-table tbody tr:nth-child(even) {
+    background: rgba(var(--colour-blue-rgb), 0.75); /* lighter blue */
+}
+
+.customer-bookings-table td,
+.customer-bookings-table th {
+    color: var(--colour-accent);
+    font-family: var(--font-secondary);
+}
+
+.customer-bookings-table tr:hover {
+    background: rgba(var(--colour-blue-rgb), 0.55);
+}
+
+
+/* Titles */
+.customer-dashboard-title {
+    font-size: 36px;
+    font-weight: 700;
+    font-family: var(--font-secondary);
+    color: var(--colour-accent);
+    margin-bottom: 10px;
+}
+
+.customer-dashboard-subtitle {
+    font-size: 16px;
+    font-family: var(--font-secondary);
+    color: var(--colour-accent);
+    margin-bottom: 40px;
+}
+
+/* Section blocks */
+.customer-card .customer-section-block {
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+.customer-card .customer-section-title {
+    font-family: var(--font-secondary);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--colour-accent);
+    margin-bottom: 20px;
+}
+
+/* Info grid */
+.customer-card .customer-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Table actions */
+.customer-card .customer-actions-cell {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Buttons */
+.crud-btn.small {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+.crud-btn.large {
+    padding: 12px 20px;
+    font-size: 15px;
 }
