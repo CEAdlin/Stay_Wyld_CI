@@ -5,11 +5,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from .models import CustomerProfile
-from bookings.models import Booking
-from units.models import Unit
+from bookings.models import Booking, Unit
 
 
-/* Login View */
+# Login View
 def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -19,20 +18,27 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
+
+            # Redirect admins/staff to Admin Dashboard
+            if user.is_staff:
+                return redirect("admin_dashboard")
+
+            # Redirect normal customers
             return redirect("my_bookings")
+
         else:
             messages.error(request, "Invalid username or password.")
 
     return render(request, "accounts/login.html")
 
 
-/* Logout View */
+# Logout View
 def logout_view(request):
     logout(request)
     return redirect("index")
 
 
-/* Register View */
+# Register View (Customer)
 def register_view(request):
     if request.method == "POST":
         full_name = request.POST.get("full_name")
@@ -42,20 +48,24 @@ def register_view(request):
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
 
+        # Password match check
         if password != confirm_password:
             messages.error(request, "Passwords do not match.")
             return redirect("register")
 
+        # Email already used?
         if User.objects.filter(username=email).exists():
             messages.error(request, "An account with this email already exists.")
             return redirect("register")
 
+        # Create user
         user = User.objects.create_user(
             username=email,
             email=email,
             password=password
         )
 
+        # Create profile
         CustomerProfile.objects.create(
             user=user,
             full_name=full_name,
@@ -63,13 +73,14 @@ def register_view(request):
             address=address
         )
 
+        # Auto-login
         login(request, user)
         return redirect("my_bookings")
 
     return render(request, "accounts/register.html")
 
 
-/* Password Confirmation Modal View */
+# Password Confirmation Modal View 
 @login_required
 def confirm_sensitive_action(request):
     if request.method != "POST":
@@ -79,12 +90,12 @@ def confirm_sensitive_action(request):
     action_type = request.POST.get("action_type")
     object_id = request.POST.get("object_id")
 
-    /* Verify password */
+    # Verify password
     if not request.user.check_password(password):
         messages.error(request, "Incorrect password. Please try again.")
         return redirect(request.META.get("HTTP_REFERER", "index"))
 
-    /* Perform action */
+    # Perform action
     if action_type == "delete_booking":
         booking = get_object_or_404(Booking, id=object_id)
         booking.delete()

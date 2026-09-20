@@ -2,56 +2,61 @@
 {% load static %}
 
 {% block content %}
-<div class="auth-wrapper">
-    <h2 class="auth-title">Create an Account</h2>
+<div class="auth-container">
 
-    <form method="POST">
-        {% csrf_token %}
+    <div class="auth-card">
+        <h2 class="auth-title">Create Your Account</h2>
+        <p class="auth-subtitle">Join us and start planning your stay</p>
 
-        {% if messages %}
-            <div class="auth-messages">
-                {% for message in messages %}
-                    <p class="auth-error">{{ message }}</p>
-                {% endfor %}
+        <form method="POST" class="auth-form">
+            {% csrf_token %}
+
+            {% if messages %}
+                <div class="auth-messages">
+                    {% for message in messages %}
+                        <p class="auth-error">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="auth-field">
+                <label>Full Name</label>
+                <input type="text" name="full_name" placeholder="Your full name">
             </div>
-        {% endif %}
 
-        <div class="auth-field">
-            <label>Full Name</label>
-            <input type="text" name="full_name" placeholder="Your full name">
-        </div>
+            <div class="auth-field">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="you@example.com">
+            </div>
 
-        <div class="auth-field">
-            <label>Email</label>
-            <input type="email" name="email" placeholder="Your email address">
-        </div>
+            <div class="auth-field">
+                <label>Phone Number</label>
+                <input type="text" name="phone" placeholder="Your contact number">
+            </div>
 
-        <div class="auth-field">
-            <label>Phone Number</label>
-            <input type="text" name="phone" placeholder="Your contact number">
-        </div>
+            <div class="auth-field">
+                <label>Address</label>
+                <textarea name="address" placeholder="Your full address"></textarea>
+            </div>
 
-        <div class="auth-field">
-            <label>Address</label>
-            <textarea name="address" placeholder="Your full address"></textarea>
-        </div>
+            <div class="auth-field">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Create a password">
+            </div>
 
-        <div class="auth-field">
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Create a password">
-        </div>
+            <div class="auth-field">
+                <label>Confirm Password</label>
+                <input type="password" name="confirm_password" placeholder="Confirm your password">
+            </div>
 
-        <div class="auth-field">
-            <label>Confirm Password</label>
-            <input type="password" name="confirm_password" placeholder="Confirm your password">
-        </div>
+            <button type="submit" class="auth-btn">Create Account</button>
+        </form>
 
-        <button type="submit" class="crud-btn">Register</button>
-    </form>
+        <p class="auth-switch">
+            Already have an account?
+            <a href="{% url 'login' %}">Log in</a>
+        </p>
+    </div>
 
-    <p class="auth-switch">
-        Already have an account?
-        <a href="{% url 'login' %}">Login here</a>
-    </p>
 </div>
 {% endblock %}

@@ -1,43 +1,63 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="admin-section">
 
-    <h1>Customers</h1>
+<div class="admin-dashboard-container">
 
-    <table class="admin-table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Total Bookings</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+    <div class="admin-card-wrapper">
 
-        <tbody>
-            {% for customer in customers %}
-            <tr>
-                <td>{{ customer.username }}</td>
-                <td>{{ customer.email }}</td>
-                <td>{{ customer.profile.phone }}</td>
-                <td>{{ customer.bookings.count }}</td>
+        <h1 class="admin-dashboard-title">Customers</h1>
+        <p class="admin-dashboard-subtitle">View, manage, and modify customer accounts</p>
 
-                <td>
-                    <a href="{% url 'admin_customer_detail' customer.id %}" class="crud-btn">View</a>
+        <div class="admin-dashboard-grid">
 
-                    <button onclick="openPasswordModal('modify_customer', {{ customer.id }})" class="crud-btn">
-                        Modify
-                    </button>
+            <!-- FULL-WIDTH CARD -->
+            <div class="admin-card" style="grid-column: 1 / -1;">
 
-                    <button onclick="openPasswordModal('delete_customer', {{ customer.id }})" class="crud-btn danger-btn">
-                        Delete
-                    </button>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Total Bookings</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
 
-</section>
+                    <tbody>
+                        {% for customer in customers %}
+                        <tr>
+                            <td>{{ customer.username }}</td>
+                            <td>{{ customer.email }}</td>
+                            <td>{{ customer.profile.phone }}</td>
+                            <td>{{ customer.bookings.count }}</td>
+
+                            <td>
+                                <a href="{% url 'admin_customer_detail' customer.id %}" class="crud-btn">
+                                    View
+                                </a>
+
+                                <button onclick="openPasswordModal('modify_customer', {{ customer.id }})"
+                                        class="crud-btn">
+                                    Modify
+                                </button>
+
+                                <button onclick="openPasswordModal('delete_customer', {{ customer.id }})"
+                                        class="crud-btn danger-btn">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 {% endblock %}

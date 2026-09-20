@@ -1,25 +1,40 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="admin-section">
 
-    <h1>Booking #{{ booking.id }}</h1>
+<div class="admin-dashboard-container">
 
-    <p><strong>Customer:</strong> {{ booking.customer.username }}</p>
-    <p><strong>Unit:</strong> {{ booking.unit.name }}</p>
-    <p><strong>Check In:</strong> {{ booking.check_in_date }}</p>
-    <p><strong>Check Out:</strong> {{ booking.check_out_date }}</p>
-    <p><strong>Total Price:</strong> £{{ booking.total_price }}</p>
-    <p><strong>Status:</strong> {{ booking.status }}</p>
+    <div class="admin-card-wrapper">
 
-    <h2>Actions</h2>
+        <h1 class="admin-dashboard-title">Booking #{{ booking.id }}</h1>
+        <p class="admin-dashboard-subtitle">Full booking details and admin actions</p>
 
-    <button onclick="openPasswordModal('modify_booking', {{ booking.id }})" class="crud-btn">
-        Modify Booking
-    </button>
+        <div class="admin-dashboard-grid">
 
-    <button onclick="openPasswordModal('delete_booking', {{ booking.id }})" class="crud-btn danger-btn">
-        Delete Booking
-    </button>
+            <div class="admin-card" style="grid-column: 1 / -1;">
 
-</section>
+                <p><strong>Customer:</strong> {{ booking.customer.username }}</p>
+                <p><strong>Unit:</strong> {{ booking.unit.name }}</p>
+                <p><strong>Check In:</strong> {{ booking.check_in_date }}</p>
+                <p><strong>Check Out:</strong> {{ booking.check_out_date }}</p>
+                <p><strong>Total Price:</strong> £{{ booking.total_price }}</p>
+                <p><strong>Status:</strong> {{ booking.status }}</p>
+
+                <h2>Actions</h2>
+
+                <button onclick="openPasswordModal('modify_booking', {{ booking.id }})" class="crud-btn">
+                    Modify Booking
+                </button>
+
+                <button onclick="openPasswordModal('delete_booking', {{ booking.id }})" class="crud-btn danger-btn">
+                    Delete Booking
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 {% endblock %}

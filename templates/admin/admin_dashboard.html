@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="admin-dashboard-container">
+
+    <div class="admin-card-wrapper">
+
+        <h1 class="admin-dashboard-title">Admin Dashboard</h1>
+        <p class="admin-dashboard-subtitle">Manage all bookings, customers, and units</p>
+
+
+        <div class="admin-dashboard-grid">
+
+            <!-- BOOKINGS CARD -->
+            <a href="{% url 'admin_booking_list' %}" class="admin-card">
+                <div class="admin-card-icon">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+                <h3>Bookings</h3>
+                <p>View, manage, and modify all bookings.</p>
+            </a>
+
+            <!-- CUSTOMERS CARD -->
+            <a href="{% url 'admin_customers_list' %}" class="admin-card">
+                <div class="admin-card-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h3>Customers</h3>
+                <p>View customer profiles and booking history.</p>
+            </a>
+
+            <!-- UNITS CARD -->
+            <a href="{% url 'admin_unit_list' %}" class="admin-card">
+                <div class="admin-card-icon">
+                    <i class="bi bi-house-door"></i>
+                </div>
+                <h3>Units</h3>
+                <p>Manage glamping units, pricing, and gallery images.</p>
+            </a>
+
+        </div>
+
+    </div>
+    <!-- END WRAPPER -->
+
+</div>
+{% endblock %}

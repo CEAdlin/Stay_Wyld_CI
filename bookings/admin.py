@@ -1,17 +1,18 @@
 from django.contrib import admin
+from adminsortable2.admin import SortableInlineAdminMixin, SortableAdminBase
 from .models import Unit, UnitGalleryImage, Booking
 
-#Drag and drop ordering for gallery images in the admin interface
-from adminsortable2.admin import SortableInlineAdminMixin
 
+# Drag‑and‑drop gallery image ordering
 class UnitGalleryImageInline(SortableInlineAdminMixin, admin.TabularInline):
     model = UnitGalleryImage
     extra = 1
     fields = ("image", "position")
 
 
+# Unit admin must inherit from SortableAdminBase
 @admin.register(Unit)
-class UnitAdmin(admin.ModelAdmin):
+class UnitAdmin(SortableAdminBase, admin.ModelAdmin):
     list_display = ("name", "slug", "active", "max_guests", "base_price_per_night")
     prepopulated_fields = {"slug": ("name",)}
     inlines = [UnitGalleryImageInline]
@@ -24,4 +25,4 @@ class UnitGalleryImageAdmin(admin.ModelAdmin):
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ("unit", "customer", "check_in_date", "check_out_date", "total_price", "status")
+    list_display = ("unit", "customer", "check_in_date", "check_out_date", "total_amount", "status")

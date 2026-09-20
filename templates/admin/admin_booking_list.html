@@ -1,61 +1,81 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="admin-section">
 
-    <h1>Bookings</h1>
+<div class="admin-dashboard-container">
 
-    <form method="GET" class="filter-form">
-        <select name="status">
-            <option value="">Current + Upcoming</option>
-            <option value="past">Past</option>
-            <option value="current">Current</option>
-            <option value="upcoming">Upcoming</option>
-        </select>
+    <div class="admin-card-wrapper">
 
-        <input type="date" name="from">
-        <input type="date" name="to">
+        <h1 class="admin-dashboard-title">Bookings</h1>
+        <p class="admin-dashboard-subtitle">View, filter, and manage all bookings</p>
 
-        <button type="submit" class="crud-btn">Filter</button>
-    </form>
+        <div class="admin-dashboard-grid">
 
-    <table class="admin-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Unit</th>
-                <th>Customer</th>
-                <th>Check In</th>
-                <th>Check Out</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+            <!-- FULL-WIDTH CARD FOR TABLE + FILTERS -->
+            <div class="admin-card" style="grid-column: 1 / -1;">
 
-        <tbody>
-            {% for booking in bookings %}
-            <tr>
-                <td>{{ booking.id }}</td>
-                <td>{{ booking.unit.name }}</td>
-                <td>{{ booking.customer.username }}</td>
-                <td>{{ booking.check_in_date }}</td>
-                <td>{{ booking.check_out_date }}</td>
-                <td>{{ booking.status }}</td>
+                <form method="GET" class="filter-form">
+                    <select name="status">
+                        <option value="">Current + Upcoming</option>
+                        <option value="past">Past</option>
+                        <option value="current">Current</option>
+                        <option value="upcoming">Upcoming</option>
+                    </select>
 
-                <td>
-                    <a href="{% url 'admin_booking_detail' booking.id %}" class="crud-btn">View</a>
+                    <input type="date" name="from">
+                    <input type="date" name="to">
 
-                    <button onclick="openPasswordModal('modify_booking', {{ booking.id }})" class="crud-btn">
-                        Modify
-                    </button>
+                    <button type="submit" class="crud-btn">Filter</button>
+                </form>
 
-                    <button onclick="openPasswordModal('delete_booking', {{ booking.id }})" class="crud-btn danger-btn">
-                        Delete
-                    </button>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Unit</th>
+                            <th>Customer</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
 
-</section>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td>{{ booking.id }}</td>
+                            <td>{{ booking.unit.name }}</td>
+                            <td>{{ booking.customer.username }}</td>
+                            <td>{{ booking.check_in_date }}</td>
+                            <td>{{ booking.check_out_date }}</td>
+                            <td>{{ booking.status }}</td>
+
+                            <td>
+                                <a href="{% url 'admin_booking_detail' booking.id %}" class="crud-btn">
+                                    View
+                                </a>
+
+                                <button onclick="openPasswordModal('modify_booking', {{ booking.id }})"
+                                        class="crud-btn">
+                                    Modify
+                                </button>
+
+                                <button onclick="openPasswordModal('delete_booking', {{ booking.id }})"
+                                        class="crud-btn danger-btn">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 {% endblock %}
