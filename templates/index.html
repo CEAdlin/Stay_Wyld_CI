@@ -1,581 +1,275 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stay Wyld | Luxury Woodland Glamping</title>
+{% block content %}
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+<!-- Hero Section -->
+<header id="home" class="hero">
+  <div class="container-fluid px-0">
+    <div class="header-spacer"></div>
 
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="../static/css/styles.css" />
+    <div class="hero-banner d-flex justify-content-end align-items-center">
+      <div class="welcome-card">
+        <p class="welcome-eyebrow">Welcome to</p>
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+        <h2>The Wyld Collective</h2>
 
-    <link rel="icon" type="image/png" href="../static/images/favicon.png" />
-</head>
+        <p>
+          Bringing upmarket comfort to a deeply natural setting, with
+          considered interiors, private outdoor spaces and a slow rhythm
+          designed for long weekends away.
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
 
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html#home">
-                <img src="../static/images/wyld-logo-nobg (1).png " alt="Stay Wyld Logo" />
-            </a>
+<!-- Stay With Us Section -->
+<section id="units" class="home-section units-section">
+  <div class="container">
+    <div class="glass-panel units-panel">
+      <div class="section-heading-home">
+        <span class="home-eyebrow"> Find your escape </span>
+        <h3 class="units-heading">Stay With Us</h3>
+      </div>
 
-            <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
-                aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+      <div class="units-wrapper">
 
-            <div class="collapse navbar-collapse justify-content-end" id="navMenu">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#home">Home</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#units">Stay</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#photo-gallery">Explore</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
-                    </li>
-
-                    <!-- Book Online Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="bookOnlineDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Book Online
-                        </a>
-
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bookOnlineDropdown">
-                            <li>
-                                <a class="dropdown-item" href="tinkers_lodge.html#booking">
-                                    Tinkers Lodge
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="keepers_cottage.html#booking">
-                                    Keepers Cottage
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-<!-- HeroSection -->
-     <header id="home" class="hero">
-      <div class="container-fluid px-0">
-        <div class="header-spacer"></div>
-
-        <div class="hero-banner d-flex justify-content-end align-items-center">
-          <div class="welcome-card">
-            <p class="welcome-eyebrow">Welcome to</p>
-
-            <h2>The Wyld Collective</h2>
-
-            <p>
-              Bringing upmarket comfort to a deeply natural setting, with
-              considered interiors, private outdoor spaces and a slow rhythm
-              designed for long weekends away.
-            </p>
+        <!-- Tinkers Lodge -->
+        <div class="unit-card unit-tinkers">
+          <div class="unit-overlay">
+            <h3>Tinkers Lodge</h3>
+            <a href="/tinkers_lodge.html" class="unit-link"> Learn more </a>
           </div>
+        </div>
+
+        <!-- Keepers Cottage -->
+        <div class="unit-card unit-keepers">
+          <div class="unit-overlay">
+            <h3>Keepers Cottage</h3>
+            <a href="/keepers_cottage.html" class="unit-link"> Learn more </a>
+          </div>
+        </div>
+
+        <!-- Shepherds Keep -->
+        <div class="unit-card unit-shepherds">
+          <div class="unit-overlay">
+            <h3>Shepherds Keep</h3>
+            <a href="/shepherds_keep.html" class="unit-link"> Learn more </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="home-section about-section">
+  <div class="container">
+    <div class="about-container glass-panel">
+      <div class="section-heading-home">
+        <span class="home-eyebrow"> A little more about us </span>
+        <h2>About The Wyld Collective</h2>
+      </div>
+
+      <div class="about-content">
+
+        <p class="lead">
+          New for 2026, The Wyld Collective is becoming a beautifully
+          designed, nature-centric retreat where slow living, woodland calm
+          and handcrafted luxury come together.
+        </p>
+
+        <p>
+          At the heart of The Wyld Collective are our five bespoke glamping
+          retreats — each one hand-built on site by us. You’ll find a
+          characterful mix of extra-large shepherds huts, rustic
+          solid-timber A-frames and beautifully finished woodland lodges,
+          all created with care, craft and a deep respect for the land
+          around us.
+        </p>
+
+        <p>
+          We’re lucky enough to be nestled within an established, magical
+          woodland, and we embrace it fully. Fairy-lights wind through the
+          trees, hidden seating nooks invite quiet moments, and winding
+          woodland paths lead you to a whole menagerie of friendly animals.
+        </p>
+
+        <p class="lead">
+          Come and meet our three gentle Shetland ponies, our rare-breed
+          chickens, and the ever-expanding guinea-pig village that delights
+          guests of all ages.
+        </p>
+
+        <p>
+          Over the coming months, our coffee hut and pizza shack will
+          transform into an exotic greenhouse café set inside the old
+          commercial glasshouse. Natural hessian drapes, warm fairy lights
+          and lush foliage will create a calm, overgrown sanctuary. Resin
+          pathways will lead to private seating areas with cosy sofas and
+          comfortable chairs, all centred around a stone-edged pond home to
+          our koi. In cooler months, wood-burning stoves will keep the space
+          snug, while outside, covered pergolas sit among silver birches,
+          olive trees and magnolias for those who prefer to relax beneath
+          the open sky.
+        </p>
+
+        <p>
+          We’re also building a children’s play barn, complete with
+          small-world farm play where little ones can ride around the mini
+          farm track on their own tractors, collect eggs and milk from the
+          farm stands, and head off on their delivery rounds. For those who
+          prefer mud pies to milk runs, our woodland mud kitchen is ready
+          and waiting.
+        </p>
+
+        <p>
+          As we grow, we’re bringing the poly-tunnels and orchard back to
+          life using permaculture principles and organic growing methods.
+          Over the coming months and years, The Wyld Collective will
+          continue to evolve into a little slice of paradise — a place
+          shaped gently by nature, crafted by hand, and shared with those
+          who want to slow down and reconnect.
+        </p>
+
+        <p class="lead">
+          We’d love to welcome you as we create something truly special here
+          on the edge of the Staffordshire countryside.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Photo Gallery -->
+<section class="photo-gallery py-5" id="photo-gallery">
+  <div class="container">
+    <div class="section-heading-home mb-4">
+      <span class="home-eyebrow"> Explore The Wyld Collective </span>
+      <h3 class="gallery-heading">Photo Gallery</h3>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- Gallery Item -->
+      <div class="col-6 col-md-4">
+        <div class="gallery-item">
+          <img src="{% static 'images/coffee-shck.png' %}" alt="Wyld Coffee Shack" class="img-fluid" />
+          <div class="overlay-text">Wyld Coffee Shack</div>
         </div>
       </div>
-    </header>
 
-    <!-- Stay With Us Section -->
-         <section id="units" class="home-section units-section">
-      <div class="container">
-        <div class="glass-panel units-panel">
-          <div class="section-heading-home">
-            <span class="home-eyebrow"> Find your escape </span>
-
-            <h3 class="units-heading">Stay With Us</h3>
-          </div>
-
-          <div class="units-wrapper">
-            <!-- Tinkers Lodge -->
-
-            <div class="unit-card unit-tinkers">
-              <div class="unit-overlay">
-                <h3>Tinkers Lodge</h3>
-
-                <a href="/tinkers_lodge.html" class="unit-link"> Learn more </a>
-              </div>
-            </div>
-
-            <!-- Keepers Cottage -->
-
-            <div class="unit-card unit-keepers">
-              <div class="unit-overlay">
-                <h3>Keepers Cottage</h3>
-
-                <a href="/keepers_cottage.html" class="unit-link">
-                  Learn more
-                </a>
-              </div>
-            </div>
-
-            <!-- Shepherds Keep -->
-
-            <div class="unit-card unit-shepherds">
-              <div class="unit-overlay">
-                <h3>Shepherds Keep</h3>
-
-                <a href="/shepherds_keep.html" class="unit-link">
-                  Learn more
-                </a>
-              </div>
-            </div>
-          </div>
+      <div class="col-6 col-md-4">
+        <div class="gallery-item">
+          <img src="{% static 'images/keepers-cottage-int.png' %}" alt="Keepers Cottage" class="img-fluid" />
+          <div class="overlay-text">Keepers Cottage</div>
         </div>
       </div>
-    </section>
 
-        <!-- ABOUT -->
-
-    <section id="about" class="home-section about-section">
-      <div class="container">
-        <div class="about-container glass-panel">
-          <div class="section-heading-home">
-            <span class="home-eyebrow"> A little more about us </span>
-
-            <h2>About The Wyld Collective</h2>
-          </div>
-
-          <div class="about-content">
-            <p class="lead">
-              New for 2026, The Wyld Collective is becoming a beautifully
-              designed, nature-centric retreat where slow living, woodland calm
-              and handcrafted luxury come together.
-            </p>
-
-            <p>
-              At the heart of The Wyld Collective are our five bespoke glamping
-              retreats — each one hand-built on site by us. You’ll find a
-              characterful mix of extra-large shepherds huts, rustic
-              solid-timber A-frames and beautifully finished woodland lodges,
-              all created with care, craft and a deep respect for the land
-              around us.
-            </p>
-
-            <p>
-              We’re lucky enough to be nestled within an established, magical
-              woodland, and we embrace it fully. Fairy-lights wind through the
-              trees, hidden seating nooks invite quiet moments, and winding
-              woodland paths lead you to a whole menagerie of friendly animals.
-            </p>
-
-            <p class="lead">
-              Come and meet our three gentle Shetland ponies, our rare-breed
-              chickens, and the ever-expanding guinea-pig village that delights
-              guests of all ages.
-            </p>
-
-            <p>
-              Over the coming months, our coffee hut and pizza shack will
-              transform into an exotic greenhouse café set inside the old
-              commercial glasshouse. Natural hessian drapes, warm fairy lights
-              and lush foliage will create a calm, overgrown sanctuary. Resin
-              pathways will lead to private seating areas with cosy sofas and
-              comfortable chairs, all centred around a stone-edged pond home to
-              our koi. In cooler months, wood-burning stoves will keep the space
-              snug, while outside, covered pergolas sit among silver birches,
-              olive trees and magnolias for those who prefer to relax beneath
-              the open sky.
-            </p>
-
-            <p>
-              We’re also building a children’s play barn, complete with
-              small-world farm play where little ones can ride around the mini
-              farm track on their own tractors, collect eggs and milk from the
-              farm stands, and head off on their delivery rounds. For those who
-              prefer mud pies to milk runs, our woodland mud kitchen is ready
-              and waiting.
-            </p>
-
-            <p>
-              As we grow, we’re bringing the poly-tunnels and orchard back to
-              life using permaculture principles and organic growing methods.
-              Over the coming months and years, The Wyld Collective will
-              continue to evolve into a little slice of paradise — a place
-              shaped gently by nature, crafted by hand, and shared with those
-              who want to slow down and reconnect.
-            </p>
-
-            <p class="lead">
-              We’d love to welcome you as we create something truly special here
-              on the edge of the Staffordshire countryside.
-            </p>
-          </div>
+      <div class="col-6 col-md-4">
+        <div class="gallery-item">
+          <img src="{% static 'images/tinkers-lodge-ext1.png' %}" alt="Tinkers Lodge" class="img-fluid" />
+          <div class="overlay-text">Tinkers Lodge</div>
         </div>
       </div>
-    </section>
 
-    <!-- Photo Gallery - Explore Section -->
-
-    <section class="photo-gallery py-5" id="photo-gallery">
-      <div class="container">
-        <div class="section-heading-home mb-4">
-          <span class="home-eyebrow"> Explore The Wyld Collective </span>
-
-          <h3 class="gallery-heading">Photo Gallery</h3>
-        </div>
-        <div class="row g-4">
-          <!-- Gallery Item -->
-          <div class="col-6 col-md-4">
-            <div class="gallery-item">
-              <img
-                src="../static/images/coffee-shck.png"
-                alt="Wyld Coffee Shack"
-                class="img-fluid"
-              />
-              <div class="overlay-text">Wyld Coffee Shack</div>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-4">
-            <div class="gallery-item">
-              <img
-                src="../static/images/keepers-cottage-int.png"
-                alt="Gallery Image"
-                class="img-fluid"
-              />
-              <div class="overlay-text">Keepers Cottage</div>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-4">
-            <div class="gallery-item">
-              <img
-                src="../static/images/tinkers-lodge-ext1.png"
-                alt="Gallery Image"
-                class="img-fluid"
-              />
-              <div class="overlay-text">Tinkers Lodge</div>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-4">
-            <div class="gallery-item">
-              <img
-                src="../static/images/keepers-cottage-ext.png"
-                alt="Wyld Coffee Shack"
-                class="img-fluid"
-              />
-              <div class="overlay-text">Keepers Cottage</div>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-4">
-            <div class="gallery-item">
-              <img
-                src="../static/images/the-shepherds-keep-int2.png"
-                alt="Gallery Image"
-                class="img-fluid"
-              />
-              <div class="overlay-text">The Shepherds Keep</div>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-4">
-            <div class="gallery-item">
-              <img
-                src="../static/images/stay-wyld-entrance.png"
-                alt="Gallery Image"
-                class="img-fluid"
-              />
-              <div class="overlay-text">Welcome to Wyld</div>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-4">
-            <div class="gallery-item">
-              <img
-                src="../static/images/tinkers-lodge-int2.png"
-                alt="Wyld Coffee Shack"
-                class="img-fluid"
-              />
-              <div class="overlay-text">Tinkers Lodge</div>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-4">
-            <div class="gallery-item">
-              <img
-                src="../static/images/tinker-lodge-outdoor-seating.png"
-                alt="Gallery Image"
-                class="img-fluid"
-              />
-              <div class="overlay-text">Tinkers Lodge</div>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-4">
-            <div class="gallery-item">
-              <img
-                src="../static/images/shepherds-hut-orchard-image.png"
-                alt="Gallery Image"
-                class="img-fluid"
-              />
-              <div class="overlay-text">The Shepherds Keep</div>
-            </div>
-          </div>
+      <div class="col-6 col-md-4">
+        <div class="gallery-item">
+          <img src="{% static 'images/keepers-cottage-ext.png' %}" alt="Keepers Cottage" class="img-fluid" />
+          <div class="overlay-text">Keepers Cottage</div>
         </div>
       </div>
-    </section>
 
-    <!-- Contact Section -->
-
-    <section id="contact" class="contact-section">
-      <div class="container">
-        <div class="contact-panel glass-panel">
-          <div class="section-heading-home">
-            <span class="home-eyebrow"> We'd love to hear from you </span>
-
-            <h3 class="contact-heading">Contact Us</h3>
-          </div>
-
-          <form id="contactForm">
-            <!-- Full Name -->
-
-            <div class="mb-3">
-              <label for="fullName" class="form-label"> Full Name </label>
-
-              <input
-                type="text"
-                class="form-control"
-                id="fullName"
-                name="fullName"
-                required
-                minlength="2"
-              />
-            </div>
-
-            <!-- Contact Number -->
-
-            <div class="mb-3">
-              <label for="contactNumber" class="form-label">
-                Contact Number
-              </label>
-
-              <input
-                type="tel"
-                class="form-control"
-                id="contactNumber"
-                name="contactNumber"
-                required
-                pattern="[0-9+\-\s]{7,}"
-              />
-            </div>
-
-            <!-- Email -->
-
-            <div class="mb-3">
-              <label for="emailAddress" class="form-label">
-                Email Address
-              </label>
-
-              <input
-                type="email"
-                class="form-control"
-                id="emailAddress"
-                name="emailAddress"
-                required
-              />
-            </div>
-
-            <!-- Query Type -->
-
-            <div class="mb-3">
-              <label for="queryType" class="form-label"> Query Type </label>
-
-              <select
-                class="form-select"
-                id="queryType"
-                name="queryType"
-                required
-              >
-                <option value="">Please select…</option>
-
-                <option>Booking enquiry</option>
-
-                <option>Availability check</option>
-
-                <option>General question</option>
-
-                <option>Special request</option>
-
-                <option>Report an issue</option>
-              </select>
-            </div>
-
-            <!-- Message -->
-
-            <div class="mb-3">
-              <label for="messageBox" class="form-label"> Message </label>
-
-              <textarea
-                class="form-control"
-                id="messageBox"
-                name="message"
-                rows="5"
-                required
-              ></textarea>
-            </div>
-
-            <!-- Submit -->
-
-            <button class="btn btn-primary" type="submit">Submit</button>
-
-            <div id="formMessage" class="mt-3"></div>
-          </form>
+      <div class="col-6 col-md-4">
+        <div class="gallery-item">
+          <img src="{% static 'images/the-shepherds-keep-int2.png' %}" alt="The Shepherds Keep" class="img-fluid" />
+          <div class="overlay-text">The Shepherds Keep</div>
         </div>
       </div>
-    </section>
 
-    <!-- Footer Section -->
-
-    <footer class="site-footer">
-      <div class="container">
-        <div class="footer-content">
-          <!-- LEFT COLUMN -->
-
-          <div class="footer-left">
-            <h3>The Wyld Collective</h3>
-
-            <p>A little escape from the everyday.</p>
-
-            <p class="footer-location">The Wyld Collecctive.</p>
-          </div>
-
-          <!-- RIGHT COLUMN -->
-
-          <div class="footer-right">
-
-            <div class="footer-social">
-              <a
-                href="https://www.instagram.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Follow Stay Wyld on Instagram"
-              >
-                <i class="bi bi-instagram"></i>
-                Instagram
-              </a>
-
-              <a
-                href="https://www.facebook.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Follow Stay Wyld on Facebook"
-              >
-                <i class="bi bi-facebook"></i>
-                Facebook
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- COPYRIGHT -->
-
-        <div class="footer-bottom">
-          <p>&copy; 2026 The Wyld Collective. All rights reserved.</p>
+      <div class="col-6 col-md-4">
+        <div class="gallery-item">
+          <img src="{% static 'images/stay-wyld-entrance.png' %}" alt="Welcome to Wyld" class="img-fluid" />
+          <div class="overlay-text">Welcome to Wyld</div>
         </div>
       </div>
-    </footer>
 
-    <!-- BOOTSTRAP JS -->
+      <div class="col-6 col-md-4">
+        <div class="gallery-item">
+          <img src="{% static 'images/tinkers-lodge-int2.png' %}" alt="Tinkers Lodge" class="img-fluid" />
+          <div class="overlay-text">Tinkers Lodge</div>
+        </div>
+      </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+      <div class="col-6 col-md-4">
+        <div class="gallery-item">
+          <img src="{% static 'images/tinker-lodge-outdoor-seating.png' %}" alt="Tinkers Lodge" class="img-fluid" />
+          <div class="overlay-text">Tinkers Lodge</div>
+        </div>
+      </div>
 
-    <!-- CONTACT FORM JAVASCRIPT -->
+      <div class="col-6 col-md-4">
+        <div class="gallery-item">
+          <img src="{% static 'images/shepherds-hut-orchard-image.png' %}" alt="The Shepherds Keep" class="img-fluid" />
+          <div class="overlay-text">The Shepherds Keep</div>
+        </div>
+      </div>
 
-    <script>
-      const contactForm = document.getElementById("contactForm");
+    </div>
+  </div>
+</section>
 
-      if (contactForm) {
-        contactForm.addEventListener("submit", async function (event) {
-          event.preventDefault();
+<!-- Contact Section -->
+<section id="contact" class="contact-section">
+  <div class="container">
+    <div class="contact-panel glass-panel">
+      <div class="section-heading-home">
+        <span class="home-eyebrow"> We'd love to hear from you </span>
+        <h3 class="contact-heading">Contact Us</h3>
+      </div>
 
-          const submitButton = contactForm.querySelector(
-            'button[type="submit"]',
-          );
+      <form id="contactForm">
 
-          const formMessage = document.getElementById("formMessage");
+        <div class="mb-3">
+          <label for="fullName" class="form-label"> Full Name </label>
+          <input type="text" class="form-control" id="fullName" name="fullName" required minlength="2" />
+        </div>
 
-          const formData = {
-            fullName: document.getElementById("fullName").value.trim(),
+        <div class="mb-3">
+          <label for="contactNumber" class="form-label"> Contact Number </label>
+          <input type="tel" class="form-control" id="contactNumber" name="contactNumber" required pattern="[0-9+\-\s]{7,}" />
+        </div>
 
-            contactNumber: document
-              .getElementById("contactNumber")
-              .value.trim(),
+        <div class="mb-3">
+          <label for="emailAddress" class="form-label"> Email Address </label>
+          <input type="email" class="form-control" id="emailAddress" name="emailAddress" required />
+        </div>
 
-            emailAddress: document.getElementById("emailAddress").value.trim(),
+        <div class="mb-3">
+          <label for="queryType" class="form-label"> Query Type </label>
+          <select class="form-select" id="queryType" name="queryType" required>
+            <option value="">Please select…</option>
+            <option>Booking enquiry</option>
+            <option>Availability check</option>
+            <option>General question</option>
+            <option>Special request</option>
+            <option>Report an issue</option>
+          </select>
+        </div>
 
-            queryType: document.getElementById("queryType").value,
+        <div class="mb-3">
+          <label for="messageBox" class="form-label"> Message </label>
+          <textarea class="form-control" id="messageBox" name="message" rows="5" required></textarea>
+        </div>
 
-            message: document.getElementById("messageBox").value.trim(),
-          };
+        <button class="btn btn-primary" type="submit">Submit</button>
 
-          submitButton.disabled = true;
-          submitButton.textContent = "Sending...";
+        <div id="formMessage" class="mt-3"></div>
+      </form>
+    </div>
+  </div>
+</section>
 
-          try {
-            const response = await fetch(
-              "https://staywyld-contact-form.corrinead.workers.dev/",
-              {
-                method: "POST",
-
-                headers: {
-                  "Content-Type": "application/json",
-                },
-
-                body: JSON.stringify(formData),
-              },
-            );
-
-            const result = await response.json();
-
-            if (result.success) {
-              formMessage.innerHTML =
-                "<p>Thank you for getting in touch! We've received your enquiry and will get back to you as soon as possible.</p>";
-
-              contactForm.reset();
-            } else {
-              formMessage.innerHTML =
-                "<p>Sorry, something went wrong. Please try again.</p>";
-            }
-          } catch (error) {
-            console.error("Contact form error:", error);
-
-            formMessage.innerHTML =
-              "<p>Sorry, something went wrong. Please try again.</p>";
-          }
-
-          submitButton.disabled = false;
-          submitButton.textContent = "Submit";
-        });
-      }
-    </script>
-
-
-</body>
-
-</html>
+{% endblock %}

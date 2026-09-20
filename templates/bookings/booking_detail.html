@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="booking-detail-wrapper">
+
+    <h1>Your Booking</h1>
+
+    <div class="booking-summary-card">
+
+        <!-- Unit Info -->
+        <div class="unit-info">
+            <h2>{{ booking.unit.name }}</h2>
+
+            {% if booking.unit.image %}
+                <img src="{{ booking.unit.image.url }}" alt="{{ booking.unit.name }}" class="unit-image">
+            {% endif %}
+        </div>
+
+        <!-- Dates -->
+        <div class="booking-dates">
+            <h3>Stay Dates</h3>
+            <p><strong>Check-in:</strong> {{ booking.check_in_date }}</p>
+            <p><strong>Check-out:</strong> {{ booking.check_out_date }}</p>
+
+            {% comment %}
+            Calculate nights inside template
+            {% endcomment %}
+            {% with nights=booking.check_out_date|date:"U"|add:-booking.check_in_date|date:"U"|divisibleby:86400 %}
+            {% endwith %}
+        </div>
+
+        <!-- Guests & Dogs -->
+        <div class="booking-guests">
+            <h3>Guests</h3>
+            <p>{{ booking.guests }} guest{{ booking.guests|pluralize }}</p>
+
+            {% if booking.dogs %}
+                <p>{{ booking.dogs }} dog{{ booking.dogs|pluralize }}</p>
+            {% else %}
+                <p>No dogs</p>
+            {% endif %}
+        </div>
+
+        <!-- Price Breakdown -->
+        <div class="booking-price">
+            <h3>Price Breakdown</h3>
+
+            {% with nights=booking.check_out_date|date:"U"|add:-booking.check_in_date|date:"U"|divisibleby:86400 %}
+            <p><strong>Nights:</strong> {{ nights }}</p>
+            <p><strong>Nightly Rate:</strong> £{{ booking.unit.price_per_night }}</p>
+            <p><strong>Base Price:</strong> £{{ nights|floatformat:0|add:0|mul:booking.unit.price_per_night }}</p>
+            {% endwith %}
+
+            {% if booking.dogs %}
+                <p><strong>Dog Surcharge:</strong> £{{ booking.dogs|add:0|mul:booking.unit.dog_surcharge }}</p>
+            {% endif %}
+
+            <p class="total-price"><strong>Total Price:</strong> £{{ booking.total_price }}</p>
+        </div>
+
+        <!-- Status -->
+        <div class="booking-status">
+            <h3>Status</h3>
+            <p>{{ booking.status|title }}</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="booking-actions">
+            <a href="{% url 'booking_update' booking.pk %}" class="crud-btn">Update Booking</a>
+            <a href="{% url 'booking_delete' booking.pk %}" class="crud-btn delete-btn">Cancel Booking</a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="booking-wrapper">
+    <h1>Book {{ unit.name }}</h1>
+
+    <!-- Calendar Section -->
+    <h2>Select Your Dates</h2>
+
+    <div id="availability-calendar"
+         data-price="{{ unit.price_per_night }}">
+    </div>
+
+    {{ booked_ranges|json_script:"booked-dates" }}
+
+    <script src="{% static 'js/calendar.js' %}"></script>
+
+    <!-- Booking Form -->
+    <h2>Your Booking Details</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Check-in</label>
+        <input type="date" name="check_in" required>
+
+        <label>Check-out</label>
+        <input type="date" name="check_out" required>
+
+        <label>Guests</label>
+        <input type="number" name="guests" min="1" max="{{ unit.max_guests }}" required>
+
+        {% if unit.dogs_allowed %}
+            <label>Dogs</label>
+            <input type="number" name="dogs" min="0" max="3">
+        {% endif %}
+
+        <button type="submit" class="crud-btn">Confirm Booking</button>
+    </form>
+</div>
+{% endblock %}

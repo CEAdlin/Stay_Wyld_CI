@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div id="availability-calendar"
+     data-price="{{ price_per_night }}">
+</div>
+
+{{ booked_ranges|json_script:"booked-dates" }}
+
+<script src="{% static 'js/calendar.js' %}"></script>
+{% endblock %}

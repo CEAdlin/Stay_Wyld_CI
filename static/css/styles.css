@@ -69,21 +69,23 @@ li {
   text-align: center;
   color: var(--colour-tertiary);
 }
+
 /* NAVBAR */
 .navbar {
-  background: rgba(49, 72, 49, 0.75);
-  backdrop-filter: blur(6px);
-  padding: 0.1rem 0;
+  background: var(--colour-primary);
+  border-bottom: 1px solid rgba(193, 189, 136, 0.35);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.55);
+  padding: 0;
 }
 
 .navbar-brand img {
-  height: 100px;
+  height: 90px;
 }
 
 .navbar .nav-link {
   color: var(--colour-accent);
   font-family: var(--font-primary);
-  font-size: 1.8rem;
+  font-size: 1.9rem;
   font-weight: 400;
   margin-left: 20px;
   transition: var(--transition-fast);
@@ -94,9 +96,7 @@ li {
   opacity: 0.85;
 }
 
-/* ================================
-   BOOK ONLINE DROPDOWN
-   ================================ */
+/* BOOK ONLINE DROPDOWN */
 
 .navbar .dropdown-menu {
   margin-top: 12px;
@@ -141,13 +141,50 @@ li {
   color: var(--colour-accent);
 }
 
+/* TOP UTILITY BAR */
+.topbar {
+  background: #314831; /* dark green */
+  border-bottom: 1px solid rgba(193, 189, 136, 0.35);
+  height: 48px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+}
+
+/* Push main navbar down */
+.main-navbar {
+  margin-top: 48px;
+}
+
+/* CRUD BUTTONS (Login/Register/etc) */
+
+.crud-btn {
+  color: var(--colour-accent); /* gold text */
+  border: 1px solid var(--colour-accent);
+  padding: 4px 16px;
+  margin-left: 12px;
+  border-radius: 50px; /* pill shape */
+  font-family: var(--font-secondary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.crud-btn:hover {
+  background: var(--colour-accent);
+  color: #314831; /* dark green text on gold */
+}
+
 /* HERO SECTION (FIXED BG) */
 .hero {
   height: auto;
 }
 
 .header-spacer {
-  height: 100px;
+  height: 40px;
 }
 
 .hero-banner {
@@ -319,10 +356,13 @@ section.bg-light {
   background: rgba(40, 41, 62, 0.15);
   position: relative;
   overflow: hidden;
-  border-radius: 18px; /* rustic rounded frame */
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); /* subtle drop shadow */
+  border-radius: 18px;
+  /* rustic rounded frame */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  /* subtle drop shadow */
   transition: transform var(--transition-medium), box-shadow var(--transition-medium);
-  background: rgba(var(--colour-accent-rgb), 0.15); /* warm rustic tint */
+  background: rgba(var(--colour-accent-rgb), 0.15);
+  /* warm rustic tint */
 }
 
 /* Image styling */
@@ -347,11 +387,9 @@ section.bg-light {
   left: 0;
   width: 100%;
   padding: 14px 10px;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.55),
-    rgba(0, 0, 0, 0.0)
-  );
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.55),
+      rgba(0, 0, 0, 0.0));
   color: var(--colour-tertiary);
   font-family: var(--font-secondary);
   font-size: 1.1rem;
@@ -972,4 +1010,3 @@ section.bg-light {
   }
 
 }
-
