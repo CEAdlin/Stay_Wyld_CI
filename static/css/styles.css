@@ -449,91 +449,77 @@ section.bg-light {
 
 /* HOMEPAGE - Stay With Us – Full Unit Showcase */
 
-.units-showcase {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 40px;
-  margin-top: 40px;
-}
-
-.unit-showcase-card {
+/* ROW CARD */
+.unit-row-card {
   background: rgba(255,255,255,0.12);
   border: 2px solid #C1BD88;
   border-radius: 16px;
-  padding: 30px;
+  padding: 20px;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+  display: flex;
+  gap: 20px;
+  height: auto;
+  overflow: hidden;
   font-family: var(--font-secondary);
   color: var(--colour-accent);
 }
 
-/* GALLERY */
-.unit-gallery {
-  margin-bottom: 20px;
+/* IMAGE */
+.unit-row-image-wrapper {
+  flex: 0 0 260px;
 }
 
-.unit-main-image {
+.unit-row-image {
   width: 100%;
-  height: 260px;
+  height: 100%;
   object-fit: cover;
   border-radius: 14px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.18);
 }
 
-.unit-thumbnails {
+/* CONTENT */
+.unit-row-content {
   display: flex;
-  gap: 10px;
-  margin-top: 12px;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.unit-thumb {
-  width: 70px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s;
-  border: 2px solid transparent;
-}
-
-.unit-thumb:hover {
-  transform: translateY(-3px);
-  border-color: #C1BD88;
-}
-
-/* SUMMARY */
+/* TITLE + DESCRIPTION */
 .unit-title {
-  font-size: 26px;
-  font-weight: 700;
-  margin-bottom: 10px;
+  font-size: 42px;
+  font-weight: 400;
+  margin-bottom: 6px;
   color: var(--colour-accent);
 }
 
 .unit-description {
-  font-size: 15px;
-  line-height: 1.5;
-  margin-bottom: 20px;
+  font-size: 20px;
+  line-height: 1.4;
+  max-height: 60px;
+  overflow: hidden;
+  margin-bottom: 10px;
 }
 
 /* FACILITIES TABLE */
 .unit-facilities-table {
   width: 100%;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
   border-collapse: collapse;
 }
 
 .unit-facilities-table th,
 .unit-facilities-table td {
-  padding: 10px 12px;
+  padding: 6px 8px;
   border-bottom: 1px solid rgba(255,255,255,0.15);
-  font-size: 15px;
+  font-size: 18px;
 }
 
 /* AVAILABILITY */
 .unit-availability h4 {
-  font-size: 20px;
-  margin-bottom: 10px;
+  font-size: 18px;
+  margin-bottom: 8px;
   color: var(--colour-accent);
 }
 
@@ -541,14 +527,14 @@ section.bg-light {
   background: rgba(255,255,255,0.1);
   border: 1px solid rgba(255,255,255,0.2);
   border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 25px;
+  padding: 12px;
+  margin-bottom: 10px;
 }
 
 /* BOOK NOW BUTTON */
 .book-now-btn {
   display: inline-block;
-  padding: 14px 26px;
+  padding: 10px 20px;
   background: var(--colour-accent);
   color: var(--colour-blue);
   font-weight: 700;
@@ -563,14 +549,14 @@ section.bg-light {
   color: var(--colour-blue);
 }
 
-/* HOMEPAGE BANNER_1 SECTION */
+/* ===============================
+   HOMEPAGE BANNER SECTION (unchanged)
+   =============================== */
 
 .banner-section {
   width: 100%;
   height: 400px;
   overflow: hidden;
-  border-top: 2px solid var(--colour-accent);
-  border-bottom: 2px solid var(--colour-accent);
   border-top: 3px solid var(--colour-accent);
   border-bottom: 3px solid var(--colour-accent);
   scroll-margin-top: 120px;
@@ -583,6 +569,7 @@ section.bg-light {
   object-position: center;
   display: block;
 }
+
 
 /* HOMEPAGE CONTACT SECTION */
 .contact-section {

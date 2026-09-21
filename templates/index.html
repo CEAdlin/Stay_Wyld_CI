@@ -25,7 +25,6 @@
 </header>
 
 <!-- Stay With Us Section -->
-<!-- Stay With Us Section -->
 <section id="units" class="home-section units-section">
   <div class="container">
     <div class="glass-panel units-panel">
@@ -35,66 +34,62 @@
         <h3 class="units-heading">Stay With Us</h3>
       </div>
 
-      <div class="units-showcase">
+      <div class="row justify-content-center">
 
         {% for unit in units %}
-        <div class="unit-showcase-card">
+        <div class="col-12 col-lg-10 mb-4">
 
-          <!-- IMAGE + THUMBNAILS -->
-          <div class="unit-gallery">
-            <img src="{{ unit.main_image.url }}" class="unit-main-image" id="main-img-{{ unit.slug }}">
+          <div class="unit-row-card d-flex">
 
-            <div class="unit-thumbnails">
-              {% for img in unit.gallery_images.all %}
-              <img src="{{ img.url }}"
-                   class="unit-thumb"
-                   onclick="swapImage('{{ unit.slug }}', '{{ img.url }}')">
-              {% endfor %}
-            </div>
-          </div>
-
-          <!-- SUMMARY -->
-          <div class="unit-summary">
-            <h3 class="unit-title">{{ unit.name }}</h3>
-            <p class="unit-description">{{ unit.short_description }}</p>
-          </div>
-
-          <!-- FACILITIES TABLE -->
-          <table class="unit-facilities-table">
-            <tr>
-              <th>Max Guests</th>
-              <td>{{ unit.max_guests }}</td>
-            </tr>
-            <tr>
-              <th>Dog Friendly</th>
-              <td>{{ unit.dogs_allowed|yesno:"Yes,No" }}</td>
-            </tr>
-            <tr>
-              <th>Price per Night</th>
-              <td>From £{{ unit.base_price }}</td>
-            </tr>
-          </table>
-
-          <!-- AVAILABILITY -->
-          <div class="unit-availability">
-            <h4>Availability</h4>
-
-            <div id="calendar-{{ unit.slug }}"
-                 class="availability-calendar"
-                 data-unit="{{ unit.slug }}"
-                 data-price="{{ unit.base_price }}">
+            <!-- IMAGE -->
+            <div class="unit-row-image-wrapper">
+              <img src="{{ unit.main_image.url }}" class="unit-row-image" id="main-img-{{ unit.slug }}">
             </div>
 
-            {{ unit.booked_ranges|json_script:unit.slug }}
-          </div>
+            <!-- CONTENT -->
+            <div class="unit-row-content flex-grow-1">
 
-          <!-- BOOK NOW -->
-          <div class="unit-booking-action">
-            <a href="{% url 'booking_create' unit.slug %}" class="book-now-btn">
-              Book Now
-            </a>
-          </div>
+              <!-- TITLE + DESCRIPTION -->
+              <h3 class="unit-title">{{ unit.name }}</h3>
+              <p class="unit-description">{{ unit.short_description }}</p>
 
+              <!-- FACILITIES TABLE -->
+              <table class="unit-facilities-table">
+                <tr>
+                  <th>Max Guests</th>
+                  <td>{{ unit.max_guests }}</td>
+                </tr>
+                <tr>
+                  <th>Dog Friendly</th>
+                  <td>{{ unit.dogs_allowed|yesno:"Yes,No" }}</td>
+                </tr>
+                <tr>
+                  <th>Price per Night</th>
+                  <td>From £{{ unit.price_per_night }}</td>
+                </tr>
+              </table>
+
+              <!-- AVAILABILITY -->
+              <div class="unit-availability">
+                <h4>Availability</h4>
+
+                <div id="calendar-{{ unit.slug }}"
+                     class="availability-calendar"
+                     data-unit="{{ unit.slug }}"
+                     data-price="{{ unit.price_per_night }}">
+                </div>
+
+                {{ unit.booked_ranges|json_script:unit.slug }}
+              </div>
+
+              <!-- BOOK NOW -->
+              <a href="{% url 'booking_create' unit.slug %}" class="book-now-btn">
+                Book Now
+              </a>
+
+            </div>
+
+          </div>
         </div>
         {% endfor %}
 
