@@ -80,7 +80,8 @@ def booking_create_view(request, unit_slug):
             unit=unit,
             check_in_date__lt=check_out_date,
             check_out_date__gt=check_in_date
-        )
+            
+         ).exclude(status="CANCELLED")
 
         if overlapping.exists():
             messages.error(request, "This unit is not available for the selected dates.")
@@ -111,9 +112,9 @@ def booking_create_view(request, unit_slug):
             customer=request.user,
             check_in_date=check_in_date,
             check_out_date=check_out_date,
-            adults=adults,
-            children=children,
-            dogs=dogs,
+            adults=int(adults or 1),
+            children=int(children or 0),
+            dogs=dog_count,
             nightly_price=unit.price_per_night,
             total_nights=nights,
             dog_surcharge=dog_fee,
