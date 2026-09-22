@@ -1,12 +1,207 @@
-{% extends "base.html" %}
 {% load static %}
-
-{% block content %}
-<div id="availability-calendar"
-     data-price="{{ price_per_night }}">
-</div>
 
 {{ booked_ranges|json_script:"booked-dates" }}
 
-<script src="{% static 'js/calendar.js' %}"></script>
-{% endblock %}
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<div class="calendar-wrapper">
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div id="calendar1" class="calendar-panel"></div>
+        </div>
+        <div class="col-md-4">
+            <div id="calendar2" class="calendar-panel"></div>
+        </div>
+        <div class="col-md-4">
+            <div id="calendar3" class="calendar-panel"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    const bookedRanges = JSON.parse(document.getElementById('booked-dates').textContent);
+    const pricePerNight = parseFloat("{{ unit.price_per_night }}");
+    const unitSlug = "{{ unit.slug }}";
+
+    let checkIn = null;
+    let checkOut = null;
+
+    // Convert booked ranges into a Set of blocked dates
+    const blockedDates = new Set();
+    bookedRanges.forEach(range => {
+        let start = new Date(range.start);
+        let end = new Date(range.end);
+
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            blockedDates.add(d.toISOString().split("T")[0]);
+        }
+    });
+
+    function updateSummary() {
+        const selectedDatesEl = document.getElementById("selected-dates");
+        const totalPriceEl = document.getElementById("total-price");
+        const bookBtn = document.getElementById("book-now-btn");
+
+        if (!checkIn || !checkOut) {
+            selectedDatesEl.textContent = "Dates Selected: none selected";
+            totalPriceEl.textContent = "Total Price: £0";
+            bookBtn.disabled = true;
+            return;
+        }
+
+        selectedDatesEl.textContent = `Dates Selected: ${checkIn} to ${checkOut}`;
+
+        let nights = (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
+        let total = nights * pricePerNight;
+
+        totalPriceEl.textContent = `Total Price: £${total}`;
+        bookBtn.disabled = false;
+    }
+
+    function clearSelection() {
+        document.querySelectorAll('.fc-daygrid-day').forEach(day => {
+            day.classList.remove('selected-checkin', 'selected-checkout', 'selected-range');
+        });
+    }
+
+    function markSelectedDates() {
+        clearSelection();
+
+        if (checkIn) {
+            let cell = document.querySelector(`[data-date="${checkIn}"]`);
+            if (cell) cell.classList.add('selected-checkin');
+        }
+
+        if (checkOut) {
+            let cell = document.querySelector(`[data-date="${checkOut}"]`);
+            if (cell) cell.classList.add('selected-checkout');
+
+            // Highlight full range
+            let start = new Date(checkIn);
+            let end = new Date(checkOut);
+
+            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                let iso = d.toISOString().split("T")[0];
+                let cell = document.querySelector(`[data-date="${iso}"]`);
+                if (cell) cell.classList.add('selected-range');
+            }
+        }
+
+        updateSummary();
+    }
+
+    function buildEvents() {
+        let events = [];
+
+        bookedRanges.forEach(range => {
+            events.push({
+                start: range.start,
+                end: range.end,
+                display: 'background',
+                backgroundColor: '#8b0000',
+                overlap: false
+            });
+        });
+
+        return events;
+    }
+
+    function createCalendar(elementId, monthOffset) {
+        let today = new Date();
+        let startMonth = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
+
+        let calendar = new FullCalendar.Calendar(document.getElementById(elementId), {
+            initialView: 'dayGridMonth',
+            headerToolbar: { left: '', center: 'title', right: '' },
+            showNonCurrentDates: false,
+            fixedWeekCount: false,
+            events: buildEvents(),
+            validRange: { start: today },
+            selectable: true,
+
+            select: function(info) {
+                let selected = info.startStr;
+
+                // Block booked dates
+                if (blockedDates.has(selected)) {
+                    alert("This date is already booked.");
+                    return;
+                }
+
+                // First click = check-in
+                if (!checkIn) {
+                    checkIn = selected;
+                    markSelectedDates();
+                    return;
+                }
+
+                // Second click = check-out
+                if (!checkOut) {
+
+                    // Must be after check-in
+                    if (new Date(selected) <= new Date(checkIn)) {
+                        alert("Check-out must be after check-in.");
+                        return;
+                    }
+
+                    // Minimum 2-night stay
+                    let nights = (new Date(selected) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
+                    if (nights < 2) {
+                        alert("Minimum stay is 2 nights.");
+                        return;
+                    }
+
+                    // Check range for blocked dates
+                    let start = new Date(checkIn);
+                    let end = new Date(selected);
+
+                    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                        let iso = d.toISOString().split("T")[0];
+                        if (blockedDates.has(iso)) {
+                            alert("Your selected range includes booked dates.");
+                            return;
+                        }
+                    }
+
+                    checkOut = selected;
+                    markSelectedDates();
+                    return;
+                }
+
+                // Third click resets selection
+                checkIn = selected;
+                checkOut = null;
+                markSelectedDates();
+            }
+        });
+
+        calendar.gotoDate(startMonth);
+        calendar.render();
+    }
+
+    createCalendar('calendar1', 0);
+    createCalendar('calendar2', 1);
+    createCalendar('calendar3', 2);
+
+    // BOOK NOW BUTTON
+    document.getElementById("book-now-btn").addEventListener("click", function() {
+        if (!checkIn || !checkOut) return;
+
+        const bookingUrl = `/units/${unitSlug}/book/?check_in=${checkIn}&check_out=${checkOut}`;
+
+        // If user is not logged in → redirect to login with ?next=
+        {% if not request.user.is_authenticated %}
+            window.location.href = `/accounts/login/?next=${bookingUrl}`;
+        {% else %}
+            window.location.href = bookingUrl;
+        {% endif %}
+    });
+
+});
+</script>
+

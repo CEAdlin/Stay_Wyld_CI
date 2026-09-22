@@ -19,7 +19,21 @@ def units_list_view(request):
 
 def unit_detail_view(request, unit_slug):
     unit = get_object_or_404(Unit, slug=unit_slug)
-    return render(request, "bookings/unit_detail.html", {"unit": unit})
+
+    bookings = Booking.objects.filter(unit=unit)
+
+    booked_ranges = [
+        {"start": b.check_in_date.isoformat(), "end": b.check_out_date.isoformat()}
+        for b in bookings
+    ]
+
+    context = {
+        "unit": unit,
+        "booked_ranges": booked_ranges,
+        "price_per_night": unit.price_per_night,
+    }
+
+    return render(request, "bookings/unit_detail.html", context)
 
 
 # Booking Flow
@@ -303,3 +317,22 @@ def admin_customer_detail_view(request, user_id):
         "customer": customer,
         "bookings": bookings,
     })
+
+def availability_calendar_view(request, unit_slug):
+    unit = get_object_or_404(Unit, slug=unit_slug)
+
+    bookings = Booking.objects.filter(unit=unit)
+
+    booked_ranges = [
+        {"start": b.check_in_date.isoformat(), "end": b.check_out_date.isoformat()}
+        for b in bookings
+    ]
+
+    context = {
+        "unit": unit,
+        "booked_ranges": booked_ranges,
+        "price_per_night": unit.price_per_night,
+    }
+
+    return render(request, "bookings/calendar.html", context)
+

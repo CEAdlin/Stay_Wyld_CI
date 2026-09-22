@@ -5,57 +5,133 @@
 <div class="unit-detail-wrapper">
 
     <h1 class="page-title">{{ unit.name }}</h1>
+    <p class="unit-short-description">{{ unit.short_description }}</p>
 
-    <!-- Gallery -->
-    <div class="unit-gallery">
-        {% if unit.image %}
-            <img src="{{ unit.image.url }}" alt="{{ unit.name }}" class="gallery-main">
-        {% endif %}
-
-        <div class="gallery-thumbs">
-            {% for photo in unit.gallery_images.all %}
-                <img src="{{ photo.image.url }}" alt="{{ unit.name }} photo" class="thumb">
-            {% endfor %}
+    <div class="row justify-content-center mt-4">
+        <div class="col-lg-8">
+            {% if unit.main_image %}
+                <img src="{{ unit.main_image.url }}" alt="{{ unit.name }} main image" class="unit-main-img">
+            {% endif %}
         </div>
     </div>
 
-    <!-- Description -->
-    <p class="unit-description">{{ unit.description }}</p>
+    <div class="row justify-content-center mt-4">
+        <div class="col-lg-10">
+            <div class="unit-description-full">
+                {{ unit.description }}
+            </div>
 
-    <!-- Features -->
-    <div class="unit-features">
-        <h2>Features</h2>
-        <ul>
-            <li>🌿 Private outdoor space</li>
-            <li>🔥 Fire pit</li>
-            <li>🛏️ Luxury double bed</li>
-            <li>✨ Soft ambient lighting</li>
-            <li>🍳 Kitchenette</li>
-            <li>🚿 Hot shower</li>
-            <li>🌌 Stargazing area</li>
-            <li>🐾 {% if unit.dogs_allowed %}Dog friendly{% else %}No dogs allowed{% endif %}</li>
-        </ul>
+            <div class="unit-actions text-center mt-4">
+                <a href="{% url 'booking_create' unit.slug %}" class="crud-btn">Book This Unit</a>
+            </div>
+        </div>
     </div>
 
-    <!-- Pricing -->
-    <div class="unit-info">
-        <p><strong>Price per night:</strong> £{{ unit.price_per_night }}</p>
-        <p><strong>Max guests:</strong> {{ unit.max_guests }}</p>
-        {% if unit.dogs_allowed %}
-            <p><strong>Dog surcharge:</strong> £{{ unit.dog_surcharge }} per dog</p>
-        {% endif %}
+<div class="gallery-slider mt-5">
+    <div class="gallery-track">
+        {% for photo in unit.gallery_images.all %}
+            {% if photo.image %}
+                <div class="gallery-slide">
+                    <img src="{{ photo.image.url }}" alt="{{ unit.name }} gallery image {{ forloop.counter }}">
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
 
-    <!-- Actions -->
-    <div class="unit-actions">
-        <a href="{% url 'booking_create' unit.slug %}" class="crud-btn">
-            Book This Unit
-        </a>
+    <button class="gallery-prev">&#10094;</button>
+    <button class="gallery-next">&#10095;</button>
+</div>
 
-        <a href="{% url 'availability_calendar' unit.slug %}" class="crud-btn secondary-btn">
-            View Availability
-        </a>
+
+    <div class="facilities-panel mt-5">
+        <h2 class="section-heading">Facilities</h2>
+
+        <div class="row facilities-row mt-4">
+            <div class="col-md-4">
+                <ul class="facility-list">
+                    <li>🌿 Private outdoor space</li>
+                    <li>🔥 Fire pit</li>
+                    <li>🛏️ Luxury double bed</li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <ul class="facility-list">
+                    <li>✨ Soft ambient lighting</li>
+                    <li>🍳 Kitchenette</li>
+                    <li>🚿 Hot shower</li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <ul class="facility-list">
+                    <li>🌌 Stargazing area</li>
+                    <li>🐾 {% if unit.dogs_allowed %}Dog friendly{% else %}No dogs allowed{% endif %}</li>
+                </ul>
+            </div>
+        </div>
     </div>
+
+    <div class="row info-row mt-5">
+        <div class="col-md-4">
+            <div class="info-box-small">
+                <p><strong>Price:</strong> £{{ unit.price_per_night }}</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-box-small">
+                <p><strong>Dog friendly:</strong> {% if unit.dogs_allowed %}Yes{% else %}No{% endif %}</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-box-small">
+                <p><strong>Max occupancy:</strong> {{ unit.max_guests }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="calendar-panel-wrapper mt-5">
+        {% include "bookings/calendar.html" with unit=unit %}
+    </div>
+
+    <div class="booking-summary-bar mt-4">
+    <span id="selected-dates">Dates Selected: none selected</span>
+    <span id="total-price">Total Price: £0</span>
+
+    <button id="book-now-btn" class="book-now-summary-btn" disabled>
+        Book Now
+    </button>
+    
+</div>
+
 
 </div>
+
+<!-- Gallery Slider JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const track = document.querySelector('.gallery-track');
+    const slides = document.querySelectorAll('.gallery-slide');
+    const nextBtn = document.querySelector('.gallery-next');
+    const prevBtn = document.querySelector('.gallery-prev');
+
+    if (!track || !nextBtn || !prevBtn || slides.length === 0) return;
+
+    let index = 0;
+
+    function updateSlider() {
+        track.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    nextBtn.addEventListener('click', function() {
+        index = (index + 1) % slides.length;
+        updateSlider();
+    });
+
+    prevBtn.addEventListener('click', function() {
+        index = (index - 1 + slides.length) % slides.length;
+        updateSlider();
+    });
+});
+</script>
+
+
 {% endblock %}

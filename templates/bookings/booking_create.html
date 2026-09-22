@@ -2,41 +2,246 @@
 {% load static %}
 
 {% block content %}
-<div class="booking-wrapper">
-    <h1>Book {{ unit.name }}</h1>
 
-    <!-- Calendar Section -->
-    <h2>Select Your Dates</h2>
+<!-- Hidden fields to pass preselected dates into JS -->
+<input type="hidden" id="preselected-checkin" value="{{ request.GET.check_in }}">
+<input type="hidden" id="preselected-checkout" value="{{ request.GET.check_out }}">
 
-    <div id="availability-calendar"
-         data-price="{{ unit.price_per_night }}">
-    </div>
+<div class="booking-create-wrapper">
 
-    {{ booked_ranges|json_script:"booked-dates" }}
+    <!-- Outer blue-glass wrapper -->
+    <div class="booking-glass-panel">
 
-    <script src="{% static 'js/calendar.js' %}"></script>
+        <h1 class="booking-title">Book {{ unit.name }}</h1>
 
-    <!-- Booking Form -->
-    <h2>Your Booking Details</h2>
+        <!-- Inner white panel -->
+        <div class="booking-white-panel">
 
-    <form method="POST">
-        {% csrf_token %}
+            <!-- Two-column layout -->
+            <div class="booking-layout">
 
-        <label>Check-in</label>
-        <input type="date" name="check_in" required>
+                <!-- LEFT: Calendar (1/3 width) -->
+                <div class="booking-calendar-column">
+                    <h2 class="booking-section-title">Select Your Dates</h2>
 
-        <label>Check-out</label>
-        <input type="date" name="check_out" required>
+                    <div id="availability-calendar"></div>
 
-        <label>Guests</label>
-        <input type="number" name="guests" min="1" max="{{ unit.max_guests }}" required>
+                    <!-- Booked ranges -->
+                    {{ booked_ranges|json_script:"booked-dates" }}
+                </div>
 
-        {% if unit.dogs_allowed %}
-            <label>Dogs</label>
-            <input type="number" name="dogs" min="0" max="3">
-        {% endif %}
+                <!-- RIGHT: Form (2/3 width) -->
+                <div class="booking-form-column">
+                    <h2 class="booking-section-title">Your Booking Details</h2>
 
-        <button type="submit" class="crud-btn">Confirm Booking</button>
-    </form>
-</div>
+                    <form method="POST" class="booking-form">
+                        {% csrf_token %}
+
+                        <label class="booking-label">Check-in</label>
+                        <input type="date"
+                               name="check_in"
+                               value="{{ request.GET.check_in }}"
+                               required
+                               class="booking-input">
+
+                        <label class="booking-label">Check-out</label>
+                        <input type="date"
+                               name="check_out"
+                               value="{{ request.GET.check_out }}"
+                               required
+                               class="booking-input">
+
+                        <label class="booking-label">Guests</label>
+                        <input type="number"
+                               name="guests"
+                               min="1"
+                               max="{{ unit.max_guests }}"
+                               required
+                               class="booking-input">
+
+                        {% if unit.dogs_allowed %}
+                            <label class="booking-label">Dogs</label>
+                            <input type="number"
+                                   name="dogs"
+                                   min="0"
+                                   max="3"
+                                   class="booking-input">
+                        {% endif %}
+
+                        <button type="submit" class="booking-submit-btn">
+                            Confirm Booking
+                        </button>
+                    </form>
+                </div>
+
+            </div><!-- end booking-layout -->
+
+        </div><!-- end booking-white-panel -->
+    </div><!-- end booking-glass-panel -->
+
+</div><!-- end booking-create-wrapper -->
+
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    const bookedRanges = JSON.parse(document.getElementById('booked-dates').textContent);
+    const pricePerNight = parseFloat("{{ unit.price_per_night }}");
+
+    const preCheckIn = document.getElementById("preselected-checkin").value;
+    const preCheckOut = document.getElementById("preselected-checkout").value;
+
+    let checkIn = preCheckIn || null;
+    let checkOut = preCheckOut || null;
+
+    // Convert booked ranges into a Set of blocked dates
+    const blockedDates = new Set();
+    bookedRanges.forEach(range => {
+        let start = new Date(range.start);
+        let end = new Date(range.end);
+
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            blockedDates.add(d.toISOString().split("T")[0]);
+        }
+    });
+
+    function clearSelection() {
+        document.querySelectorAll('.fc-daygrid-day').forEach(day => {
+            day.classList.remove('selected-checkin', 'selected-checkout', 'selected-range');
+        });
+    }
+
+    function markSelectedDates() {
+        clearSelection();
+
+        if (checkIn) {
+            let cell = document.querySelector(`[data-date="${checkIn}"]`);
+            if (cell) cell.classList.add('selected-checkin');
+        }
+
+        if (checkOut) {
+            let cell = document.querySelector(`[data-date="${checkOut}"]`);
+            if (cell) cell.classList.add('selected-checkout');
+
+            let start = new Date(checkIn);
+            let end = new Date(checkOut);
+
+            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                let iso = d.toISOString().split("T")[0];
+                let cell = document.querySelector(`[data-date="${iso}"]`);
+                if (cell) cell.classList.add('selected-range');
+            }
+        }
+    }
+
+    function buildEvents() {
+        let events = [];
+
+        bookedRanges.forEach(range => {
+            events.push({
+                start: range.start,
+                end: range.end,
+                display: 'background',
+                backgroundColor: '#8b0000',
+                overlap: false
+            });
+        });
+
+        return events;
+    }
+
+    function createCalendar(elementId) {
+        let today = new Date();
+        let startMonth;
+
+        // Auto-jump to selected month
+        if (checkIn) {
+            startMonth = new Date(checkIn);
+        } else {
+            startMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        }
+
+        let calendar = new FullCalendar.Calendar(document.getElementById(elementId), {
+            initialView: 'dayGridMonth',
+            headerToolbar: { left: '', center: 'title', right: '' },
+
+            showNonCurrentDates: false,
+            fixedWeekCount: false,
+
+            events: buildEvents(),
+            validRange: { start: today },
+            selectable: true,
+
+            select: function(info) {
+                let selected = info.startStr;
+
+                if (blockedDates.has(selected)) {
+                    alert("This date is already booked.");
+                    return;
+                }
+
+                if (!checkIn) {
+                    checkIn = selected;
+                    markSelectedDates();
+                    return;
+                }
+
+                if (!checkOut) {
+
+                    if (new Date(selected) <= new Date(checkIn)) {
+                        alert("Check-out must be after check-in.");
+                        return;
+                    }
+
+                    let nights = (new Date(selected) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
+                    if (nights < 2) {
+                        alert("Minimum stay is 2 nights.");
+                        return;
+                    }
+
+                    let start = new Date(checkIn);
+                    let end = new Date(selected);
+
+                    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                        let iso = d.toISOString().split("T")[0];
+                        if (blockedDates.has(iso)) {
+                            alert("Your selected range includes booked dates.");
+                            return;
+                        }
+                    }
+
+                    checkOut = selected;
+                    markSelectedDates();
+
+                    document.querySelector("input[name='check_in']").value = checkIn;
+                    document.querySelector("input[name='check_out']").value = checkOut;
+
+                    return;
+                }
+
+                checkIn = selected;
+                checkOut = null;
+                markSelectedDates();
+            }
+        });
+
+        calendar.gotoDate(startMonth);
+        calendar.render();
+    }
+
+    // Only ONE calendar now
+    createCalendar('availability-calendar');
+
+    // Preselect dates on load
+    if (checkIn && checkOut) {
+        setTimeout(markSelectedDates, 300);
+        document.querySelector("input[name='check_in']").value = checkIn;
+        document.querySelector("input[name='check_out']").value = checkOut;
+    }
+
+});
+</script>
+
 {% endblock %}
