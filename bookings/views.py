@@ -4,6 +4,7 @@ from django.contrib import messages
 from datetime import datetime
 from .models import Unit, Booking, BookingChangeRequest
 from django.contrib.auth.models import User
+from decimal import Decimal
 
 
 # Homepage
@@ -56,7 +57,8 @@ def booking_create_view(request, unit_slug):
     if request.method == "POST":
         check_in = request.POST.get("check_in")
         check_out = request.POST.get("check_out")
-        guests = request.POST.get("guests")
+        adults = request.POST.get("adults")
+        children = request.POST.get("children")
         dogs = request.POST.get("dogs")
 
         if not check_in or not check_out:
@@ -84,57 +86,47 @@ def booking_create_view(request, unit_slug):
             messages.error(request, "This unit is not available for the selected dates.")
             return redirect(request.path)
 
+        # Calculate nights
         nights = (check_out_date - check_in_date).days
         base_price = nights * unit.price_per_night
 
-        dog_fee = 0
-        if unit.dogs_allowed and dogs and int(dogs) > 0:
-            dog_fee = int(dogs) * unit.dog_surcharge
+        # DOG SURCHARGE 
+        try:
+            dog_count = int(dogs or 0)
+        except (TypeError, ValueError):
+            dog_count = 0
 
+        dog_fee = (
+            Decimal("20.00")
+            if unit.dogs_allowed and dog_count > 0
+            else Decimal("0.00")
+        )
+
+        # Final total
         total_price = base_price + dog_fee
 
+        # Create booking
         booking = Booking.objects.create(
             unit=unit,
             customer=request.user,
             check_in_date=check_in_date,
             check_out_date=check_out_date,
-            guests=guests,
+            adults=adults,
+            children=children,
             dogs=dogs,
-            total_price=total_price,
-            status="confirmed"
+            nightly_price=unit.price_per_night,
+            total_nights=nights,
+            dog_surcharge=dog_fee,
+            total_amount=total_price,
+            status="PENDING"
         )
 
-        return redirect("booking_detail", pk=booking.pk)
+        return redirect("my_bookings")
 
     return render(request, "bookings/booking_create.html", {
         "unit": unit,
         "booked_ranges": booked_ranges
     })
-
-
-def availability_calendar_view(request, unit_slug):
-    unit = get_object_or_404(Unit, slug=unit_slug)
-
-    bookings = Booking.objects.filter(unit=unit).values(
-        "check_in_date",
-        "check_out_date"
-    )
-
-    booked_ranges = []
-    for b in bookings:
-        booked_ranges.append({
-            "start": b["check_in_date"].strftime("%Y-%m-%d"),
-            "end": b["check_out_date"].strftime("%Y-%m-%d")
-        })
-
-    context = {
-        "unit": unit,
-        "booked_ranges": booked_ranges,
-        "price_per_night": unit.price_per_night,
-    }
-
-    return render(request, "bookings/calendar.html", context)
-
 
 # Customer Dashboard
 @login_required
@@ -170,7 +162,8 @@ def booking_update_view(request, pk):
     if request.method == "POST":
         check_in = request.POST.get("check_in")
         check_out = request.POST.get("check_out")
-        guests = request.POST.get("guests")
+        adults = request.POST.get("adults")
+        children = request.POST.get("children")
         dogs = request.POST.get("dogs")
 
         if not check_in or not check_out:
@@ -201,17 +194,28 @@ def booking_update_view(request, pk):
         nights = (check_out_date - check_in_date).days
         base_price = nights * unit.price_per_night
 
-        dog_fee = 0
-        if unit.dogs_allowed and dogs and int(dogs) > 0:
-            dog_fee = int(dogs) * unit.dog_surcharge
+        try:
+            dog_count = int(dogs or 0)
+        except (TypeError, ValueError):
+            dog_count = 0
 
-        total_price = base_price + dog_fee
+        dog_surcharge = (
+            Decimal("20.00")
+            if unit.dogs_allowed and dog_count > 0
+            else Decimal("0.00")
+        )
+
+        total_amount = base_price + dog_surcharge
 
         booking.check_in_date = check_in_date
         booking.check_out_date = check_out_date
-        booking.guests = guests
-        booking.dogs = dogs
-        booking.total_price = total_price
+        booking.adults = adults
+        booking.children = children
+        booking.dogs = dog_count
+        booking.nightly_price = unit.price_per_night
+        booking.total_nights = nights
+        booking.dog_surcharge = dog_surcharge
+        booking.total_amount = total_amount
         booking.save()
 
         return redirect("booking_detail", pk=booking.pk)
@@ -251,7 +255,7 @@ def booking_change_request_view(request, pk):
             booking=booking,
             customer=request.user,
             message=message,
-            status="pending"
+            status="OPEN"
         )
 
         messages.success(request, "Your change request has been submitted.")

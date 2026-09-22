@@ -17,7 +17,9 @@ class Unit(models.Model):
     main_image = models.ImageField(upload_to="unit_main/", blank=True, null=True)
 
     # Capacity & pricing
-    max_guests = models.PositiveIntegerField(default=2)
+    max_adults = models.PositiveIntegerField(default=2)
+    max_children = models.PositiveIntegerField(default=2)
+
     price_per_night = models.DecimalField(max_digits=7, decimal_places=2)
     dog_surcharge = models.DecimalField(max_digits=6, decimal_places=2, default=0)
 
@@ -28,7 +30,7 @@ class Unit(models.Model):
     def __str__(self):
         return self.name
 
-
+# GALLERY MODEL
 
 class UnitGalleryImage(models.Model):
     unit = models.ForeignKey(Unit, related_name="gallery_images", on_delete=models.CASCADE)

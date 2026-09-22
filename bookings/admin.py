@@ -13,7 +13,7 @@ class UnitGalleryImageInline(SortableInlineAdminMixin, admin.TabularInline):
 # Unit admin must inherit from SortableAdminBase
 @admin.register(Unit)
 class UnitAdmin(SortableAdminBase, admin.ModelAdmin):
-    list_display = ("name", "slug", "active", "max_guests", "price_per_night", "dogs_allowed")
+    list_display = ("name", "slug", "price_per_night", "max_adults", "max_children")
     prepopulated_fields = {"slug": ("name",)}
     inlines = [UnitGalleryImageInline]
 

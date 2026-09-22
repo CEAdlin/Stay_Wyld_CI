@@ -39,44 +39,46 @@
                         <input type="date" name="check_out" readonly class="booking-input" />
 
                         <label class="booking-label">Adults</label>
-                        <input type="number" name="adults" min="1" max="{{ unit.max_guests }}" required
-                            class="booking-input">
+                        <input type="number" name="adults" min="1" max="{{ unit.max_adults }}" required
+                            class="booking-input" />
 
                         <label class="booking-label">Children</label>
-                        <input type="number" name="children" min="0" max="{{ unit.max_guests }}" class="booking-input">
+                        <input type="number" name="children" min="0" max="{{ unit.max_children }}" required
+                            class="booking-input" />
 
                         {% if unit.dogs_allowed %}
                         <label class="booking-label">Dogs</label>
-                        <select name="dogs_allowed" id="dogsAllowed" class="booking-input">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
+                        <select name="dogs" id="dogsAllowed" class="booking-input">
+                            <option value="0">No</option>
+                            <option value="1">1 Dog</option>
+                            <option value="2">2 Dogs</option>
+                            <option value="3">3 Dogs</option>
                         </select>
-
-                        <div id="dogCountWrapper" style="display:none;">
-                            <label class="booking-label">How many dogs?</label>
-                            <select name="dogs" class="booking-input">
-                                <option value="1">1 Dog</option>
-                                <option value="2">2 Dogs</option>
-                                <option value="3">3 Dogs</option>
-                            </select>
-                        </div>
-
                         {% endif %}
 
                         <label class="booking-label">Estimated Time of Arrival</label>
-                        <input type="time" name="eta" class="booking-input" />
-
-                        <label class="booking-label">Special Requests</label>
-                        <textarea name="special_requests" rows="4" class="booking-input"></textarea>
+                        <select name="eta" class="booking-input" required>
+                            <option value="">Select a time</option>
+                            <option value="15:00">3:00 pm</option>
+                            <option value="16:00">4:00 pm</option>
+                            <option value="17:00">5:00 pm</option>
+                            <option value="18:00">6:00 pm</option>
+                            <option value="19:00">7:00 pm</option>
+                            <option value="20:00">8:00 pm</option>
+                            <option value="21:00">9:00 pm</option>
+                            <option value="22:00">10:00 pm</option>
+                            <option value="23:00">11:00 pm</option>
+                        </select>
 
                         <p class="booking-total">
                             Total Price To Book:
                             <strong>£<span id="totalPrice">0</span></strong>
                         </p>
 
-                        <button type="button" class="booking-submit-btn" id="openModalBtn">
+                        <button type="submit" class="booking-submit-btn">
                             Confirm Booking
                         </button>
+
                     </form>
                 </div>
             </div>
@@ -85,25 +87,29 @@
 </div>
 
 <!-- Confirmation Modal -->
-<div id="bookingModal" class="modal-overlay" style="display:none;">
+<div id="bookingModal" class="modal-overlay" style="display: none">
     <div class="modal-content">
-
-        <button id="modalClose" class="modal-close">×</button>
+        <button type="button" id="modalClose" class="modal-close">×</button>
 
         <h2>Thank you for your booking request</h2>
         <p>
-            All bookings are <strong>pending</strong> until approved by a member of staff.<br>
+            All bookings are <strong>pending</strong> until approved by a member of
+            staff.<br />
             You will receive confirmation via email within 24 hours.
         </p>
         <p>
-            You can log back in at any time to check or modify your booking prior to arrival.
+            You can log back in at any time to check or modify your booking prior to
+            arrival.
         </p>
 
         <p class="modal-date">
             We look forward to welcoming you on <strong id="modalCheckin"></strong>.
         </p>
 
-        <a href="{% url 'my_bookings' %}" class="booking-submit-btn">Go to My Bookings</a>
+        <button type="button" class="booking-submit-btn" id="confirmBookingBtn">
+            Go To My Bookings
+        </button>
+
     </div>
 </div>
 
@@ -112,8 +118,11 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+
+/* CALENDAR SETUP */
+
         const bookedRanges = JSON.parse(
-            document.getElementById("booked-dates").textContent,
+            document.getElementById("booked-dates").textContent
         );
         const pricePerNight = parseFloat("{{ unit.price_per_night }}");
 
@@ -123,9 +132,14 @@
         let checkIn = preCheckIn || null;
         let checkOut = preCheckOut || null;
 
-        /* -------------------------
-           BLOCKED DATES
-        ------------------------- */
+        if (checkIn) {
+            document.querySelector("input[name='check_in']").value = checkIn;
+        }
+        if (checkOut) {
+            document.querySelector("input[name='check_out']").value = checkOut;
+        }
+
+/* BLOCKED DATES */
         const blockedDates = new Set();
         bookedRanges.forEach((range) => {
             let start = new Date(range.start);
@@ -136,15 +150,13 @@
             }
         });
 
-        /* -------------------------
-           CALENDAR SELECTION
-        ------------------------- */
+/* CALENDAR SELECTION */
         function clearSelection() {
             document.querySelectorAll(".fc-daygrid-day").forEach((day) => {
                 day.classList.remove(
                     "selected-checkin",
                     "selected-checkout",
-                    "selected-range",
+                    "selected-range"
                 );
             });
         }
@@ -183,7 +195,7 @@
                     end: range.end,
                     display: "background",
                     backgroundColor: "#8b0000",
-                    overlap: false,
+                    overlap: false
                 });
             });
 
@@ -200,9 +212,9 @@
                 document.getElementById(elementId), {
                     initialView: "dayGridMonth",
                     headerToolbar: {
-                        left: "",
+                        left: "prev",
                         center: "title",
-                        right: ""
+                        right: "next"
                     },
                     showNonCurrentDates: false,
                     fixedWeekCount: false,
@@ -235,6 +247,7 @@
                             let nights =
                                 (new Date(selected) - new Date(checkIn)) /
                                 (1000 * 60 * 60 * 24);
+
                             if (nights < 2) {
                                 alert("Minimum stay is 2 nights.");
                                 return;
@@ -243,9 +256,7 @@
                             let start = new Date(checkIn);
                             let end = new Date(selected);
 
-                            for (
-                                let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)
-                            ) {
+                            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
                                 let iso = d.toISOString().split("T")[0];
                                 if (blockedDates.has(iso)) {
                                     alert("Your selected range includes booked dates.");
@@ -257,8 +268,7 @@
                             markSelectedDates();
 
                             document.querySelector("input[name='check_in']").value = checkIn;
-                            document.querySelector("input[name='check_out']").value =
-                                checkOut;
+                            document.querySelector("input[name='check_out']").value = checkOut;
 
                             return;
                         }
@@ -266,8 +276,8 @@
                         checkIn = selected;
                         checkOut = null;
                         markSelectedDates();
-                    },
-                },
+                    }
+                }
             );
 
             calendar.gotoDate(startMonth);
@@ -276,15 +286,24 @@
 
         createCalendar("availability-calendar");
 
-        /* -------------------------
-           PRICE CALCULATION
-        ------------------------- */
+        /* PRICE CALCULATION */
         function updatePrice() {
             if (!checkIn || !checkOut) return;
 
             let nights =
                 (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
             let total = nights * pricePerNight;
+
+            const dogsAllowedSelect =
+                document.getElementById("dogsAllowed");
+
+            const dogCount = dogsAllowedSelect ?
+                parseInt(dogsAllowedSelect.value || "0", 10) :
+                0;
+
+            if (dogCount > 0) {
+                total += 20; // flat fee
+            }
 
             document.getElementById("totalPrice").textContent = total.toFixed(2);
         }
@@ -294,41 +313,65 @@
             updatePrice();
         }
 
-        /* -------------------------
-   DOGS YES/NO TOGGLE
-------------------------- */
-        const dogsAllowedSelect = document.getElementById("dogsAllowed");
-        if (dogsAllowedSelect) {
-            dogsAllowedSelect.addEventListener("change", function () {
-                const wrapper = document.getElementById("dogCountWrapper");
-                wrapper.style.display = this.value === "yes" ? "block" : "none";
-            });
-        }
+/* DOGS PRICE UPDATE */
+        const dogsSelect = document.getElementById("dogsAllowed");
 
+        if (dogsSelect) {
+            dogsSelect.addEventListener("change", updatePrice);
+        } 
 
-        /* -------------------------
-           MODAL HANDLING
-        ------------------------- */
+/* MODAL HANDLING */
+        const bookingForm = document.getElementById("bookingForm");
         const modal = document.getElementById("bookingModal");
-        const openModalBtn = document.getElementById("openModalBtn");
+        const modalClose = document.getElementById("modalClose");
+        const confirmBookingBtn =
+            document.getElementById("confirmBookingBtn");
 
-        openModalBtn.addEventListener("click", function () {
-            const checkinField = document.querySelector(
-                "input[name='check_in']",
-            ).value;
-            document.getElementById("modalCheckin").textContent = checkinField;
+        let bookingConfirmed = false;
+
+        bookingForm.addEventListener("submit", function (event) {
+            if (bookingConfirmed) {
+                return;
+            }
+
+            event.preventDefault();
+
+            const checkinField =
+                document.querySelector("input[name='check_in']").value;
+            const checkoutField =
+                document.querySelector("input[name='check_out']").value;
+            const adults =
+                document.querySelector("input[name='adults']").value;
+            const children =
+                document.querySelector("input[name='children']").value;
+
+            if (!checkinField || !checkoutField) {
+                alert("Please select your check-in and check-out dates.");
+                return;
+            }
+
+            if (!adults || children === "") {
+                alert("Please complete the guest details.");
+                return;
+            }
+
+            document.getElementById("modalCheckin").textContent =
+                checkinField;
+
             modal.style.display = "flex";
         });
 
-        /* Close modal + redirect */
-        const modalClose = document.getElementById("modalClose");
-        if (modalClose) {
-            modalClose.addEventListener("click", function () {
-                window.location.href = "{% url 'my_bookings' %}";
-            });
-        }
+        modalClose.addEventListener("click", function () {
+            modal.style.display = "none";
+        });
 
+        confirmBookingBtn.addEventListener("click", function () {
+            bookingConfirmed = true;
+            modal.style.display = "none";
+            bookingForm.requestSubmit();
+        });
     });
 </script>
+
 
 {% endblock %}

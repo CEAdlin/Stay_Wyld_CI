@@ -1863,6 +1863,20 @@ section.bg-light {
     padding: 10px;
 }
 
+/* Grey out past dates */
+.fc-day-past {
+    background-color: #e6e6e6 !important;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Grey out empty days at start/end of month */
+.fc-day-other {
+    background-color: #e6e6e6 !important;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
 /* Month header bar */
 .fc-toolbar.fc-header-toolbar {
     background: #ffffff;
