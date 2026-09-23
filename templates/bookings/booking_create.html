@@ -32,6 +32,17 @@
                             You are booking: <strong>{{ unit.name }}</strong>
                         </p>
 
+                        {% if request.user.is_staff %}
+                        <label class="booking-label">Customer Name</label>
+                        <input type="text" name="customer_name" required class="booking-input">
+
+                        <label class="booking-label">Customer Email</label>
+                        <input type="email" name="customer_email" required class="booking-input">
+
+                        <label class="booking-label">Customer Phone</label>
+                        <input type="text" name="customer_phone" required class="booking-input">
+                        {% endif %}
+
                         <label class="booking-label">Check-in Date</label>
                         <input type="date" name="check_in" readonly class="booking-input" />
 
@@ -119,7 +130,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-/* CALENDAR SETUP */
+        /* CALENDAR SETUP */
 
         const bookedRanges = JSON.parse(
             document.getElementById("booked-dates").textContent
@@ -139,7 +150,7 @@
             document.querySelector("input[name='check_out']").value = checkOut;
         }
 
-/* BLOCKED DATES */
+        /* BLOCKED DATES */
         const blockedDates = new Set();
         bookedRanges.forEach((range) => {
             let start = new Date(range.start);
@@ -150,7 +161,7 @@
             }
         });
 
-/* CALENDAR SELECTION */
+        /* CALENDAR SELECTION */
         function clearSelection() {
             document.querySelectorAll(".fc-daygrid-day").forEach((day) => {
                 day.classList.remove(
@@ -313,14 +324,14 @@
             updatePrice();
         }
 
-/* DOGS PRICE UPDATE */
+        /* DOGS PRICE UPDATE */
         const dogsSelect = document.getElementById("dogsAllowed");
 
         if (dogsSelect) {
             dogsSelect.addEventListener("change", updatePrice);
-        } 
+        }
 
-/* MODAL HANDLING */
+        /* MODAL HANDLING */
         const bookingForm = document.getElementById("bookingForm");
         const modal = document.getElementById("bookingModal");
         const modalClose = document.getElementById("modalClose");

@@ -5,12 +5,14 @@ from datetime import datetime
 from .models import Unit, Booking, BookingChangeRequest
 from django.contrib.auth.models import User
 from decimal import Decimal
+from accounts.models import CustomerProfile
 
 
 # Homepage
 def index_view(request):
     units = Unit.objects.filter(active=True)
     return render(request, "index.html", {"units": units})
+
 
 # Units
 def units_list_view(request):
@@ -43,16 +45,17 @@ def booking_create_view(request, unit_slug):
     unit = get_object_or_404(Unit, slug=unit_slug)
 
     bookings = Booking.objects.filter(unit=unit).values(
-        "check_in_date",
-        "check_out_date"
+        "check_in_date", "check_out_date"
     )
 
     booked_ranges = []
     for b in bookings:
-        booked_ranges.append({
-            "start": b["check_in_date"].strftime("%Y-%m-%d"),
-            "end": b["check_out_date"].strftime("%Y-%m-%d")
-        })
+        booked_ranges.append(
+            {
+                "start": b["check_in_date"].strftime("%Y-%m-%d"),
+                "end": b["check_out_date"].strftime("%Y-%m-%d"),
+            }
+        )
 
     if request.method == "POST":
         check_in = request.POST.get("check_in")
@@ -79,37 +82,56 @@ def booking_create_view(request, unit_slug):
         overlapping = Booking.objects.filter(
             unit=unit,
             check_in_date__lt=check_out_date,
-            check_out_date__gt=check_in_date
-            
-         ).exclude(status="CANCELLED")
+            check_out_date__gt=check_in_date,
+        ).exclude(status="CANCELLED")
 
         if overlapping.exists():
-            messages.error(request, "This unit is not available for the selected dates.")
+            messages.error(
+                request, "This unit is not available for the selected dates."
+            )
             return redirect(request.path)
 
         # Calculate nights
         nights = (check_out_date - check_in_date).days
         base_price = nights * unit.price_per_night
 
-        # DOG SURCHARGE 
+        # DOG SURCHARGE
         try:
             dog_count = int(dogs or 0)
         except (TypeError, ValueError):
             dog_count = 0
 
         dog_fee = (
-            Decimal("20.00")
-            if unit.dogs_allowed and dog_count > 0
-            else Decimal("0.00")
+            Decimal("20.00") if unit.dogs_allowed and dog_count > 0 else Decimal("0.00")
         )
 
         # Final total
         total_price = base_price + dog_fee
 
+        # Who is making this booking?
+        if request.user.is_staff:
+            # Admin booking on behalf of a customer
+            customer = None
+
+            customer_name = request.POST.get("customer_name")
+            customer_email = request.POST.get("customer_email")
+            customer_phone = request.POST.get("customer_phone")
+        else:
+            # Customer booking themselves
+            customer = request.user
+
+            profile = CustomerProfile.objects.get(user=request.user)
+            customer_name = profile.full_name
+            customer_email = request.user.email
+            customer_phone = profile.phone_number
+
         # Create booking
         booking = Booking.objects.create(
             unit=unit,
-            customer=request.user,
+            customer=customer,
+            customer_name=customer_name,
+            customer_email=customer_email,
+            customer_phone=customer_phone,
             check_in_date=check_in_date,
             check_out_date=check_out_date,
             adults=int(adults or 1),
@@ -119,15 +141,17 @@ def booking_create_view(request, unit_slug):
             total_nights=nights,
             dog_surcharge=dog_fee,
             total_amount=total_price,
-            status="PENDING"
+            status="PENDING",
         )
 
         return redirect("my_bookings")
 
-    return render(request, "bookings/booking_create.html", {
-        "unit": unit,
-        "booked_ranges": booked_ranges
-    })
+    return render(
+        request,
+        "bookings/booking_create.html",
+        {"unit": unit, "booked_ranges": booked_ranges},
+    )
+
 
 # Customer Dashboard
 @login_required
@@ -148,17 +172,20 @@ def booking_update_view(request, pk):
     booking = get_object_or_404(Booking, pk=pk, customer=request.user)
     unit = booking.unit
 
-    bookings = Booking.objects.filter(unit=unit).exclude(pk=booking.pk).values(
-        "check_in_date",
-        "check_out_date"
+    bookings = (
+        Booking.objects.filter(unit=unit)
+        .exclude(pk=booking.pk)
+        .values("check_in_date", "check_out_date")
     )
 
     booked_ranges = []
     for b in bookings:
-        booked_ranges.append({
-            "start": b["check_in_date"].strftime("%Y-%m-%d"),
-            "end": b["check_out_date"].strftime("%Y-%m-%d")
-        })
+        booked_ranges.append(
+            {
+                "start": b["check_in_date"].strftime("%Y-%m-%d"),
+                "end": b["check_out_date"].strftime("%Y-%m-%d"),
+            }
+        )
 
     if request.method == "POST":
         check_in = request.POST.get("check_in")
@@ -185,84 +212,132 @@ def booking_update_view(request, pk):
         overlapping = Booking.objects.filter(
             unit=unit,
             check_in_date__lt=check_out_date,
-            check_out_date__gt=check_in_date
-        ).exclude(pk=booking.pk)
+            check_out_date__gt=check_in_date,
+        ).exclude(
+            pk=booking.pk
+        ).exclude(
+            status="CANCELLED"
+        )
 
         if overlapping.exists():
-            messages.error(request, "This unit is not available for the selected dates.")
+            messages.error(
+                request,
+                "This unit is not available for the selected dates.",
+            )
             return redirect(request.path)
 
-        nights = (check_out_date - check_in_date).days
-        base_price = nights * unit.price_per_night
+        if overlapping.exists():
+            messages.error(
+                request, "This unit is not available for the selected dates."
+            )
+            return redirect(request.path)
 
         try:
             dog_count = int(dogs or 0)
+            adult_count = int(adults or 1)
+            child_count = int(children or 0)
+
+            if adult_count < 1 or child_count < 0 or dog_count < 0:
+                raise ValueError
         except (TypeError, ValueError):
-            dog_count = 0
-
-        dog_surcharge = (
-            Decimal("20.00")
-            if unit.dogs_allowed and dog_count > 0
-            else Decimal("0.00")
-        )
-
-        total_amount = base_price + dog_surcharge
-
-        booking.check_in_date = check_in_date
-        booking.check_out_date = check_out_date
-        booking.adults = adults
-        booking.children = children
-        booking.dogs = dog_count
-        booking.nightly_price = unit.price_per_night
-        booking.total_nights = nights
-        booking.dog_surcharge = dog_surcharge
-        booking.total_amount = total_amount
-        booking.save()
-
-        return redirect("booking_detail", pk=booking.pk)
-
-    return render(request, "bookings/booking_update.html", {
-        "booking": booking,
-        "unit": unit,
-        "booked_ranges": booked_ranges
-    })
-
-# Booking Delete Requests
-@login_required
-def booking_delete_view(request, pk):
-    booking = get_object_or_404(Booking, pk=pk, customer=request.user)
-
-    if request.method == "POST":
-        booking.delete()
-        messages.success(request, "Your booking has been cancelled.")
-        return redirect("my_bookings")
-
-    return render(request, "bookings/booking_delete.html", {"booking": booking})
-
-
-# Booking Change Requests
-@login_required
-def booking_change_request_view(request, pk):
-    booking = get_object_or_404(Booking, pk=pk, customer=request.user)
-
-    if request.method == "POST":
-        message = request.POST.get("message")
-
-        if not message:
-            messages.error(request, "Please describe the change you want to request.")
+            messages.error(request, "Please enter valid guest numbers.")
             return redirect(request.path)
 
         BookingChangeRequest.objects.create(
             booking=booking,
             customer=request.user,
-            message=message,
-            status="OPEN"
+            request_type="MODIFY",
+            message="Customer requested a booking modification.",
+            status="OPEN",
+            requested_check_in=check_in_date,
+            requested_check_out=check_out_date,
+            requested_adults=int(adults or 1),
+            requested_children=int(children or 0),
+            requested_dogs=dog_count,
         )
 
-        messages.success(request, "Your change request has been submitted.")
+        messages.success(
+            request,
+            "Your modification request has been sent for admin approval.",
+        )
         return redirect("booking_detail", pk=booking.pk)
 
-    return render(request, "bookings/booking_change_request.html", {"booking": booking})
+    return render(
+        request,
+        "bookings/booking_update.html",
+        {"booking": booking, "unit": unit, "booked_ranges": booked_ranges},
+    )
+
+
+# Booking Delete Requests
+@login_required
+def booking_delete_view(request, pk):
+    booking = get_object_or_404(
+        Booking,
+        pk=pk,
+        customer=request.user,
+    )
+
+    if request.method == "POST":
+        BookingChangeRequest.objects.create(
+            booking=booking,
+            customer=request.user,
+            request_type="CANCEL",
+            message="Customer requested cancellation.",
+            status="OPEN",
+        )
+
+        messages.success(
+            request,
+            "Your cancellation request has been sent for approval.",
+        )
+        return redirect("booking_detail", pk=booking.pk)
+
+    return render(
+        request,
+        "bookings/booking_delete.html",
+        {"booking": booking},
+    )
+
+
+# Booking Change Requests
+@login_required
+def booking_change_request_view(request, pk):
+    booking = get_object_or_404(
+        Booking,
+        pk=pk,
+        customer=request.user,
+    )
+
+    if request.method == "POST":
+        message = request.POST.get("message", "").strip()
+
+        if not message:
+            messages.error(
+                request,
+                "Please describe the change you want to request.",
+            )
+            return redirect(request.path)
+
+        BookingChangeRequest.objects.create(
+            booking=booking,
+            customer=request.user,
+            request_type="MODIFY",
+            message=message,
+            status="OPEN",
+        )
+
+        messages.success(
+            request,
+            "Your modification request has been sent for approval.",
+        )
+        return redirect("booking_detail", pk=booking.pk)
+
+    return render(
+        request,
+        "bookings/booking_change_request.html",
+        {"booking": booking},
+    )
 
 
 # Admin Dashboard
@@ -318,10 +393,15 @@ def admin_customer_detail_view(request, user_id):
 
     customer = get_object_or_404(User, pk=user_id)
     bookings = Booking.objects.filter(customer=customer)
-    return render(request, "admin/admin_customer_detail.html", {
-        "customer": customer,
-        "bookings": bookings,
-    })
+    return render(
+        request,
+        "admin/admin_customer_detail.html",
+        {
+            "customer": customer,
+            "bookings": bookings,
+        },
+    )
+
 
 def availability_calendar_view(request, unit_slug):
     unit = get_object_or_404(Unit, slug=unit_slug)
@@ -340,4 +420,3 @@ def availability_calendar_view(request, unit_slug):
     }
 
     return render(request, "bookings/calendar.html", context)
-

@@ -1,64 +1,57 @@
-{% extends "base.html" %} {% load static %} {% block content %}
-<div class="booking-detail-wrapper">
-    <h1>Your Booking</h1>
+{% extends "base.html" %}
+{% load static %}
 
-    <div class="booking-summary-card">
-        <!-- Unit Info -->
-        <div class="unit-info">
-            <h2>{{ booking.unit.name }}</h2>
-            {% if booking.unit.main_image %}
-            <img src="{{ booking.unit.main_image.url }}" alt="{{ booking.unit.name }}" class="unit-image" />
-            {% endif %}
+{% block content %}
+<div class="customer-card-wrapper wide">
+    <h1 class="customer-dashboard-title">Your Booking</h1>
+    <p class="customer-dashboard-subtitle">Booking details and price breakdown</p>
+    <div class="customer-card booking-detail-card">
+        <div class="booking-detail-grid">
+
+            <section class="booking-detail-section booking-image-section">
+                <h2>{{ booking.unit.name }}</h2>
+                {% if booking.unit.main_image %}
+                <img src="{{ booking.unit.main_image.url }}" alt="{{ booking.unit.name }}" class="unit-image">
+                {% endif %}
+                
+            </section>
+
+            <section class="booking-detail-section">
+                <h3>Stay Dates</h3>
+                <p><strong>Check-in:</strong> {{ booking.check_in_date }}</p>
+                <p><strong>Check-out:</strong> {{ booking.check_out_date }}</p>
+                <p><strong>Nights:</strong> {{ booking.total_nights }}</p>
+            </section>
+
+            <section class="booking-detail-section">
+                <h3>Guests</h3>
+                <p><strong>Adults:</strong> {{ booking.adults }}</p>
+                <p><strong>Children:</strong> {{ booking.children }}</p>
+                <p><strong>Dogs:</strong> {{ booking.dogs }}</p>
+            </section>
+
+            <section class="booking-detail-section">
+                <h3>Price Breakdown</h3>
+                <p><strong>Nightly rate:</strong> £{{ booking.nightly_price }}</p>
+                <p><strong>Dog surcharge:</strong> £{{ booking.dog_surcharge }}</p>
+                <p class="total-price">
+                    <strong>Total:</strong> £{{ booking.total_amount }}
+                </p>
+            </section>
+
         </div>
 
-        <!-- Dates -->
-        <div class="booking-dates">
-            <h3>Stay Dates</h3>
-            <p><strong>Check-in:</strong> {{ booking.check_in_date }}</p>
-            <p><strong>Check-out:</strong> {{ booking.check_out_date }}</p>
-
-            {% comment %} Calculate nights inside template {% endcomment %}
+        <div class="booking-detail-status status-{{ booking.status|lower }}">
+            <strong>Status:</strong> {{ booking.get_status_display }}
         </div>
 
-        <!-- Guests & Dogs -->
-        <div class="booking-guests">
-            <h3>Guests</h3>
-            <p>{{ booking.adults }} adult{{ booking.adults|pluralize }}</p>
-            {% if booking.children == 1 %}
-            <p>1 child</p>
-            {% else %}
-            <p>{{ booking.children }} children</p>
-            {% endif %}
-
-            {% if booking.dogs %}
-            <p>{{ booking.dogs }} dog{{ booking.dogs|pluralize }}</p>
-            {% else %}
-            <p>No dogs</p>
-            {% endif %}
-        </div>
-
-        <!-- Price Breakdown -->
-        <div class="booking-price">
-            <h3>Price Breakdown</h3>
-
-            <p><strong>Nights:</strong> {{ booking.total_nights }}</p>
-            <p><strong>Nightly Rate:</strong> £{{ booking.nightly_price }}</p>
-            <p><strong>Dog Surcharge:</strong> £{{ booking.dog_surcharge }}</p>
-            <p class="total-price">
-                <strong>Total Price:</strong> £{{ booking.total_amount }}
-            </p>
-        </div>
-
-        <!-- Status -->
-        <div class="booking-status">
-            <h3>Status</h3>
-            <p>{{ booking.status|title }}</p>
-        </div>
-
-        <!-- Actions -->
-        <div class="booking-actions">
-            <a href="{% url 'booking_update' booking.pk %}" class="crud-btn">Update Booking</a>
-            <a href="{% url 'booking_delete' booking.pk %}" class="crud-btn delete-btn">Cancel Booking</a>
+        <div class="customer-actions-cell">
+            <a href="{% url 'booking_update' booking.pk %}" class="crud-btn">
+                Request To Update Booking
+            </a>
+            <a href="{% url 'booking_delete' booking.pk %}" class="crud-btn delete-btn">
+                Request To Cancel Booking
+            </a>
         </div>
     </div>
 </div>

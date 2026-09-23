@@ -48,20 +48,32 @@
                             <td>{{ booking.customer.username }}</td>
                             <td>{{ booking.check_in_date }}</td>
                             <td>{{ booking.check_out_date }}</td>
-                            <td>{{ booking.status }}</td>
+                            <td>
+                                <form method="post" action="{% url 'admin_booking_status_update' booking.id %}">
+                                    {% csrf_token %}
+
+                                    <select name="status" class="status-button status-{{ booking.status|lower }}"
+                                        onchange="this.form.submit()">
+                                        {% for value, label in status_choices %}
+                                        <option value="{{ value }}" {% if booking.status == value %}selected{% endif %}>
+                                            {{ label }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                            </td>
 
                             <td>
                                 <a href="{% url 'admin_booking_detail' booking.id %}" class="crud-btn">
                                     View
                                 </a>
 
-                                <button onclick="openPasswordModal('modify_booking', {{ booking.id }})"
-                                        class="crud-btn">
+                                <button onclick="openPasswordModal('modify_booking', {{ booking.id }})" class="crud-btn">
                                     Modify
                                 </button>
 
                                 <button onclick="openPasswordModal('delete_booking', {{ booking.id }})"
-                                        class="crud-btn danger-btn">
+                                    class="crud-btn danger-btn">
                                     Delete
                                 </button>
                             </td>

@@ -1,40 +1,86 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <div class="admin-dashboard-container">
-
     <div class="admin-card-wrapper">
-
         <h1 class="admin-dashboard-title">Booking #{{ booking.id }}</h1>
-        <p class="admin-dashboard-subtitle">Full booking details and admin actions</p>
 
-        <div class="admin-dashboard-grid">
+        {% if messages %} {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %} {% endif %}
 
-            <div class="admin-card" style="grid-column: 1 / -1;">
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="save_booking" />
 
-                <p><strong>Customer:</strong> {{ booking.customer.username }}</p>
-                <p><strong>Unit:</strong> {{ booking.unit.name }}</p>
-                <p><strong>Check In:</strong> {{ booking.check_in_date }}</p>
-                <p><strong>Check Out:</strong> {{ booking.check_out_date }}</p>
-                <p><strong>Total Price:</strong> £{{ booking.total_price }}</p>
-                <p><strong>Status:</strong> {{ booking.status }}</p>
+            <p><strong>Unit:</strong> {{ booking.unit.name }}</p>
 
-                <h2>Actions</h2>
+            <p>
+                <strong>Customer:</strong>
+                {{ booking.customer_name }}
+            </p>
 
-                <button onclick="openPasswordModal('modify_booking', {{ booking.id }})" class="crud-btn">
-                    Modify Booking
-                </button>
+            <p>
+                <strong>Email:</strong>
+                {{ booking.customer_email }}
+            </p>
 
-                <button onclick="openPasswordModal('delete_booking', {{ booking.id }})" class="crud-btn danger-btn">
-                    Delete Booking
-                </button>
+            <p>
+                <strong>Phone:</strong>
+                {{ booking.customer_phone }}
+            </p>
 
-            </div>
+            <label>Check in</label>
+            <input type="date" name="check_in" value="{{ booking.check_in_date|date:'Y-m-d' }}"
+                class="form-control" />
 
-        </div>
+            <label>Check out</label>
+            <input type="date" name="check_out" value="{{ booking.check_out_date|date:'Y-m-d' }}"
+                class="form-control" />
 
+            <label>Adults</label>
+            <input type="number" name="adults" value="{{ booking.adults }}" min="1" class="form-control" />
+
+            <label>Children</label>
+            <input type="number" name="children" value="{{ booking.children }}" min="0" class="form-control" />
+
+            <label>Dogs</label>
+            <input type="number" name="dogs" value="{{ booking.dogs }}" min="0" class="form-control" />
+
+            <label>Status</label>
+            <select name="status" id="statusSelect" class="form-select status-{{ booking.status|lower }}">
+                {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if booking.status == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <p>
+                <strong>Total:</strong>
+                £{{ booking.total_amount }}
+            </p>
+
+            <button type="submit" class="crud-btn">Save Changes</button>
+        </form>
+
+        <hr />
+
+        <button type="button" class="crud-btn" onclick="openPasswordModal('unlock_booking', {{ booking.id }})">
+            Modify Booking
+        </button>
+
+        <button type="button" class="crud-btn danger-btn" onclick="openPasswordModal('delete_booking', {{ booking.id }})">
+            Delete Booking
+        </button>
     </div>
-
 </div>
+
+<script>
+    document
+        .getElementById("statusSelect")
+        .addEventListener("change", function () {
+            this.className = "form-select status-" + this.value.toLowerCase();
+        });
+</script>
 
 {% endblock %}

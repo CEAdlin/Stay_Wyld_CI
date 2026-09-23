@@ -33,7 +33,7 @@
                         <td>{{ booking.check_in_date }}</td>
                         <td>{{ booking.check_out_date }}</td>
                         <td>{{ booking.status|title }}</td>
-                        <td>£{{ booking.total_price }}</td>
+                        <td>£{{ booking.total_amount }}</td>
 
                         <td class="customer-actions-cell">
                             <a href="{% url 'booking_detail' booking.pk %}" class="crud-btn small">View</a>

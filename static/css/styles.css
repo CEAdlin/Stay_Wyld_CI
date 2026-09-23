@@ -1074,26 +1074,70 @@ section.bg-light {
 
 /* Status Colours */
 
-.status-vacant {
+.unit-status-vacant {
   color: var(--colour-accent);
   font-weight: 600;
 }
 
-.status-occupied {
+.unit-status-occupied {
   color: #ff6b6b;
   font-weight: 600;
 }
 
-.status-checkin {
+.unit-status-checkin {
   color: #4ecdc4;
   font-weight: 600;
 }
 
-.status-checkout {
+.unit-status-checkout {
   color: #ffe66d;
   font-weight: 600;
 }
 
+.status-button {
+    appearance: none;
+    border: 0;
+    border-radius: 999px;
+    padding: 8px 30px 8px 14px;
+    min-width: 125px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 9px;
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: calc(100% - 14px) 50%,
+                         calc(100% - 9px) 50%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-confirmed {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-cancelled {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.status-completed {
+    background-color: #cfe2ff;
+    color: #084298;
+}
+
+.status-button option {
+    background: white;
+    color: #222;
+}
 /* Admin Gallery */
 
 .admin-gallery {
@@ -1469,7 +1513,7 @@ section.bg-light {
 
 /* WRAPPER */
 .admin-card-wrapper {
-    width: 80vw;
+    width: 90vw;
     background: rgba(255, 255, 255, 0.85);
     border: 2px solid #C1BD88;
     border-radius: 16px;
@@ -2263,4 +2307,125 @@ section.bg-light {
     text-align: center;
 }
 
+/* CUSTOMER BOOKING DETAIL PAGE STYLES */
+.booking-detail-card {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
 
+.booking-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.booking-detail-section {
+    min-width: 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--colour-accent);
+    border-radius: 12px;
+}
+
+.booking-detail-section h2,
+.booking-detail-section h3 {
+    margin: 0 0 0.8rem;
+    color: var(--colour-primary);
+    font-family: var(--font-secondary);
+    font-size: 1.35rem;
+    text-align: left;
+}
+
+.booking-detail-section p {
+    margin: 0.4rem 0;
+    color: var(--colour-primary);
+    font-size: 1rem;
+    text-align: left;
+}
+
+.booking-image-section .unit-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 0.8rem;
+    border-radius: 8px;
+}
+
+.booking-detail-status {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 1rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid currentColor;
+    border-radius: 10px;
+    font-family: var(--font-secondary);
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.booking-detail-status strong {
+    font-family: var(--font-secondary);
+    margin-right: 0.4rem;
+}
+
+.booking-detail-status.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.booking-detail-status.status-confirmed {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.booking-detail-status.status-cancelled {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.booking-detail-status.status-completed {
+    background-color: #cfe2ff;
+    color: #084298;
+}
+
+.booking-detail-section .total-price {
+    margin-top: 0.8rem;
+    padding-top: 0.6rem;
+    border-top: 2px solid var(--colour-accent);
+    font-weight: 700;
+}
+
+.booking-detail-card .customer-actions-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+/* Two columns on smaller screens */
+@media (max-width: 900px) {
+    .booking-detail-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* One column on mobile */
+@media (max-width: 600px) {
+    .booking-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-detail-card .customer-actions-cell {
+        flex-direction: column;
+    }
+
+    .booking-detail-card .customer-actions-cell .crud-btn {
+        width: 100%;
+        max-width: 220px;
+        margin-left: 0;
+        text-align: center;
+    }
+}
