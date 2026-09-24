@@ -100,10 +100,10 @@ class BookingChangeRequest(models.Model):
     ]
 
     STATUS_CHOICES = [
-        ("OPEN", "Open"),
-        ("APPROVED", "Approved"),
-        ("REJECTED", "Rejected"),
-    ]
+    ("OPEN", "Open"),
+    ("APPROVED", "Accepted"),
+    ("REJECTED", "Declined"),
+]
 
     booking = models.ForeignKey(
         Booking,

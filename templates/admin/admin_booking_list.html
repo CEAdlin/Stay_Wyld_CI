@@ -33,6 +33,7 @@
                             <th>Check In</th>
                             <th>Check Out</th>
                             <th>Status</th>
+                            <th>Request status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -48,8 +49,9 @@
                             <td>
                                 <form method="post" action="{% url 'admin_booking_status_update' booking.id %}">
                                     {% csrf_token %}
-                                    <select name="status" class="status-button status-{{ booking.status|lower }}" 
-                                    onchange="this.form.submit()">
+                                    <!-- filepath: c:\Users\corri\Documents\AA_CI_Projects\capstone_staywyld\templates\admin\admin_booking_list.html -->
+                                    <select name="status" class="status-button status-{{ booking.status|lower }}"
+                                        onchange="this.form.submit()">
                                         {% for value, label in status_choices %}
                                         <option value="{{ value }}" {% if booking.status == value %}selected{% endif %}>
                                             {{ label }}
@@ -57,6 +59,15 @@
                                         {% endfor %}
                                     </select>
                                 </form>
+                            </td>
+                            <td class="request-status-cell">
+                                {% if booking.latest_request %}
+                                <span class="request-status request-status-{{ booking.latest_request.status|lower }}">
+                                    {{ booking.latest_request.get_status_display }}
+                                </span>
+                                {% else %}
+                                <span class="request-status request-status-none">None</span>
+                                {% endif %}
                             </td>
 
                             <td class="booking-actions">

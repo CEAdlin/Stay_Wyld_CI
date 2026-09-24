@@ -1,19 +1,14 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block content %}
+{% extends "base.html" %} {% load static %} {% block content %}
 <div class="customer-card-wrapper wide">
     <h1 class="customer-dashboard-title">Your Booking</h1>
     <p class="customer-dashboard-subtitle">Booking details and price breakdown</p>
     <div class="customer-card booking-detail-card">
         <div class="booking-detail-grid">
-
             <section class="booking-detail-section booking-image-section">
                 <h2>{{ booking.unit.name }}</h2>
                 {% if booking.unit.main_image %}
-                <img src="{{ booking.unit.main_image.url }}" alt="{{ booking.unit.name }}" class="unit-image">
+                <img src="{{ booking.unit.main_image.url }}" alt="{{ booking.unit.name }}" class="unit-image" />
                 {% endif %}
-                
             </section>
 
             <section class="booking-detail-section">
@@ -38,13 +33,14 @@
                     <strong>Total:</strong> £{{ booking.total_amount }}
                 </p>
             </section>
-
         </div>
 
         <div class="booking-detail-status status-{{ booking.status|lower }}">
-            <strong>Status:</strong> {{ booking.get_status_display }}
+            <strong>Status:</strong>
+            {% if cancellation_requested %} Cancellation request sent {% else %} {{
+      booking.get_status_display }} {% endif %}
         </div>
-
+    {% if not cancellation_requested %}
         <div class="customer-actions-cell">
             <a href="{% url 'booking_update' booking.pk %}" class="crud-btn">
                 Request To Update Booking
@@ -53,6 +49,7 @@
                 Request To Cancel Booking
             </a>
         </div>
+    {% endif %}
     </div>
 </div>
 {% endblock %}

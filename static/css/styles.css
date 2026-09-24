@@ -2381,8 +2381,8 @@ section.bg-light {
 }
 
 .booking-detail-status.status-pending {
-    background-color: #fff3cd;
-    color: #856404;
+    background-color: #fee2e2;
+    color: #b91c1c;
 }
 
 .booking-detail-status.status-confirmed {
@@ -2438,6 +2438,43 @@ section.bg-light {
         margin-left: 0;
         text-align: center;
     }
+}
+/* Booking Request Status Styles */
+.request-status {
+    display: inline-block;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.request-status-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.request-status-none {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+
+.request-status-open {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.request-status-approved,
+.request-status-accepted {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.request-status-rejected,
+.request-status-declined {
+    background-color: #fef3c7;
+    color: #92400e;
 }
 
 /* Admin Booking Detail Page Styles  */

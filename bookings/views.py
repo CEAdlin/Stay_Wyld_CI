@@ -157,14 +157,55 @@ def booking_create_view(request, unit_slug):
 @login_required
 def my_bookings_view(request):
     bookings = Booking.objects.filter(customer=request.user)
-    return render(request, "bookings/my_bookings.html", {"bookings": bookings})
 
+    for booking in bookings:
+        booking.latest_request = (
+            BookingChangeRequest.objects
+            .filter(booking=booking)
+            .order_by("-created_at")
+            .first()
+        )
+
+    return render(
+        request,
+        "bookings/my_bookings.html",
+        {"bookings": bookings},
+    )
 
 @login_required
 def booking_detail_view(request, pk):
-    booking = get_object_or_404(Booking, pk=pk, customer=request.user)
-    return render(request, "bookings/booking_detail.html", {"booking": booking})
+    booking = get_object_or_404(
+        Booking,
+        pk=pk,
+        customer=request.user,
+    )
 
+    latest_request = BookingChangeRequest.objects.filter(
+        booking=booking,
+        customer=request.user,
+    ).order_by("-created_at").first()
+
+    open_request = BookingChangeRequest.objects.filter(
+        booking=booking,
+        customer=request.user,
+        status="OPEN",
+    ).first()
+
+    cancellation_requested = (
+        open_request is not None
+        and open_request.request_type == "CANCEL"
+    )
+
+    return render(
+        request,
+        "bookings/booking_detail.html",
+        {
+            "booking": booking,
+            "latest_request": latest_request,
+            "open_request": open_request,
+            "cancellation_requested": cancellation_requested,
+        },
+    )
 
 # UPDATED BOOKING UPDATE VIEW (no dashed lines)
 @login_required
@@ -209,14 +250,14 @@ def booking_update_view(request, pk):
             messages.error(request, "Check-out date must be after check-in date.")
             return redirect(request.path)
 
-        overlapping = Booking.objects.filter(
-            unit=unit,
-            check_in_date__lt=check_out_date,
-            check_out_date__gt=check_in_date,
-        ).exclude(
-            pk=booking.pk
-        ).exclude(
-            status="CANCELLED"
+        overlapping = (
+            Booking.objects.filter(
+                unit=unit,
+                check_in_date__lt=check_out_date,
+                check_out_date__gt=check_in_date,
+            )
+            .exclude(pk=booking.pk)
+            .exclude(status="CANCELLED")
         )
 
         if overlapping.exists():
@@ -277,57 +318,18 @@ def booking_delete(request, pk):
             customer=request.user,
             request_type="CANCEL",
             status="OPEN",
-            defaults={
-                "message": "Customer requested cancellation."
-            },
+            defaults={"message": "Customer requested cancellation."},
         )
 
-        return redirect("booking_detail", pk=booking.pk)
-
-    return render(request, "bookings/booking_delete.html", {
-        "booking": booking,
-    })
-
-
-# Booking Change Requests
-@login_required
-def booking_change_request_view(request, pk):
-    booking = get_object_or_404(
-        Booking,
-        pk=pk,
-        customer=request.user,
-    )
-
-    if request.method == "POST":
-        message = request.POST.get("message", "").strip()
-
-        if not message:
-            messages.error(
-                request,
-                "Please describe the change you want to request.",
-            )
-            return redirect(request.path)
-
-        BookingChangeRequest.objects.create(
-            booking=booking,
-            customer=request.user,
-            request_type="MODIFY",
-            message=message,
-            status="OPEN",
-        )
-
-        messages.success(
-            request,
-            "Your modification request has been sent for approval.",
-        )
         return redirect("booking_detail", pk=booking.pk)
 
     return render(
         request,
-        "bookings/booking_change_request.html",
-        {"booking": booking},
+        "bookings/booking_delete.html",
+        {
+            "booking": booking,
+        },
     )
-
 
 # Admin Dashboard
 @login_required
@@ -336,8 +338,20 @@ def admin_bookings_list_view(request):
         return render(request, "403.html")
 
     bookings = Booking.objects.all().order_by("check_in_date")
-    return render(request, "admin/admin_bookings_list.html", {"bookings": bookings})
 
+    for booking in bookings:
+        booking.latest_request = (
+            BookingChangeRequest.objects
+            .filter(booking=booking)
+            .order_by("-created_at")
+            .first()
+        )
+
+    return render(
+        request,
+        "admin/admin_bookings_list.html",
+        {"bookings": bookings},
+    )
 
 @login_required
 def admin_booking_detail_view(request, pk):
