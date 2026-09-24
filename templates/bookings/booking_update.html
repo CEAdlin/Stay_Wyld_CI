@@ -2,41 +2,111 @@
 {% load static %}
 
 {% block content %}
-<div class="booking-update-wrapper">
+<div class="customer-card-wrapper wide">
+    <h1 class="customer-dashboard-title">Update Your Booking</h1>
+    <p class="customer-dashboard-subtitle">
+        Request changes to your stay
+    </p>
 
-    <h1>Update Your Booking</h1>
+    <div class="customer-card booking-detail-card">
+        <form method="post">
+            {% csrf_token %}
 
-    <!-- Calendar -->
-    <h2>Select New Dates</h2>
+            <div class="booking-detail-grid">
+                <section class="booking-detail-section booking-image-section">
+                    <h2>{{ booking.unit.name }}</h2>
 
-    <div id="availability-calendar"
-         data-price="{{ unit.price_per_night }}">
+                    {% if booking.unit.main_image %}
+                        <img src="{{ booking.unit.main_image.url }}"
+                             alt="{{ booking.unit.name }}"
+                             class="unit-image">
+                    {% endif %}
+                </section>
+
+                <section class="booking-detail-section">
+                    <h3>Stay Dates</h3>
+
+                    <label for="check_in">Check-in</label>
+                    <input type="date"
+                           id="check_in"
+                           name="check_in"
+                           value="{{ booking.check_in_date|date:'Y-m-d' }}"
+                           class="form-control"
+                           required>
+
+                    <label for="check_out">Check-out</label>
+                    <input type="date"
+                           id="check_out"
+                           name="check_out"
+                           value="{{ booking.check_out_date|date:'Y-m-d' }}"
+                           class="form-control"
+                           required>
+                </section>
+
+                <section class="booking-detail-section">
+                    <h3>Guests</h3>
+
+                    <label for="adults">Adults</label>
+                    <input type="number"
+                           id="adults"
+                           name="adults"
+                           value="{{ booking.adults }}"
+                           min="1"
+                           class="form-control"
+                           required>
+
+                    <label for="children">Children</label>
+                    <input type="number"
+                           id="children"
+                           name="children"
+                           value="{{ booking.children }}"
+                           min="0"
+                           class="form-control">
+
+                    <label for="dogs">Dogs</label>
+                    <input type="number"
+                           id="dogs"
+                           name="dogs"
+                           value="{{ booking.dogs }}"
+                           min="0"
+                           class="form-control">
+                </section>
+
+                <section class="booking-detail-section">
+                    <h3>Current Price</h3>
+                    <p>
+                        <strong>Nightly rate:</strong>
+                        £{{ booking.nightly_price }}
+                    </p>
+                    <p>
+                        <strong>Dog surcharge:</strong>
+                        £{{ booking.dog_surcharge }}
+                    </p>
+                    <p class="total-price">
+                        <strong>Total:</strong>
+                        £{{ booking.total_amount }}
+                    </p>
+                </section>
+            </div>
+
+            <div class="booking-detail-status">
+                <strong>Status:</strong>
+                <span class="status-badge status-{{ booking.status|lower }}">
+                    {{ booking.get_status_display }}
+                </span>
+            </div>
+
+            <div class="customer-actions-cell">
+                <button type="submit" class="crud-btn">
+                    Submit Update Request
+                </button>
+
+                <a href="{% url 'booking_detail' booking.pk %}"
+                   class="crud-btn delete-btn">
+                    Back to Booking
+                </a>
+            </div>
+        </form>
     </div>
-
-    {{ booked_ranges|json_script:"booked-dates" }}
-
-    <script src="{% static 'js/calendar.js' %}"></script>
-
-    <!-- Update Form -->
-    <form method="POST">
-        {% csrf_token %}
-
-        <label>Check-in</label>
-        <input type="date" name="check_in" value="{{ booking.check_in_date }}" required>
-
-        <label>Check-out</label>
-        <input type="date" name="check_out" value="{{ booking.check_out_date }}" required>
-
-        <label>Guests</label>
-        <input type="number" name="guests" min="1" max="{{ unit.max_guests }}" value="{{ booking.guests }}" required>
-
-        {% if unit.dogs_allowed %}
-            <label>Dogs</label>
-            <input type="number" name="dogs" min="0" max="3" value="{{ booking.dogs }}">
-        {% endif %}
-
-        <button type="submit" class="crud-btn">Save Changes</button>
-    </form>
-
 </div>
 {% endblock %}

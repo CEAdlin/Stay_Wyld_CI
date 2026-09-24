@@ -37,10 +37,12 @@
 
         <div class="booking-detail-status status-{{ booking.status|lower }}">
             <strong>Status:</strong>
-            {% if cancellation_requested %} Cancellation request sent {% else %} {{
-      booking.get_status_display }} {% endif %}
+            <span class="status-badge status-{{ booking.status|lower }}">
+                {{ booking.get_status_display }}
+            </span>
         </div>
-    {% if not cancellation_requested %}
+
+        {% if booking.status != "CANCELLED" and not cancellation_requested %}
         <div class="customer-actions-cell">
             <a href="{% url 'booking_update' booking.pk %}" class="crud-btn">
                 Request To Update Booking
@@ -49,7 +51,7 @@
                 Request To Cancel Booking
             </a>
         </div>
-    {% endif %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}

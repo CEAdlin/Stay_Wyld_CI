@@ -1,18 +1,27 @@
 {% extends "base.html" %}
+
 {% block content %}
-
 <div class="admin-dashboard-container">
-
     <div class="admin-card-wrapper wide">
-
         <h1 class="admin-dashboard-title">Customers</h1>
-        <p class="admin-dashboard-subtitle">View, manage, and modify customer accounts</p>
-
+        <p class="admin-dashboard-subtitle">
+            View, manage, and modify customer accounts
+        </p>
+        <!-- Admin Customer List Dashboard -->
         <div class="admin-dashboard-grid">
-
-            <!-- FULL-WIDTH CARD -->
             <div class="admin-card" style="grid-column: 1 / -1;">
+                <!-- Filter Fields -->
+                <div class="admin-table-toolbar">
+                    <span class="sort-label">Sort Customers By:</span>
 
+                    <a href="?sort=name" class="crud-btn {% if sort_by == 'name' or not sort_by %}active{% endif %}">
+                        Customer A-Z
+                    </a>
+
+                    <a href="?sort=active" class="crud-btn {% if sort_by == 'active' %}active{% endif %}">
+                        Active Booking
+                    </a>
+                </div>
                 <table class="admin-table">
                     <thead>
                         <tr>
@@ -20,6 +29,7 @@
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Total Bookings</th>
+                            <th>Active Booking</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -29,35 +39,34 @@
                         <tr>
                             <td>{{ customer.username }}</td>
                             <td>{{ customer.email }}</td>
-                            <td>{{ customer.profile.phone }}</td>
-                            <td>{{ customer.bookings.count }}</td>
-
+                            <td>{{ customer.phone_number }}</td>
+                            <td>{{ customer.total_bookings }}</td>
+                            <td>
+                                {% if customer.has_active_booking %}
+                                <span class="customer-status status-yes">
+                                    Yes
+                                </span>
+                                {% else %}
+                                <span class="customer-status status-no">
+                                    No
+                                </span>
+                                {% endif %}
+                            </td>
                             <td>
                                 <a href="{% url 'admin_customer_detail' customer.id %}" class="crud-btn">
-                                    View
+                                    View &amp; Update
                                 </a>
-
-                                <button onclick="openPasswordModal('modify_customer', {{ customer.id }})"
-                                        class="crud-btn">
-                                    Modify
-                                </button>
-
-                                <button onclick="openPasswordModal('delete_customer', {{ customer.id }})"
-                                        class="crud-btn danger-btn">
-                                    Delete
-                                </button>
                             </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6">No customers found.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
-
 {% endblock %}

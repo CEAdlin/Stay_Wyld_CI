@@ -1,2 +1,5 @@
 .venv/ 
 STAY_WYLD_10_DAY_PLAN.md
+
+__pycache__/
+*.pyc

@@ -33,7 +33,11 @@
                         <td>{{ booking.unit.name }}</td>
                         <td>{{ booking.check_in_date }}</td>
                         <td>{{ booking.check_out_date }}</td>
-                        <td>{{ booking.status|title }}</td>
+                        <td>
+                            <span class="status-badge status-{{ booking.status|lower }}">
+                                {{ booking.get_status_display }}
+                            </span>
+                        </td>
                         <td>
                             {% if booking.latest_request %}
                             <span class="request-status request-status-{{ booking.latest_request.status|lower }}">

@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from datetime import date, datetime
 from decimal import Decimal
 from bookings.models import Booking, Unit, BookingChangeRequest
+from accounts.models import CustomerProfile
 
 
 @login_required
@@ -33,6 +34,7 @@ def admin_booking_status_update(request, booking_id):
 
     return redirect("admin_booking_list")
 
+
 @login_required
 def admin_booking_delete(request, booking_id):
     if not request.user.is_staff:
@@ -45,6 +47,7 @@ def admin_booking_delete(request, booking_id):
         messages.success(request, "Booking deleted.")
 
     return redirect("admin_booking_list")
+
 
 @login_required
 def admin_unit_list(request):
@@ -112,8 +115,78 @@ def admin_modify_unit(request, unit_id):
 def admin_customers_list(request):
     if not request.user.is_staff:
         return redirect("index")
-    customers = User.objects.all().order_by("username")
-    return render(request, "admin/admin_customers_list.html", {"customers": customers})
+
+    today = date.today()
+    customers = list(User.objects.all())
+
+    for customer in customers:
+        profile = CustomerProfile.objects.filter(user=customer).first()
+        bookings = Booking.objects.filter(customer=customer)
+
+        customer.phone_number = profile.phone_number if profile else "Not provided"
+        customer.total_bookings = bookings.count()
+        customer.has_active_booking = (
+            bookings.filter(
+                check_in_date__lte=today,
+                check_out_date__gte=today,
+            )
+            .exclude(status="CANCELLED")
+            .exists()
+        )
+
+    sort_by = request.GET.get("sort", "name")
+
+    if sort_by == "active":
+        customers.sort(
+            key=lambda customer: (
+                not customer.has_active_booking,
+                customer.username.lower(),
+            )
+        )
+    else:
+        customers.sort(key=lambda customer: customer.username.lower())
+
+@login_required
+def admin_customers_list(request):
+    if not request.user.is_staff:
+        return redirect("index")
+
+    today = date.today()
+    customers = list(User.objects.all())
+
+    for customer in customers:
+        profile = CustomerProfile.objects.filter(user=customer).first()
+        bookings = Booking.objects.filter(customer=customer)
+
+        customer.phone_number = (
+            profile.phone_number if profile else "Not provided"
+        )
+        customer.total_bookings = bookings.count()
+        customer.has_active_booking = bookings.filter(
+            check_in_date__lte=today,
+            check_out_date__gte=today,
+        ).exclude(status="CANCELLED").exists()
+
+    sort_by = request.GET.get("sort", "name")
+
+    if sort_by == "active":
+        customers.sort(
+            key=lambda customer: (
+                not customer.has_active_booking,
+                customer.username.lower(),
+            )
+        )
+    else:
+        customers.sort(key=lambda customer: customer.username.lower())
+
+    return render(
+        request,
+        "admin/admin_customers_list.html",
+        {
+            "customers": customers,
+            "sort_by": sort_by,
+        },
+    )
 
 
 @login_required
@@ -153,13 +226,15 @@ def admin_booking_list(request):
     status_filter = request.GET.get("status")
     date_from = request.GET.get("from")
     date_to = request.GET.get("to")
-
     today = date.today()
 
     if status_filter == "past":
         bookings = bookings.filter(check_out_date__lt=today)
     elif status_filter == "current":
-        bookings = bookings.filter(check_in_date__lte=today, check_out_date__gte=today)
+        bookings = bookings.filter(
+            check_in_date__lte=today,
+            check_out_date__gte=today,
+        )
     elif status_filter == "upcoming":
         bookings = bookings.filter(check_in_date__gt=today)
 
@@ -168,6 +243,11 @@ def admin_booking_list(request):
 
     if date_to:
         bookings = bookings.filter(check_out_date__lte=date_to)
+
+    for booking in bookings:
+        booking.latest_request = (
+            booking.change_requests.all().order_by("-created_at").first()
+        )
 
     return render(
         request,
@@ -234,11 +314,16 @@ def admin_booking_detail(request, booking_id):
 
     change_requests = booking.change_requests.order_by("-created_at")
 
-    return render(request, "admin/admin_booking_detail.html", {
-        "booking": booking,
-        "status_choices": Booking.STATUS_CHOICES,
-        "change_requests": change_requests,
-    })
+    return render(
+        request,
+        "admin/admin_booking_detail.html",
+        {
+            "booking": booking,
+            "status_choices": Booking.STATUS_CHOICES,
+            "change_requests": change_requests,
+        },
+    )
+
 
 @login_required
 def admin_change_request_action(request, request_id):
@@ -275,8 +360,7 @@ def admin_change_request_action(request, request_id):
                     else Decimal("0.00")
                 )
                 booking.total_amount = (
-                    booking.total_nights * booking.nightly_price
-                    + booking.dog_surcharge
+                    booking.total_nights * booking.nightly_price + booking.dog_surcharge
                 )
                 booking.save()
 
@@ -293,4 +377,3 @@ def admin_change_request_action(request, request_id):
         "admin_booking_detail",
         booking_id=change_request.booking_id,
     )
-

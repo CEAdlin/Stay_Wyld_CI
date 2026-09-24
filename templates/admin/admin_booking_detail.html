@@ -1,69 +1,150 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
 
-<div class="admin-dashboard-container">
-    <div class="admin-card-wrapper">
+{% block content %}
+<div class="admin-booking-detail-page">
+    <div class="admin-booking-detail-card">
         <h1 class="admin-dashboard-title">Booking #{{ booking.id }}</h1>
 
-        {% if messages %} {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %} {% endif %}
-
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="save_booking" />
-
-            <div class="admin-booking-grid">
-                <div class="admin-booking-info">
-                    <p><strong>Unit:</strong> {{ booking.unit.name }}</p>
-                    <p><strong>Customer:</strong> {{ booking.customer_name }}</p>
-                    <p><strong>Email:</strong> {{ booking.customer_email }}</p>
-                    <p><strong>Phone:</strong> {{ booking.customer_phone }}</p>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
                 </div>
+            {% endfor %}
+        {% endif %}
 
-                <div class="admin-booking-fields">
-                    <label>Check in</label>
-                    <input type="date" name="check_in"
-                        value="{{ booking.check_in_date|date:'Y-m-d' }}" class="form-control" />
+        <div class="admin-booking-grid">
+            <div class="admin-booking-info">
+                <h2>Customer Details</h2>
+                <p><strong>Unit:</strong> {{ booking.unit.name }}</p>
+                <p><strong>Customer:</strong> {{ booking.customer_name }}</p>
+                <p><strong>Email:</strong> {{ booking.customer_email }}</p>
+                <p><strong>Phone:</strong> {{ booking.customer_phone }}</p>
+            </div>
 
-                    <label>Check out</label>
-                    <input type="date" name="check_out"
-                        value="{{ booking.check_out_date|date:'Y-m-d' }}" class="form-control" />
+            <div class="admin-booking-fields">
+                <h2>Booking Details</h2>
 
-                    <label>Adults</label>
-                    <input type="number" name="adults" value="{{ booking.adults }}" min="1" class="form-control" />
+                <label for="check_in">Check in</label>
+                <input id="check_in" type="date" name="check_in"
+                       form="save-booking-form"
+                       value="{{ booking.check_in_date|date:'Y-m-d' }}"
+                       class="form-control">
 
-                    <label>Children</label>
-                    <input type="number" name="children" value="{{ booking.children }}" min="0" class="form-control" />
+                <label for="check_out">Check out</label>
+                <input id="check_out" type="date" name="check_out"
+                       form="save-booking-form"
+                       value="{{ booking.check_out_date|date:'Y-m-d' }}"
+                       class="form-control">
 
-                    <label>Dogs</label>
-                    <input type="number" name="dogs" value="{{ booking.dogs }}" min="0" class="form-control" />
-                </div>
+                <label for="adults">Adults</label>
+                <input id="adults" type="number" name="adults"
+                       form="save-booking-form"
+                       value="{{ booking.adults }}" min="1"
+                       class="form-control">
+
+                <label for="children">Children</label>
+                <input id="children" type="number" name="children"
+                       form="save-booking-form"
+                       value="{{ booking.children }}" min="0"
+                       class="form-control">
+
+                <label for="dogs">Dogs</label>
+                <input id="dogs" type="number" name="dogs"
+                       form="save-booking-form"
+                       value="{{ booking.dogs }}" min="0"
+                       class="form-control">
             </div>
 
             <div class="admin-booking-summary">
-                <label>Status</label>
-                <select name="status" id="statusSelect" class="form-select status-{{ booking.status|lower }}">
+                <h2>Booking Summary</h2>
+
+                <label for="statusSelect">Status:</label>
+                <select name="status"
+                        id="statusSelect"
+                        form="save-booking-form"
+                        class="form-select status-{{ booking.status|lower }}">
                     {% for value, label in status_choices %}
-                    <option value="{{ value }}" {% if booking.status == value %}selected{% endif %}>
-                        {{ label }}
-                    </option>
+                        <option value="{{ value }}"
+                            {% if booking.status == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
                     {% endfor %}
                 </select>
 
-                <p><strong>Total:</strong> £{{ booking.total_amount }}</p>
+                <h3 class="booking-request-heading">Booking Requests:</h3>
 
-                <button type="submit" class="crud-btn">Save Changes</button>
+                {% for change_request in change_requests %}
+                    {% if change_request.status == "OPEN" %}
+                        <div class="admin-request-card request-open">
+                            <p>
+                                <strong>Type:</strong>
+                                {% if change_request.request_type == "CANCEL" %}
+                                    Cancel Booking
+                                {% else %}
+                                    Update Booking
+                                {% endif %}
+                            </p>
+
+                            <p>
+                                <strong>Message:</strong>
+                                {{ change_request.message }}
+                            </p>
+
+                            {% if change_request.request_type == "MODIFY" %}
+                                <p><strong>Check-in:</strong> {{ change_request.requested_check_in }}</p>
+                                <p><strong>Check-out:</strong> {{ change_request.requested_check_out }}</p>
+                                <p><strong>Adults:</strong> {{ change_request.requested_adults }}</p>
+                                <p><strong>Children:</strong> {{ change_request.requested_children }}</p>
+                                <p><strong>Dogs:</strong> {{ change_request.requested_dogs }}</p>
+                            {% endif %}
+
+                            <form method="post"
+                                  action="{% url 'admin_change_request_action' change_request.id %}"
+                                  class="admin-request-actions">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        name="action"
+                                        value="approve"
+                                        class="accept-button">
+                                    Accept
+                                </button>
+
+                                <button type="submit"
+                                        name="action"
+                                        value="reject"
+                                        class="decline-button">
+                                    Decline
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <p class="no-request-message">No booking requests.</p>
+                {% endfor %}
+
+                <p class="booking-total">
+                    <strong>Final Booking Price:</strong> £{{ booking.total_amount }}
+                </p>
+
+                <form method="post" id="save-booking-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="save_booking">
+
+                    <button type="submit" class="crud-btn">
+                        Save Changes
+                    </button>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
 <script>
-    document
-        .getElementById("statusSelect")
-        .addEventListener("change", function () {
-            this.className = "form-select status-" + this.value.toLowerCase();
-        });
-</script>
+    const statusSelect = document.getElementById("statusSelect");
 
+    statusSelect.addEventListener("change", function () {
+        this.className = "form-select status-" + this.value.toLowerCase();
+    });
+</script>
 {% endblock %}

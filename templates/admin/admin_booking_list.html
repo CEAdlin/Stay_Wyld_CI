@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block content %}
 
 <div class="admin-dashboard-container">
-    <div class="admin-card-wrapper">
+    <div class="admin-card-wrapper wide">
         <h1 class="admin-dashboard-title">Bookings</h1>
         <p class="admin-dashboard-subtitle">
             View, filter, and manage all bookings
@@ -9,7 +9,7 @@
 
         <div class="admin-dashboard-grid">
             <!-- FULL-WIDTH CARD FOR TABLE + FILTERS -->
-            <div class="admin-card" style="grid-column: 1 / -1">
+            <div class="admin-card" style="grid-column: 1 / -1;">
                 <form method="GET" class="filter-form">
                     <select name="status">
                         <option value="">Current + Upcoming</option>
@@ -49,7 +49,6 @@
                             <td>
                                 <form method="post" action="{% url 'admin_booking_status_update' booking.id %}">
                                     {% csrf_token %}
-                                    <!-- filepath: c:\Users\corri\Documents\AA_CI_Projects\capstone_staywyld\templates\admin\admin_booking_list.html -->
                                     <select name="status" class="status-button status-{{ booking.status|lower }}"
                                         onchange="this.form.submit()">
                                         {% for value, label in status_choices %}

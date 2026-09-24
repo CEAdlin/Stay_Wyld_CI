@@ -16,17 +16,25 @@ urlpatterns = [
         views.admin_booking_status_update,
         name="admin_booking_status_update",
     ),
-        path(
+    path(
         "bookings/<int:booking_id>/delete/",
         views.admin_booking_delete,
         name="admin_booking_delete",
     ),
+    path(
+        "change-request/<int:request_id>/action/",
+        views.admin_change_request_action,
+        name="admin_change_request_action",
+    ),
+
     # Admin Units
     path("units/", views.admin_unit_list, name="admin_unit_list"),
-    path("units/<int:unit_id>/", views.admin_unit_detail, name="admin_unit_detail"),
     path(
-        "units/<int:unit_id>/modify/", views.admin_modify_unit, name="admin_modify_unit"
+        "units/<int:unit_id>/",
+        views.admin_unit_detail,
+        name="admin_unit_detail",
     ),
+
     # Admin Customers
     path("customers/", views.admin_customers_list, name="admin_customers_list"),
     path(
@@ -38,10 +46,5 @@ urlpatterns = [
         "customers/<int:customer_id>/modify/",
         views.admin_modify_customer,
         name="admin_modify_customer",
-    ),
-    path(
-        "change-requests/<int:request_id>/action/",
-        views.admin_change_request_action,
-        name="admin_change_request_action",
     ),
 ]

@@ -39,6 +39,7 @@ body {
 h1 {
   font-family: var(--font-primary);
   letter-spacing: 2px;
+  font-size: 3.2rem;
   color: var(--colour-accent);
   text-align: center;
 }
@@ -46,7 +47,7 @@ h1 {
 h2 {
   font-family: var(--font-primary);
   font-weight: 550;
-  font-size: 3.2rem;
+  font-size: 2.8rem;
   letter-spacing: 2px;
   color: var(--colour-tertiary);
   text-align: center;
@@ -175,6 +176,11 @@ li {
 
 .crud-btn:hover {
   background: var(--colour-accent);
+  color: #314831; /* dark green text on gold */
+}
+
+.crud-btn.active {
+  background: rgba(193, 189, 136, 0.35);
   color: #314831; /* dark green text on gold */
 }
 
@@ -1521,10 +1527,6 @@ section.bg-light {
     padding: 10px 30px;           /* optional spacing */
 }
 
-.admin-card-wrapper.wide {
-    width: 95vw;
-}
-
 .admin-dashboard-subtitle {
     font-size: 16px;
     color: #759075;
@@ -1627,11 +1629,6 @@ section.bg-light {
 .admin-card {
     text-align: left;
     padding: 40px;
-}
-
-/* Improve spacing inside wrapper */
-.admin-card-wrapper {
-    padding: 60px 60px;
 }
 
 /* Wider wrapper for table-heavy pages */
@@ -2381,8 +2378,8 @@ section.bg-light {
 }
 
 .booking-detail-status.status-pending {
-    background-color: #fee2e2;
-    color: #b91c1c;
+    background-color: #fff3cd;
+    color: #856404;
 }
 
 .booking-detail-status.status-confirmed {
@@ -2398,6 +2395,16 @@ section.bg-light {
 .booking-detail-status.status-completed {
     background-color: #cfe2ff;
     color: #084298;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    text-align: center;
 }
 
 .booking-detail-section .total-price {
@@ -2479,17 +2486,131 @@ section.bg-light {
 
 /* Admin Booking Detail Page Styles  */
 
+/* Admin booking detail */
+
+.admin-booking-detail-page {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    color: var(--colour-blue);
+}
+
+.admin-booking-detail-card {
+    background: rgba(40, 41, 62, 0.82);
+    border: 1px solid var(--colour-accent);
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    margin: 80px auto;
+}
+
 .admin-booking-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem;
     margin-bottom: 1.5rem;
 }
 
+.admin-booking-info,
+.admin-booking-fields,
+.admin-booking-summary {
+    background: var(--colour-blue);
+    border: 1px solid var(--colour-accent);
+    border-radius: 10px;
+    padding: 1.25rem;
+}
+
+.admin-booking-fields {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.admin-booking-fields input,
+.admin-booking-summary select {
+    width: 100%;
+    margin-bottom: 0.75rem;
+}
+
+.admin-request-card {
+    margin-top: 1.5rem;
+    padding: 0.6rem;
+    border: 2px solid #b42318;
+    border-radius: 10px;
+    background: #fffaf8;
+    color: var(--colour-blue);
+}
+
+.admin-request-card h2 {
+    margin-top: 0;
+    color: #b42318;
+}
+
+.admin-request-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.admin-request-actions button {
+    border: 0;
+    border-radius: 6px;
+    padding: 0.65rem 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.admin-request-actions .accept-button {
+    background: #236b45;
+    color: #fff;
+}
+
+.admin-request-actions .decline-button {
+    background: #b42318;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .admin-booking-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-booking-detail-card {
+        padding: 1rem;
+    }
+
+    .admin-request-actions {
+        flex-direction: column;
+    }
+}
+
+.admin-booking-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: start;
+}
+
+.admin-booking-info,
+.admin-booking-fields,
+.admin-booking-summary {
+    min-width: 0;
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+    .admin-booking-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .admin-booking-info p,
 .admin-booking-summary p {
-    color: var(--colour-blue);
-    font-size: 1.4rem;
+    color: var(--colour-tertiary);
+    font-size: 1.0rem;
 }
 
 .admin-booking-info {
@@ -2505,7 +2626,7 @@ section.bg-light {
 
 .admin-booking-fields label,
 .admin-booking-summary label {
-    color: var(--colour-blue);
+    color: var(--colour-tertiary);
     font-weight: 600;
 }
 
@@ -2513,15 +2634,27 @@ section.bg-light {
     width: 100%;
 }
 
+.admin-booking-summary .booking-request-heading,
+.admin-booking-summary .booking-total {
+    font-family: var(--font-secondary);
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--colour-tertiary);
+    text-align: center;
+}
+
 .admin-booking-summary .form-select,
 .admin-booking-summary .crud-btn {
     width: 100%;
     box-sizing: border-box;
+    margin: 0 auto;
 }
 
 .admin-booking-summary p {
     margin: 1rem 0;
-    text-align: left;
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--colour-blue);
 }
 
 @media (max-width: 700px) {
@@ -2631,4 +2764,77 @@ section.bg-light {
     .booking-delete-card form .crud-btn {
         width: 100%;
     }
+}
+
+/* Responsive booking filters */
+.filter-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.filter-form select,
+.filter-form input[type="date"] {
+    flex: 1 1 140px;
+    width: auto;
+    min-width: 120px;
+    padding: 8px 10px;
+}
+
+.filter-form button {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 8px 16px;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .filter-form {
+        flex-wrap: nowrap;
+        gap: 0.35rem;
+    }
+
+    .filter-form select,
+    .filter-form input[type="date"] {
+        min-width: 0;
+        flex: 1 1 0;
+        padding: 7px 6px;
+        font-size: 0.8rem;
+    }
+
+    .filter-form button {
+        padding: 7px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Responsive admin table scrolling */
+.admin-card {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.admin-table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    table-layout: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.admin-table thead,
+.admin-table tbody {
+    display: table;
+    width: max-content;
+    min-width: 100%;
+}
+
+.admin-table th,
+.admin-table td {
+    white-space: nowrap;
 }
