@@ -44,7 +44,14 @@ def register_view(request):
         full_name = request.POST.get("full_name")
         email = request.POST.get("email")
         phone = request.POST.get("phone")
-        address = request.POST.get("address")
+        address = request.POST.get("address", "").strip()
+
+        if len(address) < 20:
+            messages.error(
+                request,
+                "Address is required and must contain at least 20 characters.",
+            )
+            return render(request, "accounts/register.html")
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
 
