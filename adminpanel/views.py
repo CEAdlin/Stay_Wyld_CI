@@ -28,11 +28,23 @@ def admin_booking_status_update(request, booking_id):
             messages.error(request, "Invalid booking status.")
         else:
             booking.status = status
-            booking.save(update_fields=["status", "updated_at"])
+            booking.save(update_fields=["status"])
             messages.success(request, "Booking status updated.")
 
     return redirect("admin_booking_list")
 
+@login_required
+def admin_booking_delete(request, booking_id):
+    if not request.user.is_staff:
+        return HttpResponseForbidden("Staff access required.")
+
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    if request.method == "POST":
+        booking.delete()
+        messages.success(request, "Booking deleted.")
+
+    return redirect("admin_booking_list")
 
 @login_required
 def admin_unit_list(request):
@@ -218,7 +230,7 @@ def admin_booking_detail(request, booking_id):
         booking.save()
 
         messages.success(request, "Booking updated successfully.")
-        return redirect(request.path)
+        return redirect("admin_booking_list")
 
     change_requests = booking.change_requests.order_by("-created_at")
 

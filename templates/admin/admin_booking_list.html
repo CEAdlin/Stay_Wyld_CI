@@ -1,18 +1,15 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <div class="admin-dashboard-container">
-
     <div class="admin-card-wrapper">
-
         <h1 class="admin-dashboard-title">Bookings</h1>
-        <p class="admin-dashboard-subtitle">View, filter, and manage all bookings</p>
+        <p class="admin-dashboard-subtitle">
+            View, filter, and manage all bookings
+        </p>
 
         <div class="admin-dashboard-grid">
-
             <!-- FULL-WIDTH CARD FOR TABLE + FILTERS -->
-            <div class="admin-card" style="grid-column: 1 / -1;">
-
+            <div class="admin-card" style="grid-column: 1 / -1">
                 <form method="GET" class="filter-form">
                     <select name="status">
                         <option value="">Current + Upcoming</option>
@@ -21,8 +18,8 @@
                         <option value="upcoming">Upcoming</option>
                     </select>
 
-                    <input type="date" name="from">
-                    <input type="date" name="to">
+                    <input type="date" name="from" />
+                    <input type="date" name="to" />
 
                     <button type="submit" class="crud-btn">Filter</button>
                 </form>
@@ -51,9 +48,8 @@
                             <td>
                                 <form method="post" action="{% url 'admin_booking_status_update' booking.id %}">
                                     {% csrf_token %}
-
-                                    <select name="status" class="status-button status-{{ booking.status|lower }}"
-                                        onchange="this.form.submit()">
+                                    <select name="status" class="status-button status-{{ booking.status|lower }}" 
+                                    onchange="this.form.submit()">
                                         {% for value, label in status_choices %}
                                         <option value="{{ value }}" {% if booking.status == value %}selected{% endif %}>
                                             {{ label }}
@@ -63,31 +59,27 @@
                                 </form>
                             </td>
 
-                            <td>
+                            <td class="booking-actions">
                                 <a href="{% url 'admin_booking_detail' booking.id %}" class="crud-btn">
-                                    View
+                                    View &amp; Modify
                                 </a>
 
-                                <button onclick="openPasswordModal('modify_booking', {{ booking.id }})" class="crud-btn">
-                                    Modify
-                                </button>
-
-                                <button onclick="openPasswordModal('delete_booking', {{ booking.id }})"
-                                    class="crud-btn danger-btn">
-                                    Delete
-                                </button>
+                                <form method="post" action="{% url 'admin_booking_delete' booking.id %}"
+                                    class="inline-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="crud-btn delete-btn"
+                                        onclick="return confirm('Delete this booking?');">
+                                        Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
 
 {% endblock %}

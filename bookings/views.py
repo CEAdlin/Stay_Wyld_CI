@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from datetime import datetime
@@ -221,13 +221,6 @@ def booking_update_view(request, pk):
 
         if overlapping.exists():
             messages.error(
-                request,
-                "This unit is not available for the selected dates.",
-            )
-            return redirect(request.path)
-
-        if overlapping.exists():
-            messages.error(
                 request, "This unit is not available for the selected dates."
             )
             return redirect(request.path)
@@ -271,7 +264,7 @@ def booking_update_view(request, pk):
 
 # Booking Delete Requests
 @login_required
-def booking_delete_view(request, pk):
+def booking_delete(request, pk):
     booking = get_object_or_404(
         Booking,
         pk=pk,
@@ -279,25 +272,21 @@ def booking_delete_view(request, pk):
     )
 
     if request.method == "POST":
-        BookingChangeRequest.objects.create(
+        BookingChangeRequest.objects.get_or_create(
             booking=booking,
             customer=request.user,
             request_type="CANCEL",
-            message="Customer requested cancellation.",
             status="OPEN",
+            defaults={
+                "message": "Customer requested cancellation."
+            },
         )
 
-        messages.success(
-            request,
-            "Your cancellation request has been sent for approval.",
-        )
         return redirect("booking_detail", pk=booking.pk)
 
-    return render(
-        request,
-        "bookings/booking_delete.html",
-        {"booking": booking},
-    )
+    return render(request, "bookings/booking_delete.html", {
+        "booking": booking,
+    })
 
 
 # Booking Change Requests

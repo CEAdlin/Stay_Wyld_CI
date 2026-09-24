@@ -1811,12 +1811,22 @@ section.bg-light {
 
 .gallery-slide {
     min-width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .gallery-slide img {
-    width: 100%;
+    display: block;
+    width: 60%;
     height: 350px;
     object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .gallery-slide img {
+        width: 100%;
+        height: auto;
+    }
 }
 
 .gallery-prev,
@@ -2427,5 +2437,161 @@ section.bg-light {
         max-width: 220px;
         margin-left: 0;
         text-align: center;
+    }
+}
+
+/* Admin Booking Detail Page Styles  */
+
+.admin-booking-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.admin-booking-info p,
+.admin-booking-summary p {
+    color: var(--colour-blue);
+    font-size: 1.4rem;
+}
+
+.admin-booking-info {
+    text-align: left;
+    margin: auto 0px;
+}
+
+.admin-booking-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.admin-booking-fields label,
+.admin-booking-summary label {
+    color: var(--colour-blue);
+    font-weight: 600;
+}
+
+.admin-booking-summary {
+    width: 100%;
+}
+
+.admin-booking-summary .form-select,
+.admin-booking-summary .crud-btn {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.admin-booking-summary p {
+    margin: 1rem 0;
+    text-align: left;
+}
+
+@media (max-width: 700px) {
+    .admin-booking-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.admin-table {
+    table-layout: auto;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 8px 10px;
+    white-space: nowrap;
+}
+
+.admin-table .booking-actions {
+    width: 1%;
+    text-align: center;
+}
+
+.admin-table .booking-actions .crud-btn,
+.admin-table .booking-actions form {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.admin-table .booking-actions .crud-btn {
+    margin: 0 3px;
+    padding: 4px 10px;
+}
+
+/* BOOKING DELETE PAGE */
+
+.booking-delete-wrapper {
+    max-width: 700px;
+    margin: 4rem auto;
+    padding: 0 1.25rem;
+    text-align: center;
+}
+
+.booking-delete-wrapper h1 {
+    margin-bottom: 2rem;
+    color: var(--colour-tertiary);
+}
+
+.booking-delete-card {
+    padding: 2.5rem;
+    border: 1px solid rgba(47, 79, 58, 0.15);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 24px rgba(47, 79, 58, 0.12);
+}
+
+.booking-delete-card h2 {
+    margin-bottom: 1.5rem;
+    color: var(--colour-blue);
+}
+
+.booking-delete-card p {
+    margin: 0.7rem 0;
+    color: var(--colour-blue);
+}
+
+.booking-delete-card .warning-text {
+    margin: 2rem 0 1.5rem;
+    color: #8a3d32;
+    font-weight: 700;
+}
+
+.booking-delete-card form {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.booking-delete-card .delete-btn {
+    border: 0;
+    background: #9b4338;
+    color: #fff;
+    cursor: pointer;
+}
+
+.booking-delete-card .delete-btn:hover {
+    background: #77332c;
+}
+
+.booking-delete-card form a {
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .booking-delete-wrapper {
+        margin: 2.5rem auto;
+    }
+
+    .booking-delete-card {
+        padding: 1.75rem 1.25rem;
+    }
+
+    .booking-delete-card form {
+        flex-direction: column;
+    }
+
+    .booking-delete-card form .crud-btn {
+        width: 100%;
     }
 }

@@ -12,66 +12,49 @@
             {% csrf_token %}
             <input type="hidden" name="action" value="save_booking" />
 
-            <p><strong>Unit:</strong> {{ booking.unit.name }}</p>
+            <div class="admin-booking-grid">
+                <div class="admin-booking-info">
+                    <p><strong>Unit:</strong> {{ booking.unit.name }}</p>
+                    <p><strong>Customer:</strong> {{ booking.customer_name }}</p>
+                    <p><strong>Email:</strong> {{ booking.customer_email }}</p>
+                    <p><strong>Phone:</strong> {{ booking.customer_phone }}</p>
+                </div>
 
-            <p>
-                <strong>Customer:</strong>
-                {{ booking.customer_name }}
-            </p>
+                <div class="admin-booking-fields">
+                    <label>Check in</label>
+                    <input type="date" name="check_in"
+                        value="{{ booking.check_in_date|date:'Y-m-d' }}" class="form-control" />
 
-            <p>
-                <strong>Email:</strong>
-                {{ booking.customer_email }}
-            </p>
+                    <label>Check out</label>
+                    <input type="date" name="check_out"
+                        value="{{ booking.check_out_date|date:'Y-m-d' }}" class="form-control" />
 
-            <p>
-                <strong>Phone:</strong>
-                {{ booking.customer_phone }}
-            </p>
+                    <label>Adults</label>
+                    <input type="number" name="adults" value="{{ booking.adults }}" min="1" class="form-control" />
 
-            <label>Check in</label>
-            <input type="date" name="check_in" value="{{ booking.check_in_date|date:'Y-m-d' }}"
-                class="form-control" />
+                    <label>Children</label>
+                    <input type="number" name="children" value="{{ booking.children }}" min="0" class="form-control" />
 
-            <label>Check out</label>
-            <input type="date" name="check_out" value="{{ booking.check_out_date|date:'Y-m-d' }}"
-                class="form-control" />
+                    <label>Dogs</label>
+                    <input type="number" name="dogs" value="{{ booking.dogs }}" min="0" class="form-control" />
+                </div>
+            </div>
 
-            <label>Adults</label>
-            <input type="number" name="adults" value="{{ booking.adults }}" min="1" class="form-control" />
+            <div class="admin-booking-summary">
+                <label>Status</label>
+                <select name="status" id="statusSelect" class="form-select status-{{ booking.status|lower }}">
+                    {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if booking.status == value %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                    {% endfor %}
+                </select>
 
-            <label>Children</label>
-            <input type="number" name="children" value="{{ booking.children }}" min="0" class="form-control" />
+                <p><strong>Total:</strong> £{{ booking.total_amount }}</p>
 
-            <label>Dogs</label>
-            <input type="number" name="dogs" value="{{ booking.dogs }}" min="0" class="form-control" />
-
-            <label>Status</label>
-            <select name="status" id="statusSelect" class="form-select status-{{ booking.status|lower }}">
-                {% for value, label in status_choices %}
-                <option value="{{ value }}" {% if booking.status == value %}selected{% endif %}>
-                    {{ label }}
-                </option>
-                {% endfor %}
-            </select>
-
-            <p>
-                <strong>Total:</strong>
-                £{{ booking.total_amount }}
-            </p>
-
-            <button type="submit" class="crud-btn">Save Changes</button>
+                <button type="submit" class="crud-btn">Save Changes</button>
+            </div>
         </form>
-
-        <hr />
-
-        <button type="button" class="crud-btn" onclick="openPasswordModal('unlock_booking', {{ booking.id }})">
-            Modify Booking
-        </button>
-
-        <button type="button" class="crud-btn danger-btn" onclick="openPasswordModal('delete_booking', {{ booking.id }})">
-            Delete Booking
-        </button>
     </div>
 </div>
 
