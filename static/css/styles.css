@@ -1731,6 +1731,10 @@ section.bg-light {
     margin-bottom: 20px;
 }
 
+.customer-bookings-table thead th {
+    padding-left: 20px;
+}
+
 /* Table actions */
 .customer-card .customer-actions-cell {
     display: flex;
