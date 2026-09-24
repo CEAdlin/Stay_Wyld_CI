@@ -1674,6 +1674,49 @@ section.bg-light {
 
 /* Customer Bookings Table Styling */
 
+/* Customer bookings table */
+.customer-table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.customer-bookings-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+.customer-bookings-table th,
+.customer-bookings-table td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.customer-bookings-table th {
+    color: var(--colour-accent);
+    font-weight: 700;
+}
+
+.customer-bookings-table td {
+    color: var(--colour-blue);
+}
+
+.customer-bookings-table tbody tr {
+    border-bottom: 1px solid rgba(193, 189, 136, 0.3);
+}
+
+.customer-bookings-table .customer-actions-cell {
+    text-align: center;
+}
+
+.customer-bookings-table .crud-btn {
+    white-space: nowrap;
+}
+
 .customer-bookings-table tbody tr:nth-child(odd) {
     background: var(--colour-blue); /* main blue */
 }
