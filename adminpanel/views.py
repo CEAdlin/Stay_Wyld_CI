@@ -116,7 +116,7 @@ def admin_customers_list(request):
         return redirect("index")
 
     today = date.today()
-    customers = list(User.objects.all())
+    customers = list(User.objects.filter(is_superuser=False).order_by("username"))  
 
     for customer in customers:
         profile = CustomerProfile.objects.filter(user=customer).first()
@@ -167,8 +167,48 @@ def admin_customer_detail(request, customer_id):
         return redirect("index")
 
     customer = get_object_or_404(User, id=customer_id)
-
     profile = CustomerProfile.objects.filter(user=customer).first()
+
+    if request.method == "POST":
+        full_name = request.POST.get("full_name", "").strip()
+        email = request.POST.get("email", "").strip().lower()
+        phone = request.POST.get("phone", "").strip()
+        address = request.POST.get("address", "").strip()
+
+        if not full_name or not email or not phone:
+            messages.error(request, "Please complete all required fields.")
+        elif len(address) < 20:
+            messages.error(
+                request,
+                "Address must be at least 20 characters.",
+            )
+        elif User.objects.filter(
+            username=email
+        ).exclude(pk=customer.pk).exists():
+            messages.error(request, "That email address is already in use.")
+        else:
+            customer.email = email
+            customer.username = email
+            customer.save(update_fields=["email", "username"])
+
+            if profile:
+                profile.full_name = full_name
+                profile.phone_number = phone
+                profile.address = address
+                profile.save()
+            else:
+                CustomerProfile.objects.create(
+                    user=customer,
+                    full_name=full_name,
+                    phone_number=phone,
+                    address=address,
+                )
+
+            messages.success(request, "Customer record updated successfully.")
+            return redirect(
+                "admin_customer_detail",
+                customer_id=customer.id,
+            )
 
     bookings = (
         Booking.objects
@@ -186,7 +226,6 @@ def admin_customer_detail(request, customer_id):
             "bookings": bookings,
         },
     )
-
 
 @login_required
 def admin_modify_customer(request, customer_id):

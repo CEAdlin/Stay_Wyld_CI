@@ -2,103 +2,105 @@
 
 {% block content %}
 <div class="admin-dashboard-container">
-    <div class="admin-card-wrapper">
+    <div class="admin-customer-detail-page">
 
-        <h2>Customer Details</h2>
+        {% if messages %}
+            <div class="admin-messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-        <div class="admin-dashboard-grid">
-            <div class="admin-card" style="grid-column: 1 / -1;">
+        <div class="customer-detail-card">
+             <h1>Customer Details</h1>
 
-                <div class="admin-section-block">
-                    <h2 class="admin-section-title">Customer Information</h2>
+            <form method="post" class="customer-detail-form">
+                {% csrf_token %}
 
-                    <div class="admin-info-grid">
-                        <p>
-                            <strong>Customer Name:</strong>
-                            {{ profile.full_name|default:customer.username }}
-                        </p>
-                        <p>
-                            <strong>Email:</strong>
-                            {{ customer.email|default:"Not provided" }}
-                        </p>
-                        <p>
-                            <strong>Phone:</strong>
-                            {{ profile.phone_number|default:"Not provided" }}
-                        </p>
-                        <p>
-                            <strong>Address:</strong>
-                            {{ profile.address|default:"Not provided" }}
-                        </p>
-                    </div>
+                <div class="customer-form-field">
+                    <label for="full_name">Customer Name</label>
+                    <input type="text"
+                           id="full_name"
+                           name="full_name"
+                           value="{{ profile.full_name|default:'' }}"
+                           required>
                 </div>
 
-                <div class="admin-section-block">
-                    <h2 class="admin-section-title">Bookings</h2>
-
-                    <div class="admin-table-scroll">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Unit</th>
-                                    <th>Check In</th>
-                                    <th>Check Out</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {% for booking in bookings %}
-                                <tr>
-                                    <td>{{ booking.unit.name }}</td>
-                                    <td>{{ booking.check_in_date }}</td>
-                                    <td>{{ booking.check_out_date }}</td>
-                                    <td>{{ booking.get_status_display }}</td>
-                                    <td class="admin-actions-cell">
-                                        <a href="{% url 'admin_booking_detail' booking.id %}"
-                                           class="crud-btn small">
-                                            View
-                                        </a>
-                                        <button type="button"
-                                                onclick="openPasswordModal('modify_booking', {{ booking.id }})"
-                                                class="crud-btn small">
-                                            Modify
-                                        </button>
-                                        <button type="button"
-                                                onclick="openPasswordModal('delete_booking', {{ booking.id }})"
-                                                class="crud-btn danger-btn small">
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                {% empty %}
-                                <tr>
-                                    <td colspan="5">No bookings found for this customer.</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="customer-form-field">
+                    <label for="email">Email Address</label>
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           value="{{ customer.email }}"
+                           required>
                 </div>
 
-                <div class="admin-section-block">
-                    <div class="admin-actions-row">
-                        <button type="button"
-                                onclick="openPasswordModal('modify_customer', {{ customer.id }})"
-                                class="crud-btn large">
-                            Modify Customer
-                        </button>
-
-                        <button type="button"
-                                onclick="openPasswordModal('delete_customer', {{ customer.id }})"
-                                class="crud-btn danger-btn large">
-                            Delete Customer
-                        </button>
-                    </div>
+                <div class="customer-form-field">
+                    <label for="phone">Phone Number</label>
+                    <input type="text"
+                           id="phone"
+                           name="phone"
+                           value="{{ profile.phone_number|default:'' }}"
+                           required>
                 </div>
 
+                <div class="customer-form-field">
+                    <label for="address">Address</label>
+                    <textarea id="address"
+                              name="address"
+                              minlength="20"
+                              maxlength="250"
+                              required>{{ profile.address|default:'' }}</textarea>
+                </div>
+
+                <button type="submit" class="crud-btn customer-update-btn">
+                    Update Customer Record
+                </button>
+            </form>
+        </div>
+
+        <div class="customer-detail-bookings-card">
+            <h1>Customer Bookings</h1>
+
+            <div class="admin-customer-bookings-table-scroll">
+                <table class="admin-table customer-detail-bookings-table">
+                    <thead>
+                        <tr>
+                            <th>Unit</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for booking in bookings %}
+                            <tr>
+                                <td>{{ booking.unit.name }}</td>
+                                <td>{{ booking.check_in_date }}</td>
+                                <td>{{ booking.check_out_date }}</td>
+                                <td>{{ booking.get_status_display }}</td>
+                                <td>
+                                    <a href="{% url 'admin_booking_detail' booking.id %}"
+                                       class="crud-btn small">
+                                        Go To Booking
+                                    </a>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">
+                                    No bookings found for this customer.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
+
     </div>
 </div>
 {% endblock %}

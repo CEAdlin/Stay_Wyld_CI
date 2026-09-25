@@ -22,49 +22,51 @@
                         Active Booking
                     </a>
                 </div>
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Total Bookings</th>
-                            <th>Active Booking</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
+                <div class="admin-table-scroll">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>No. Bookings</th>
+                                <th>Active</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        {% for customer in customers %}
-                        <tr>
-                            <td>{{ customer.username }}</td>
-                            <td>{{ customer.email }}</td>
-                            <td>{{ customer.phone_number }}</td>
-                            <td>{{ customer.total_bookings }}</td>
-                            <td>
-                                {% if customer.has_active_booking %}
-                                <span class="customer-status status-yes">
-                                    Yes
-                                </span>
-                                {% else %}
-                                <span class="customer-status status-no">
-                                    No
-                                </span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <a href="{% url 'admin_customer_detail' customer.id %}" class="crud-btn">
-                                    View &amp; Update
-                                </a>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="6">No customers found.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        <tbody>
+                            {% for customer in customers %}
+                            <tr>
+                                <td>{{ customer.customer_name }}</td>
+                                <td>{{ customer.email }}</td>
+                                <td>{{ customer.phone_number }}</td>
+                                <td>{{ customer.total_bookings }}</td>
+                                <td>
+                                    {% if customer.has_active_booking %}
+                                    <span class="customer-status status-yes">
+                                        Yes
+                                    </span>
+                                    {% else %}
+                                    <span class="customer-status status-no">
+                                        No
+                                    </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'admin_customer_detail' customer.id %}" class="crud-btn">
+                                        View &amp; Update
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6">No customers found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

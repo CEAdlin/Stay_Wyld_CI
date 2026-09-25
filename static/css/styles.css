@@ -1304,13 +1304,6 @@ section.bg-light {
     font-size: 0.85rem;
   }
 
-  /* Make tables scrollable horizontally */
-  .admin-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
   .admin-gallery {
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 15px;
@@ -2662,6 +2655,38 @@ section.bg-light {
     font-weight: 600;
 }
 
+@media (max-width: 700px) {
+    .admin-booking-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.admin-table {
+    table-layout: auto;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 8px 10px;
+    white-space: nowrap;
+}
+
+.admin-table .booking-actions {
+    width: 1%;
+    text-align: center;
+}
+
+ .booking-actions .crud-btn,
+ .booking-actions form {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.admin-table .booking-actions .crud-btn {
+    margin: 0 3px;
+    padding: 4px 10px;
+}
+
+
 .admin-booking-summary {
     width: 100%;
 }
@@ -2686,38 +2711,7 @@ section.bg-light {
     margin: 1rem 0;
     text-align: center;
     font-size: 1.1rem;
-    color: var(--colour-tertiary);
-}
-
-@media (max-width: 700px) {
-    .admin-booking-grid {
-        grid-template-columns: 1fr;
-    }
-}
-.admin-table {
-    table-layout: auto;
-}
-
-.admin-table th,
-.admin-table td {
-    padding: 8px 10px;
-    white-space: nowrap;
-}
-
-.admin-table .booking-actions {
-    width: 1%;
-    text-align: center;
-}
-
-.admin-table .booking-actions .crud-btn,
-.admin-table .booking-actions form {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.admin-table .booking-actions .crud-btn {
-    margin: 0 3px;
-    padding: 4px 10px;
+    color: var(--colour-blue);
 }
 
 /* BOOKING DELETE PAGE */
@@ -2848,25 +2842,221 @@ section.bg-light {
     overflow: hidden;
 }
 
-.admin-table {
-    display: block;
+
+/* Keep customer table headings aligned with cells */
+.admin-table-scroll {
     width: 100%;
-    max-width: 100%;
     overflow-x: auto;
-    overflow-y: hidden;
+}
+
+.customers-table {
+    display: table;
+    width: 100%;
+    min-width: 850px;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.customers-table thead {
+    display: table-header-group !important;
+}
+
+.customers-table tbody {
+    display: table-row-group !important;
+}
+
+.customers-table tr {
+    display: table-row !important;
+}
+
+.customers-table th,
+.customers-table td {
+    display: table-cell !important;
+    box-sizing: border-box;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    vertical-align: middle;
     white-space: nowrap;
-    table-layout: auto;
+}
+
+.customers-table th:nth-child(1) {
+    width: 18%;
+}
+
+.customers-table th:nth-child(2) {
+    width: 28%;
+}
+
+.customers-table th:nth-child(3) {
+    width: 18%;
+}
+
+.customers-table th:nth-child(4) {
+    width: 15%;
+}
+
+.customers-table th:nth-child(5) {
+    width: 10%;
+}
+
+.customers-table th:nth-child(6) {
+    width: 20%;
+}
+
+/* Admin Customer Detail Page */
+.admin-customer-detail-page {
+    background: rgba(40, 41, 62, 0.82);
+    border: 1px solid var(--colour-accent);
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    margin: 80px auto;
+}
+
+.customer-detail-card {
+    margin: 1.5rem auto;
+    max-width: 50%;
+    min-width: 300px;
+    padding: 2rem;
+    background: #ffffff;
+    border: 1px solid #d6d6d6;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.customer-detail-card h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+.customer-detail-form {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.customer-form-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.2rem;
+}
+
+.customer-form-field label {
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+
+.customer-form-field input,
+.customer-form-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem;
+    border: 1px solid #cfcfcf;
+    border-radius: 6px;
+    font: inherit;
+}
+
+.customer-form-field textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.customer-update-btn {
+    display: block;
+    margin: 1.5rem auto 0;
+}
+
+.customer-detail-bookings-card {
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid #C1BD88;
+    padding: 30px;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    text-decoration: none;
+    color: #314831;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Customer detail bookings table */
+.customer-detail-bookings-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    background: rgba(40, 41, 62, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+}
+
+.customer-detail-bookings-table thead {
+    background: rgba(var(--colour-accent-rgb), 0.25);
+}
+
+.customer-detail-bookings-table th {
+    padding: 14px 18px;
+    color: var(--colour-tertiary);
+    font-family: var(--font-secondary);
+    font-weight: 600;
+    text-align: left;
+}
+
+.customer-detail-bookings-table td {
+    padding: 12px 18px;
+    color: var(--colour-tertiary);
+    font-family: var(--font-secondary);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.customer-detail-bookings-table tr:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 700px) {
+    .customer-detail-card {
+        padding: 1.25rem;
+    }
+}
+
+/* Customer detail bookings table */
+.admin-customer-bookings-table-scroll {
+    width: 100%;
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
 
-.admin-table thead,
-.admin-table tbody {
+.admin-customer-bookings-table-scroll
+.customer-detail-bookings-table {
     display: table;
-    width: max-content;
-    min-width: 100%;
+    width: 100%;
+    min-width: 750px;
+    table-layout: auto;
+    border-collapse: collapse;
+    white-space: nowrap;
 }
 
-.admin-table th,
-.admin-table td {
+.admin-customer-bookings-table-scroll
+.customer-detail-bookings-table thead {
+    display: table-header-group;
+}
+
+.admin-customer-bookings-table-scroll
+.customer-detail-bookings-table tbody {
+    display: table-row-group;
+}
+
+.admin-customer-bookings-table-scroll
+.customer-detail-bookings-table tr {
+    display: table-row;
+}
+
+.admin-customer-bookings-table-scroll
+.customer-detail-bookings-table th,
+.admin-customer-bookings-table-scroll
+.customer-detail-bookings-table td {
+    display: table-cell;
+    padding: 12px 18px;
+    text-align: left;
+    vertical-align: middle;
     white-space: nowrap;
 }
