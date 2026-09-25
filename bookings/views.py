@@ -180,20 +180,18 @@ def booking_detail_view(request, pk):
         customer=request.user,
     )
 
-    latest_request = BookingChangeRequest.objects.filter(
+    request_queryset = BookingChangeRequest.objects.filter(
         booking=booking,
         customer=request.user,
-    ).order_by("-created_at").first()
+    )
 
-    open_request = BookingChangeRequest.objects.filter(
-        booking=booking,
-        customer=request.user,
-        status="OPEN",
-    ).first()
+    latest_request = request_queryset.order_by("-created_at", "-id").first()
 
-    cancellation_requested = (
-        open_request is not None
-        and open_request.request_type == "CANCEL"
+    open_request = (
+        request_queryset
+        .filter(status="OPEN")
+        .order_by("-created_at", "-id")
+        .first()
     )
 
     return render(
@@ -203,7 +201,10 @@ def booking_detail_view(request, pk):
             "booking": booking,
             "latest_request": latest_request,
             "open_request": open_request,
-            "cancellation_requested": cancellation_requested,
+            "cancellation_requested": (
+                open_request is not None
+                and open_request.request_type == "CANCEL"
+            ),
         },
     )
 

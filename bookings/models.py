@@ -4,8 +4,12 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # UNIT MODEL
-
 class Unit(models.Model):
+    DOG_CHARGE_TYPES = [
+        ("PER_DOG_PER_STAY", "Per dog per stay"),
+        ("PER_STAY", "Per stay"),
+    ]
+
     name = models.CharField(max_length=120)
     slug = models.SlugField(unique=True)
 
@@ -22,6 +26,11 @@ class Unit(models.Model):
 
     price_per_night = models.DecimalField(max_digits=7, decimal_places=2)
     dog_surcharge = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    dog_charge_type = models.CharField(
+        max_length=20,
+        choices=DOG_CHARGE_TYPES,
+        default="PER_DOG_PER_STAY",
+    )
 
     # Flags
     dogs_allowed = models.BooleanField(default=False)
@@ -30,10 +39,13 @@ class Unit(models.Model):
     def __str__(self):
         return self.name
 
-# GALLERY MODEL
 
 class UnitGalleryImage(models.Model):
-    unit = models.ForeignKey(Unit, related_name="gallery_images", on_delete=models.CASCADE)
+    unit = models.ForeignKey(
+        Unit,
+        related_name="gallery_images",
+        on_delete=models.CASCADE,
+    )
     image = models.ImageField(upload_to="unit_gallery/")
     position = models.PositiveIntegerField(default=0)
 
@@ -42,6 +54,27 @@ class UnitGalleryImage(models.Model):
 
     def __str__(self):
         return f"Gallery image for {self.unit.name}"
+
+
+class UnitBlockedDate(models.Model):
+    unit = models.ForeignKey(
+        Unit,
+        related_name="blocked_dates",
+        on_delete=models.CASCADE,
+    )
+    date = models.DateField()
+
+    class Meta:
+        ordering = ["date"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["unit", "date"],
+                name="unique_unit_blocked_date",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.unit.name} unavailable on {self.date}"
 
 # BOOKING MODEL
 
@@ -85,11 +118,17 @@ class Booking(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        # Prefer admin-entered name if present
         if self.customer_name:
-            return f"{self.customer_name} - {self.unit.name} ({self.check_in_date})"
-        return f"{self.customer.username} - {self.unit.name} ({self.check_in_date})"
+            display_name = self.customer_name
+        elif self.customer:
+            display_name = (
+                self.customer.get_full_name()
+                or self.customer.username
+            )
+        else:
+            display_name = "Guest"
 
+        return f"{display_name} - {self.unit.name} ({self.check_in_date})"
 
 # BOOKING CHANGE REQUEST
 

@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from django.contrib.auth.models import User
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from decimal import Decimal
-from bookings.models import Booking, Unit, BookingChangeRequest
+from bookings.models import Booking, Unit, UnitGalleryImage, UnitBlockedDate, BookingChangeRequest
 from accounts.models import CustomerProfile
+import json
+from django.db import transaction
 
 
 @login_required
@@ -50,7 +52,7 @@ def admin_booking_delete(request, booking_id):
 
 
 @login_required
-def admin_unit_list(request):
+def admin_units_list(request):
     if not request.user.is_staff:
         return redirect("index")
     units = Unit.objects.all()
@@ -73,34 +75,138 @@ def admin_unit_list(request):
         else:
             unit.today_status = "Vacant"
 
-    return render(request, "admin/admin_unit_list.html", {"units": units})
+    return render(request, "admin/admin_units_list.html", {"units": units})
 
 
 @login_required
 def admin_unit_detail(request, unit_id):
     if not request.user.is_staff:
         return redirect("index")
+
     unit = get_object_or_404(Unit, id=unit_id)
 
-    today = date.today()
-    todays_bookings = Booking.objects.filter(
-        unit=unit, check_in_date__lte=today, check_out_date__gte=today
+    if request.method == "POST":
+        action = request.POST.get("action")
+
+        if action == "save_unit":
+            unit.name = request.POST.get("name", "").strip()
+            unit.short_description = request.POST.get(
+                "short_description", ""
+            ).strip()
+            unit.description = request.POST.get("description", "").strip()
+            unit.max_adults = request.POST.get("max_adults", 1)
+            unit.max_children = request.POST.get("max_children", 0)
+            unit.price_per_night = request.POST.get("price_per_night", 0)
+            unit.dog_surcharge = request.POST.get("dog_surcharge", 0)
+            unit.dog_charge_type = request.POST.get(
+                "dog_charge_type",
+                "PER_DOG_PER_STAY",
+            )
+            unit.dogs_allowed = "dogs_allowed" in request.POST
+            unit.active = "active" in request.POST
+
+            if request.FILES.get("main_image"):
+                unit.main_image = request.FILES["main_image"]
+
+            if request.POST.get("delete_main_image") and unit.main_image:
+                unit.main_image.delete(save=False)
+                unit.main_image = None
+
+            unit.save()
+
+            for image in request.FILES.getlist("gallery_images"):
+                UnitGalleryImage.objects.create(
+                    unit=unit,
+                    image=image,
+                )
+
+            messages.success(request, "Unit updated successfully.")
+
+        elif action == "delete_gallery_image":
+            image = get_object_or_404(
+                UnitGalleryImage,
+                id=request.POST.get("image_id"),
+                unit=unit,
+            )
+            image.image.delete(save=False)
+            image.delete()
+            messages.success(request, "Gallery image deleted.")
+
+        elif action == "block_date":
+            blocked_date = request.POST.get("blocked_date")
+
+            if blocked_date:
+                UnitBlockedDate.objects.get_or_create(
+                    unit=unit,
+                    date=blocked_date,
+                )
+                messages.success(request, "Date marked unavailable.")
+
+        elif action == "unblock_date":
+            UnitBlockedDate.objects.filter(
+                unit=unit,
+                id=request.POST.get("blocked_date_id"),
+            ).delete()
+            messages.success(request, "Date made available.")
+
+        return redirect("admin_unit_detail", unit_id=unit.id)
+
+    return render(
+        request,
+        "admin/admin_unit_detail.html",
+        {
+            "unit": unit,
+            "gallery_images": unit.gallery_images.all(),
+            "blocked_dates": unit.blocked_dates.all(),
+        },
+    )
+
+@login_required
+def admin_unit_availability(request, unit_id):
+    if not request.user.is_staff:
+        return HttpResponseForbidden("Staff access required.")
+
+    unit = get_object_or_404(Unit, id=unit_id)
+    events = []
+
+    for blocked_date in unit.blocked_dates.all():
+        events.append({
+            "id": f"blocked-{blocked_date.id}",
+            "title": "Unavailable",
+            "start": blocked_date.date.isoformat(),
+            "allDay": True,
+            "className": "admin-calendar-blocked",
+            "extendedProps": {
+                "type": "blocked",
+            },
+        })
+
+    bookings = Booking.objects.filter(
+        unit=unit,
     ).exclude(status="CANCELLED")
 
-    if todays_bookings.exists():
-        booking = todays_bookings.first()
+    for booking in bookings:
+        current_date = booking.check_in_date
 
-        if booking.check_in_date == today:
-            unit.today_status = "Check-in Today"
-        elif booking.check_out_date == today:
-            unit.today_status = "Check-out Today"
-        else:
-            unit.today_status = "Occupied"
-    else:
-        unit.today_status = "Vacant"
+        while current_date < booking.check_out_date:
+            events.append({
+                "id": (
+                    f"booking-{booking.id}-"
+                    f"{current_date.isoformat()}"
+                ),
+                "title": "Booked",
+                "start": current_date.isoformat(),
+                "allDay": True,
+                "className": "admin-calendar-booked",
+                "extendedProps": {
+                    "type": "booking",
+                    "booking_id": booking.id,
+                },
+            })
 
-    return render(request, "admin/admin_unit_detail.html", {"unit": unit})
+            current_date += timedelta(days=1)
 
+    return JsonResponse(events, safe=False)
 
 @login_required
 def admin_modify_unit(request, unit_id):

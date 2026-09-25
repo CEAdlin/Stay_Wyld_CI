@@ -36,18 +36,8 @@
 
                             <td>
                                 <a href="{% url 'admin_unit_detail' unit.id %}" class="crud-btn">
-                                    View
+                                    View, Modify &amp; Delete
                                 </a>
-
-                                <button onclick="openPasswordModal('modify_unit', {{ unit.id }})"
-                                        class="crud-btn">
-                                    Modify
-                                </button>
-
-                                <button onclick="openPasswordModal('delete_unit', {{ unit.id }})"
-                                        class="crud-btn danger-btn">
-                                    Delete
-                                </button>
                             </td>
                         </tr>
                         {% endfor %}

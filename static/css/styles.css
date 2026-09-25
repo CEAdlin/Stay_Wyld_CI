@@ -3060,3 +3060,326 @@ section.bg-light {
     vertical-align: middle;
     white-space: nowrap;
 }
+/* Admin unit detail page */
+#admin-unit-detail-page {
+    width: 100%;
+    padding: 2rem 1rem;
+}
+
+#admin-unit-detail-page .admin-unit-detail-wrapper {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: rgba(40, 41, 62, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+#admin-unit-detail-page .admin-unit-detail-title {
+    color: var(--colour-accent);
+    text-align: center;
+}
+
+#admin-unit-detail-page .admin-unit-detail-subtitle {
+    color: var(--colour-tertiary);
+    text-align: center;
+}
+
+#admin-unit-detail-page .admin-unit-detail-card {
+    margin: 1.5rem 0;
+    padding: 2rem;
+    background: var(--colour-blue);
+    border: 1px solid var(--colour-accent);
+    border-radius: 12px;
+    color: var(--colour-tertiary);
+}
+
+#admin-unit-detail-page .admin-unit-detail-card h2 {
+    color: var(--colour-accent);
+}
+
+#admin-unit-detail-page .admin-unit-detail-card h3 {
+    margin: 0 0 0.75rem;
+    color: var(--colour-accent);
+    font-family: var(--font-secondary);
+    font-size: 1.35rem;
+    text-align: left;
+}
+
+#admin-unit-detail-page .admin-unit-detail-form,
+#admin-unit-detail-page .admin-unit-detail-block-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#admin-unit-detail-page .admin-unit-detail-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+#admin-unit-detail-page .admin-unit-detail-field label,
+#admin-unit-detail-page .admin-unit-detail-image-section label,
+#admin-unit-detail-page .admin-unit-detail-checkboxes label,
+#admin-unit-detail-page .admin-unit-detail-block-form label {
+    color: var(--colour-tertiary);
+    font-family: var(--font-secondary);
+    font-weight: 600;
+}
+
+#admin-unit-detail-page .admin-unit-detail-field input,
+#admin-unit-detail-page .admin-unit-detail-field textarea,
+#admin-unit-detail-page .admin-unit-detail-field select,
+#admin-unit-detail-page .admin-unit-detail-block-form input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem;
+    background: #ffffff;
+    color: var(--colour-blue);
+    border: 1px solid var(--colour-accent);
+    border-radius: 6px;
+    font: inherit;
+}
+
+#admin-unit-detail-page .admin-unit-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+#admin-unit-detail-page .admin-unit-detail-checkboxes {
+    display: flex;
+    gap: 1.5rem;
+}
+
+#admin-unit-detail-page .admin-unit-detail-button {
+    align-self: center;
+    padding: 0.7rem 1.2rem;
+    background: var(--colour-accent);
+    color: var(--colour-blue);
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: var(--font-secondary);
+    font-weight: 600;
+}
+
+#admin-unit-detail-page .admin-unit-detail-button:hover {
+    background: var(--colour-tertiary);
+}
+
+/* Image management layout: 4/12 main image and 8/12 gallery */
+#admin-unit-detail-page .admin-unit-detail-images-layout {
+    display: grid;
+    grid-template-columns: 4fr 8fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+#admin-unit-detail-page .admin-unit-detail-main-image-panel,
+#admin-unit-detail-page .admin-unit-detail-gallery-panel {
+    min-width: 0;
+}
+
+#admin-unit-detail-page .admin-unit-detail-main-image {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+#admin-unit-detail-page .admin-unit-detail-image-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-top: 1rem;
+}
+
+#admin-unit-detail-page .admin-unit-detail-image-form input[type="file"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.4rem;
+    color: var(--colour-tertiary);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    font-family: var(--font-secondary);
+    font-size: 0.85rem;
+}
+
+#admin-unit-detail-page .admin-unit-detail-image-form input[type="file"]::file-selector-button {
+    margin-right: 0.5rem;
+    padding: 0.4rem 0.7rem;
+    background: var(--colour-accent);
+    color: var(--colour-blue);
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font-secondary);
+    font-weight: 600;
+}
+
+#admin-unit-detail-page .admin-unit-detail-image-form .admin-unit-detail-button {
+    align-self: flex-start;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.85rem;
+}
+
+#admin-unit-detail-page .admin-unit-detail-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+#admin-unit-detail-page .admin-unit-detail-gallery-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+    padding: 0.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 10px;
+    cursor: grab;
+}
+
+#admin-unit-detail-page .admin-unit-detail-gallery-item.is-dragging {
+    opacity: 0.45;
+}
+
+#admin-unit-detail-page .admin-unit-detail-gallery-item img {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 7px;
+}
+
+#admin-unit-detail-page .admin-unit-detail-gallery-item form {
+    margin: 0;
+}
+
+#admin-unit-detail-page .admin-unit-detail-delete-button {
+    width: 100%;
+    padding: 0.45rem 0.7rem;
+    background: #a33;
+    color: #ffffff;
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
+#admin-unit-detail-page .admin-unit-detail-delete-button:hover {
+    background: #c44;
+}
+
+#admin-unit-detail-page #admin-unit-detail-reorder-form {
+    margin-top: 1rem;
+}
+
+#admin-unit-detail-page .admin-unit-detail-blocked-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    color: var(--colour-tertiary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 800px) {
+    #admin-unit-detail-page .admin-unit-detail-images-layout {
+        grid-template-columns: 1fr;
+    }
+
+    #admin-unit-detail-page .admin-unit-detail-gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    #admin-unit-detail-page .admin-unit-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #admin-unit-detail-page .admin-unit-detail-checkboxes {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    #admin-unit-detail-page .admin-unit-detail-wrapper {
+        padding: 1rem;
+    }
+
+    #admin-unit-detail-page .admin-unit-detail-card {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 500px) {
+    #admin-unit-detail-page .admin-unit-detail-gallery {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Availability Calendar Styles */
+
+#admin-availability-calendar {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #ffffff;
+    border: 1px solid var(--colour-accent);
+    border-radius: 10px;
+    color: var(--colour-blue);
+}
+
+#admin-availability-calendar .fc-toolbar-title {
+    color: var(--colour-blue);
+    font-family: var(--font-secondary);
+    font-size: 1.4rem;
+}
+
+#admin-availability-calendar .fc-button {
+    background: var(--colour-accent);
+    border-color: var(--colour-accent);
+    color: var(--colour-blue);
+}
+
+#admin-availability-calendar .fc-daygrid-day-number {
+    color: var(--colour-blue);
+}
+
+#admin-availability-calendar .admin-calendar-booked {
+    background: rgba(180, 45, 45, 0.6);
+}
+
+#admin-availability-calendar .admin-calendar-blocked {
+    background: rgba(130, 130, 130, 0.6);
+}
+
+#admin-availability-calendar .admin-calendar-selected {
+    background: rgba(193, 189, 136, 0.75);
+}
+
+.admin-availability-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.admin-availability-message {
+    min-height: 1.5rem;
+    color: var(--colour-accent);
+}
+
+@media (max-width: 700px) {
+    .admin-availability-actions {
+        flex-direction: column;
+    }
+}

@@ -28,11 +28,17 @@ urlpatterns = [
     ),
 
     # Admin Units
-    path("units/", views.admin_unit_list, name="admin_unit_list"),
+    path("units/", views.admin_units_list, name="admin_unit_list"),
     path(
         "units/<int:unit_id>/",
         views.admin_unit_detail,
         name="admin_unit_detail",
+    ),
+    #Admin Unit Availability
+    path(
+    "units/<int:unit_id>/availability/",
+    views.admin_unit_availability,
+    name="admin_unit_availability",
     ),
 
     # Admin Customers

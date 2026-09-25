@@ -1,50 +1,401 @@
 {% extends "base.html" %}
+
 {% block content %}
+<div id="admin-unit-detail-page">
+    <div class="admin-unit-detail-wrapper">
+        <h1 class="admin-unit-detail-title">{{ unit.name }}</h1>
+        <p class="admin-unit-detail-subtitle">View and manage unit details</p>
 
-<div class="admin-dashboard-container">
+        {% if messages %}
+        <div class="admin-unit-detail-messages">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
 
-    <div class="admin-card-wrapper">
+        <div class="admin-unit-detail-card">
+            <form method="post" class="admin-unit-detail-form">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="save_unit">
 
-        <h1 class="admin-dashboard-title">{{ unit.name }}</h1>
-        <p class="admin-dashboard-subtitle">Unit details, gallery, and admin actions</p>
-
-        <div class="admin-dashboard-grid">
-
-            <!-- FULL-WIDTH CARD -->
-            <div class="admin-card" style="grid-column: 1 / -1;">
-
-                <p><strong>Description:</strong> {{ unit.description }}</p>
-                <p><strong>Max Guests:</strong> {{ unit.max_guests }}</p>
-                <p><strong>Base Price:</strong> £{{ unit.base_price }}</p>
-                <p><strong>Dog Friendly:</strong> {{ unit.dog_friendly }}</p>
-                <p><strong>Active:</strong> {{ unit.active }}</p>
-
-                <h2>Today’s Status</h2>
-                <p>{{ unit.today_status }}</p>
-
-                <h2>Gallery</h2>
-                <div class="gallery">
-                    {% for image in unit.images.all %}
-                        <img src="{{ image.image.url }}" alt="{{ unit.name }}">
-                    {% endfor %}
+                <div class="admin-unit-detail-field">
+                    <label for="unit-name">Name</label>
+                    <input id="unit-name" name="name" value="{{ unit.name }}" required>
                 </div>
 
-                <h2>Actions</h2>
+                <div class="admin-unit-detail-field">
+                    <label for="unit-short-description">Short Description</label>
+                    <input id="unit-short-description" name="short_description" value="{{ unit.short_description }}">
+                </div>
 
-                <button onclick="openPasswordModal('modify_unit', {{ unit.id }})" class="crud-btn">
-                    Modify Unit
+                <div class="admin-unit-detail-field">
+                    <label for="unit-description">Description</label>
+                    <textarea id="unit-description" name="description" rows="6">{{ unit.description }}</textarea>
+                </div>
+
+                <div class="admin-unit-detail-grid">
+                    <div class="admin-unit-detail-field">
+                        <label for="unit-max-adults">Maximum Adults</label>
+                        <input id="unit-max-adults" type="number" name="max_adults" min="1" value="{{ unit.max_adults }}"
+                            required>
+                    </div>
+
+                    <div class="admin-unit-detail-field">
+                        <label for="unit-max-children">Maximum Children</label>
+                        <input id="unit-max-children" type="number" name="max_children" min="0"
+                            value="{{ unit.max_children }}" required>
+                    </div>
+
+                    <div class="admin-unit-detail-field">
+                        <label for="unit-price">Price Per Night (£)</label>
+                        <input id="unit-price" type="number" name="price_per_night" min="0" step="0.01"
+                            value="{{ unit.price_per_night }}" required>
+                    </div>
+
+                    <div class="admin-unit-detail-field">
+                        <label for="unit-dog-charge">Dog Charge (£)</label>
+                        <input id="unit-dog-charge" type="number" name="dog_surcharge" min="0" step="0.01"
+                            value="{{ unit.dog_surcharge }}">
+                    </div>
+                </div>
+
+                <div class="admin-unit-detail-field">
+                    <label for="unit-dog-charge-type">Dog Charge Type</label>
+                    <select id="unit-dog-charge-type" name="dog_charge_type">
+                        {% for value, label in unit.DOG_CHARGE_TYPES %}
+                        <option value="{{ value }}" {% if unit.dog_charge_type == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="admin-unit-detail-checkboxes">
+                    <label>
+                        <input type="checkbox" name="dogs_allowed" {% if unit.dogs_allowed %}checked{% endif %}>
+                        Dog friendly
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="active" {% if unit.active %}checked{% endif %}>
+                        Unit active
+                    </label>
+                </div>
+
+                <button type="submit" class="admin-unit-detail-button">
+                    Update Unit
                 </button>
-
-                <button onclick="openPasswordModal('delete_unit', {{ unit.id }})" class="crud-btn danger-btn">
-                    Delete Unit
-                </button>
-
-            </div>
-
+            </form>
         </div>
 
-    </div>
+        <div class="admin-unit-detail-card admin-unit-detail-images-card">
+            <h2>Unit Images</h2>
 
+            <div class="admin-unit-detail-images-layout">
+                <section class="admin-unit-detail-main-image-panel">
+                    <h3>Main Image</h3>
+
+                    {% if unit.main_image %}
+                    <img src="{{ unit.main_image.url }}" alt="{{ unit.name }}" class="admin-unit-detail-main-image">
+                    {% else %}
+                    <p>No main image uploaded.</p>
+                    {% endif %}
+
+                    {% if request.user.is_superuser %}
+                    <form method="post" enctype="multipart/form-data" class="admin-unit-detail-image-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="upload_main_image">
+
+                        <input type="file" name="main_image" accept="image/*" required>
+
+                        <button type="submit" class="admin-unit-detail-button">
+                            Upload New Main Image
+                        </button>
+                    </form>
+                    {% endif %}
+                </section>
+
+                <section class="admin-unit-detail-gallery-panel">
+                    <h3>Gallery Images</h3>
+                    <p class="admin-unit-detail-gallery-help">
+                        Drag and drop images to change their order.
+                    </p>
+
+                    <form method="post" enctype="multipart/form-data" class="admin-unit-detail-image-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="upload_gallery_images">
+
+                        <input type="file" name="gallery_images" accept="image/*" multiple required>
+
+                        <button type="submit" class="admin-unit-detail-button">
+                            Add Gallery Images
+                        </button>
+                    </form>
+
+                    <div id="admin-unit-detail-gallery" class="admin-unit-detail-gallery">
+                        {% for image in gallery_images %}
+                        <div class="admin-unit-detail-gallery-item" draggable="true" data-image-id="{{ image.id }}">
+                            <img src="{{ image.image.url }}" alt="{{ unit.name }} gallery image">
+
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="delete_gallery_image">
+                                <input type="hidden" name="image_id" value="{{ image.id }}">
+
+                                <button type="submit" class="admin-unit-detail-button admin-unit-detail-delete-button">
+                                    Delete Image
+                                </button>
+                            </form>
+                        </div>
+                        {% empty %}
+                        <p>No gallery images uploaded.</p>
+                        {% endfor %}
+                    </div>
+
+                    {% if gallery_images %}
+                    <form method="post" id="admin-unit-detail-reorder-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="reorder_gallery_images">
+                        <input type="hidden" name="image_order" id="admin-unit-detail-image-order">
+
+                        <button type="submit" class="admin-unit-detail-button">
+                            Save Gallery Order
+                        </button>
+                    </form>
+                    {% endif %}
+                </section>
+            </div>
+        </div>
+        <div class="admin-unit-detail-card">
+            <h2>Availability</h2>
+
+            <p class="admin-availability-help">
+                Select one or more dates. Booked dates cannot be changed.
+            </p>
+
+            <div id="admin-availability-calendar" data-events-url="{% url 'admin_unit_availability' unit.id %}"
+                data-update-url="{% url 'admin_unit_detail' unit.id %}">
+            </div>
+
+            <div class="admin-availability-actions">
+                <button type="button" id="admin-block-dates-button" class="admin-unit-detail-button">
+                    Mark Selected Unavailable
+                </button>
+
+                <button type="button" id="admin-unblock-dates-button" class="admin-unit-detail-button">
+                    Make Selected Available
+                </button>
+            </div>
+
+            <p id="admin-availability-message" class="admin-availability-message" aria-live="polite">
+            </p>
+        </div>
+    </div>
 </div>
 
+<script>
+    const gallery = document.getElementById(
+        "admin-unit-detail-gallery"
+    );
+    const reorderForm = document.getElementById(
+        "admin-unit-detail-reorder-form"
+    );
+    const imageOrder = document.getElementById(
+        "admin-unit-detail-image-order"
+    );
+
+    if (gallery && reorderForm && imageOrder) {
+        let draggedItem = null;
+
+        gallery.querySelectorAll(
+            ".admin-unit-detail-gallery-item"
+        ).forEach((item) => {
+            item.addEventListener("dragstart", () => {
+                draggedItem = item;
+                item.classList.add("is-dragging");
+            });
+
+            item.addEventListener("dragend", () => {
+                draggedItem = null;
+                item.classList.remove("is-dragging");
+            });
+
+            item.addEventListener("dragover", (event) => {
+                event.preventDefault();
+
+                if (!draggedItem || draggedItem === item) {
+                    return;
+                }
+
+                const box = item.getBoundingClientRect();
+                const insertAfter =
+                    event.clientY > box.top + box.height / 2;
+
+                gallery.insertBefore(
+                    draggedItem,
+                    insertAfter ? item.nextSibling : item
+                );
+            });
+        });
+
+        reorderForm.addEventListener("submit", () => {
+            imageOrder.value = Array.from(
+                    gallery.querySelectorAll(
+                        ".admin-unit-detail-gallery-item"
+                    )
+                )
+                .map((item) => item.dataset.imageId)
+                .join(",");
+        });
+    }
+
+    // Availability Calendar JavaScript
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const calendarElement = document.getElementById(
+            "admin-availability-calendar"
+        );
+
+        if (!calendarElement) {
+            return;
+        }
+
+        const selectedDates = new Set();
+        let calendarEvents = [];
+
+        const calendar = new FullCalendar.Calendar(calendarElement, {
+            initialView: "adminThreeMonths",
+
+            views: {
+                adminThreeMonths: {
+                    type: "multiMonth",
+                    duration: {
+                        months: 3
+                    }
+                }
+            },
+            height: "auto",
+            selectable: true,
+            dayMaxEvents: true,
+            firstDay: 1,
+            events: calendarElement.dataset.eventsUrl,
+
+            headerToolbar: {
+                left: "prev,next today",
+                center: "title",
+                right: ""
+            },
+
+            datesSet: () => {
+                calendarEvents = calendar.getEvents();
+            },
+
+            select: (selection) => {
+                let current = new Date(selection.start);
+
+                while (current < selection.end) {
+                    const dateString = current.toISOString().slice(0, 10);
+
+                    const hasBooking = calendarEvents.some((event) => {
+                        return event.startStr === dateString &&
+                            event.extendedProps.type === "booking";
+                    });
+
+                    if (!hasBooking) {
+                        if (selectedDates.has(dateString)) {
+                            selectedDates.delete(dateString);
+                        } else {
+                            selectedDates.add(dateString);
+                        }
+                    }
+
+                    current.setDate(current.getDate() + 1);
+                }
+
+                calendar.unselect();
+                updateSelectedDates();
+            },
+
+            dateClick: (info) => {
+                const dateString = info.dateStr;
+                const events = calendar.getEvents().filter((event) => {
+                    return event.startStr === dateString;
+                });
+
+                const isBooked = events.some((event) => {
+                    return event.extendedProps.type === "booking";
+                });
+
+                if (!isBooked) {
+                    selectedDates.has(dateString) ?
+                        selectedDates.delete(dateString) :
+                        selectedDates.add(dateString);
+
+                    updateSelectedDates();
+                }
+            },
+        });
+
+        function updateSelectedDates() {
+            document.querySelectorAll(
+                ".fc-daygrid-day"
+            ).forEach((cell) => {
+                cell.classList.toggle(
+                    "admin-calendar-selected",
+                    selectedDates.has(cell.dataset.date)
+                );
+            });
+
+            document.getElementById(
+                    "admin-availability-message"
+                ).textContent = selectedDates.size ?
+                `${selectedDates.size} date(s) selected` :
+                "";
+        }
+
+        async function updateAvailability(action) {
+            if (!selectedDates.size) {
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("csrfmiddlewaretoken", getCsrfToken());
+            formData.append("action", action);
+            formData.append(
+                "dates",
+                JSON.stringify(Array.from(selectedDates))
+            );
+
+            await fetch(calendarElement.dataset.updateUrl, {
+                method: "POST",
+                body: formData,
+            });
+
+            selectedDates.clear();
+            calendar.refetchEvents();
+            updateSelectedDates();
+        }
+
+        function getCsrfToken() {
+            return document.querySelector(
+                "[name=csrfmiddlewaretoken]"
+            ).value;
+        }
+
+        document.getElementById(
+            "admin-block-dates-button"
+        ).addEventListener("click", () => {
+            updateAvailability("block_dates");
+        });
+
+        document.getElementById(
+            "admin-unblock-dates-button"
+        ).addEventListener("click", () => {
+            updateAvailability("unblock_dates");
+        });
+
+        calendar.render();
+    });
+</script>
 {% endblock %}

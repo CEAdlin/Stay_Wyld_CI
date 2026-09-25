@@ -35,18 +35,33 @@
             </section>
         </div>
 
+        <!-- filepath: c:\Users\corri\Documents\AA_CI_Projects\capstone_staywyld\templates\bookings\booking_detail.html -->
         <div class="booking-detail-status status-{{ booking.status|lower }}">
             <strong>Status:</strong>
+
+            {% if open_request %}
+            {% if open_request.request_type == "CANCEL" %}
+            <span class="status-badge status-pending">
+                Cancel Request Pending
+            </span>
+            {% else %}
+            <span class="status-badge status-pending">
+                Update Request Pending
+            </span>
+            {% endif %}
+            {% else %}
             <span class="status-badge status-{{ booking.status|lower }}">
                 {{ booking.get_status_display }}
             </span>
+            {% endif %}
         </div>
 
-        {% if booking.status != "CANCELLED" and not cancellation_requested %}
+        {% if booking.status != "CANCELLED" and not open_request %}
         <div class="customer-actions-cell">
             <a href="{% url 'booking_update' booking.pk %}" class="crud-btn">
                 Request To Update Booking
             </a>
+
             <a href="{% url 'booking_delete' booking.pk %}" class="crud-btn delete-btn">
                 Request To Cancel Booking
             </a>
