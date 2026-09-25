@@ -110,10 +110,9 @@ def admin_modify_unit(request, unit_id):
     messages.info(request, "Modify unit page not yet implemented.")
     return redirect("admin_unit_detail", unit_id=unit_id)
 
-
 @login_required
 def admin_customers_list(request):
-    if not request.user.is_staff:
+    if not request.user.is_superuser:
         return redirect("index")
 
     today = date.today()
@@ -123,7 +122,13 @@ def admin_customers_list(request):
         profile = CustomerProfile.objects.filter(user=customer).first()
         bookings = Booking.objects.filter(customer=customer)
 
-        customer.phone_number = profile.phone_number if profile else "Not provided"
+        customer.customer_name = (
+            profile.full_name if profile else customer.get_full_name() or customer.username
+        )
+        customer.email_address = customer.email
+        customer.phone_number = (
+            profile.phone_number if profile else "Not provided"
+        )
         customer.total_bookings = bookings.count()
         customer.has_active_booking = (
             bookings.filter(
@@ -133,39 +138,6 @@ def admin_customers_list(request):
             .exclude(status="CANCELLED")
             .exists()
         )
-
-    sort_by = request.GET.get("sort", "name")
-
-    if sort_by == "active":
-        customers.sort(
-            key=lambda customer: (
-                not customer.has_active_booking,
-                customer.username.lower(),
-            )
-        )
-    else:
-        customers.sort(key=lambda customer: customer.username.lower())
-
-@login_required
-def admin_customers_list(request):
-    if not request.user.is_staff:
-        return redirect("index")
-
-    today = date.today()
-    customers = list(User.objects.all())
-
-    for customer in customers:
-        profile = CustomerProfile.objects.filter(user=customer).first()
-        bookings = Booking.objects.filter(customer=customer)
-
-        customer.phone_number = (
-            profile.phone_number if profile else "Not provided"
-        )
-        customer.total_bookings = bookings.count()
-        customer.has_active_booking = bookings.filter(
-            check_in_date__lte=today,
-            check_out_date__gte=today,
-        ).exclude(status="CANCELLED").exists()
 
     sort_by = request.GET.get("sort", "name")
 
@@ -191,15 +163,28 @@ def admin_customers_list(request):
 
 @login_required
 def admin_customer_detail(request, customer_id):
-    if not request.user.is_staff:
+    if not request.user.is_superuser:
         return redirect("index")
+
     customer = get_object_or_404(User, id=customer_id)
-    bookings = Booking.objects.filter(customer=customer)
+
+    profile = CustomerProfile.objects.filter(user=customer).first()
+
+    bookings = (
+        Booking.objects
+        .filter(customer=customer)
+        .select_related("unit")
+        .order_by("-check_in_date")
+    )
 
     return render(
         request,
         "admin/admin_customer_detail.html",
-        {"customer": customer, "bookings": bookings},
+        {
+            "customer": customer,
+            "profile": profile,
+            "bookings": bookings,
+        },
     )
 
 

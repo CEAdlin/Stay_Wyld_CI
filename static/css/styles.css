@@ -1674,7 +1674,6 @@ section.bg-light {
 
 /* Customer Bookings Table Styling */
 
-/* Customer bookings table */
 .customer-table-scroll {
     width: 100%;
     overflow-x: auto;
@@ -1685,6 +1684,10 @@ section.bg-light {
     width: 100%;
     min-width: 850px;
     border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--colour-accent);
+    border-radius: 12px;
+    overflow: hidden;
     table-layout: auto;
 }
 
@@ -1697,44 +1700,26 @@ section.bg-light {
 }
 
 .customer-bookings-table th {
-    color: var(--colour-accent);
+    background: rgba(193, 189, 136, 0.3);
+    color: var(--colour-blue);
     font-weight: 700;
 }
 
 .customer-bookings-table td {
     color: var(--colour-blue);
+    border-top: 1px solid rgba(40, 41, 62, 0.12);
 }
 
-.customer-bookings-table tbody tr {
-    border-bottom: 1px solid rgba(193, 189, 136, 0.3);
-}
-
-.customer-bookings-table .customer-actions-cell {
-    text-align: center;
+.customer-bookings-table tbody tr:hover {
+    background: rgba(193, 189, 136, 0.12);
 }
 
 .customer-bookings-table .crud-btn {
+    margin: 0;
     white-space: nowrap;
+    color: var(--colour-blue);
+    border: 1px solid var(--colour-blue);
 }
-
-.customer-bookings-table tbody tr:nth-child(odd) {
-    background: var(--colour-blue); /* main blue */
-}
-
-.customer-bookings-table tbody tr:nth-child(even) {
-    background: rgba(var(--colour-blue-rgb), 0.75); /* lighter blue */
-}
-
-.customer-bookings-table td,
-.customer-bookings-table th {
-    color: var(--colour-accent);
-    font-family: var(--font-secondary);
-}
-
-.customer-bookings-table tr:hover {
-    background: rgba(var(--colour-blue-rgb), 0.55);
-}
-
 
 /* Titles */
 .customer-dashboard-title {
@@ -2449,7 +2434,7 @@ section.bg-light {
     padding: 0.35rem 0.75rem;
     border-radius: 999px;
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     white-space: nowrap;
     text-align: center;
 }
@@ -2694,14 +2679,14 @@ section.bg-light {
 .admin-booking-summary .crud-btn {
     width: 100%;
     box-sizing: border-box;
-    margin: 0 auto;
+    margin: 10 auto;
 }
 
 .admin-booking-summary p {
     margin: 1rem 0;
     text-align: center;
     font-size: 1.1rem;
-    color: var(--colour-blue);
+    color: var(--colour-tertiary);
 }
 
 @media (max-width: 700px) {
