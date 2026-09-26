@@ -237,6 +237,7 @@ li {
   text-transform: uppercase;
 }
 
+.welcome-card h1,
 .welcome-card h2 {
   margin-bottom: 20px;
   color: var(--colour-accent);
@@ -646,6 +647,7 @@ section.bg-light {
     border-radius: 16px;
   }
 
+  .welcome-card h1,
   .welcome-card h2 {
     font-size: 3rem;
   }
@@ -700,6 +702,7 @@ section.bg-light {
 }
 
 @media (max-width: 500px) {
+  .welcome-card h1,
   .welcome-card h2 {
     font-size: 2.6rem;
   }
@@ -1603,6 +1606,7 @@ section.bg-light {
     margin-bottom: 15px;
 }
 
+.admin-card h2,
 .admin-card h3 {
     font-size: 22px;
     color: var(--colour-primary);
