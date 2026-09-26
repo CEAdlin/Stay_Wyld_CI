@@ -118,3 +118,37 @@ class AdminBookingListTests(TestCase):
 			list(response.context["bookings"]),
 			[earliest_past, latest_past],
 		)
+
+	def test_unit_filter_shows_only_selected_unit_bookings(self):
+		other_unit = Unit.objects.create(
+			name="Other Unit",
+			slug="other-unit",
+			price_per_night="120.00",
+		)
+		today = date.today()
+		selected_booking = self.create_booking(
+			today,
+			today + timedelta(days=2),
+		)
+		other_booking = Booking.objects.create(
+			unit=other_unit,
+			customer_name="Other Customer",
+			customer_email="other@example.com",
+			customer_phone="01234567890",
+			check_in_date=today,
+			check_out_date=today + timedelta(days=2),
+			nightly_price="120.00",
+			total_nights=2,
+			total_amount="240.00",
+		)
+
+		response = self.client.get(
+			reverse("admin_booking_list"),
+			{"unit": self.unit.id},
+		)
+
+		self.assertEqual(
+			list(response.context["bookings"]),
+			[selected_booking],
+		)
+		self.assertNotIn(other_booking, response.context["bookings"])

@@ -112,7 +112,11 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": (
+            "whitenoise.storage.CompressedManifestStaticFilesStorage"
+            if os.environ.get("DYNO")
+            else "django.contrib.staticfiles.storage.StaticFilesStorage"
+        ),
     },
 }
 

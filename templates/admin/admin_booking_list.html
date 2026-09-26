@@ -26,10 +26,20 @@
                         </option>
                     </select>
 
+                    <select name="unit">
+                        <option value="">All units</option>
+                        {% for unit in units %}
+                        <option value="{{ unit.id }}" {% if unit_filter == unit.id|stringformat:"s" %}selected{% endif %}>
+                            {{ unit.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
                     <input type="date" name="from" value="{{ request.GET.from }}" />
                     <input type="date" name="to" value="{{ request.GET.to }}" />
 
                     <button type="submit" class="crud-btn">Filter</button>
+                    <a href="{% url 'admin_booking_list' %}" class="crud-btn">Clear</a>
                 </form>
 
                 <table class="admin-table">
