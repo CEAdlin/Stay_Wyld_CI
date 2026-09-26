@@ -12,14 +12,22 @@
             <div class="admin-card" style="grid-column: 1 / -1;">
                 <form method="GET" class="filter-form">
                     <select name="status">
-                        <option value="">Current + Upcoming</option>
-                        <option value="past">Past</option>
-                        <option value="current">Current</option>
-                        <option value="upcoming">Upcoming</option>
+                        <option value="" {% if status_filter == "active" %}selected{% endif %}>
+                            Current + Upcoming
+                        </option>
+                        <option value="past" {% if status_filter == "past" %}selected{% endif %}>
+                            Past
+                        </option>
+                        <option value="current" {% if status_filter == "current" %}selected{% endif %}>
+                            Current
+                        </option>
+                        <option value="upcoming" {% if status_filter == "upcoming" %}selected{% endif %}>
+                            Upcoming
+                        </option>
                     </select>
 
-                    <input type="date" name="from" />
-                    <input type="date" name="to" />
+                    <input type="date" name="from" value="{{ request.GET.from }}" />
+                    <input type="date" name="to" value="{{ request.GET.to }}" />
 
                     <button type="submit" class="crud-btn">Filter</button>
                 </form>

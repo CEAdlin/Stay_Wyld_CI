@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from datetime import datetime
-from .models import Unit, Booking, BookingChangeRequest
+from .models import Unit, Booking, BookingChangeRequest, UnitBlockedDate
 from django.contrib.auth.models import User
 from decimal import Decimal
 from accounts.models import CustomerProfile
@@ -44,8 +44,12 @@ def unit_detail_view(request, unit_slug):
 def booking_create_view(request, unit_slug):
     unit = get_object_or_404(Unit, slug=unit_slug)
 
-    bookings = Booking.objects.filter(unit=unit).values(
-        "check_in_date", "check_out_date"
+    bookings = (
+        Booking.objects.filter(unit=unit)
+        .exclude(status="CANCELLED")
+        .values(
+            "check_in_date", "check_out_date"
+        )
     )
 
     booked_ranges = []
@@ -56,6 +60,14 @@ def booking_create_view(request, unit_slug):
                 "end": b["check_out_date"].strftime("%Y-%m-%d"),
             }
         )
+
+    blocked_dates = list(
+        UnitBlockedDate.objects.filter(unit=unit)
+        .values_list("date", flat=True)
+    )
+    blocked_dates = [
+        blocked_date.isoformat() for blocked_date in blocked_dates
+    ]
 
     if request.method == "POST":
         check_in = request.POST.get("check_in")
@@ -77,6 +89,17 @@ def booking_create_view(request, unit_slug):
 
         if check_out_date <= check_in_date:
             messages.error(request, "Check-out date must be after check-in date.")
+            return redirect(request.path)
+
+        if UnitBlockedDate.objects.filter(
+            unit=unit,
+            date__gte=check_in_date,
+            date__lt=check_out_date,
+        ).exists():
+            messages.error(
+                request,
+                "This unit is unavailable for one or more selected nights.",
+            )
             return redirect(request.path)
 
         overlapping = Booking.objects.filter(
@@ -149,7 +172,11 @@ def booking_create_view(request, unit_slug):
     return render(
         request,
         "bookings/booking_create.html",
-        {"unit": unit, "booked_ranges": booked_ranges},
+        {
+            "unit": unit,
+            "booked_ranges": booked_ranges,
+            "blocked_dates": blocked_dates,
+        },
     )
 
 

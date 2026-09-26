@@ -19,6 +19,7 @@
                     <div id="availability-calendar"></div>
 
                     {{ booked_ranges|json_script:"booked-dates" }}
+                    {{ blocked_dates|json_script:"blocked-dates" }}
                 </div>
 
                 <!-- RIGHT: Form -->
@@ -135,6 +136,9 @@
         const bookedRanges = JSON.parse(
             document.getElementById("booked-dates").textContent
         );
+        const blockedDateValues = JSON.parse(
+            document.getElementById("blocked-dates").textContent
+        );
         const pricePerNight = parseFloat("{{ unit.price_per_night }}");
 
         const preCheckIn = document.getElementById("preselected-checkin").value;
@@ -151,12 +155,12 @@
         }
 
         /* BLOCKED DATES */
-        const blockedDates = new Set();
+        const blockedDates = new Set(blockedDateValues);
         bookedRanges.forEach((range) => {
-            let start = new Date(range.start);
-            let end = new Date(range.end);
+            let start = new Date(`${range.start}T00:00:00Z`);
+            let end = new Date(`${range.end}T00:00:00Z`);
 
-            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            for (let d = new Date(start); d < end; d.setUTCDate(d.getUTCDate() + 1)) {
                 blockedDates.add(d.toISOString().split("T")[0]);
             }
         });
@@ -207,6 +211,19 @@
                     display: "background",
                     backgroundColor: "#8b0000",
                     overlap: false
+                });
+            });
+
+            blockedDateValues.forEach((blockedDate) => {
+                const end = new Date(`${blockedDate}T00:00:00Z`);
+                end.setUTCDate(end.getUTCDate() + 1);
+
+                events.push({
+                    start: blockedDate,
+                    end: end.toISOString().split("T")[0],
+                    display: "background",
+                    backgroundColor: "#808080",
+                    overlap: false,
                 });
             });
 
@@ -264,10 +281,10 @@
                                 return;
                             }
 
-                            let start = new Date(checkIn);
-                            let end = new Date(selected);
+                            let start = new Date(`${checkIn}T00:00:00Z`);
+                            let end = new Date(`${selected}T00:00:00Z`);
 
-                            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                            for (let d = new Date(start); d < end; d.setUTCDate(d.getUTCDate() + 1)) {
                                 let iso = d.toISOString().split("T")[0];
                                 if (blockedDates.has(iso)) {
                                     alert("Your selected range includes booked dates.");

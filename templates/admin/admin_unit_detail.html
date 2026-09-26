@@ -265,18 +265,21 @@
         let calendarEvents = [];
 
         const calendar = new FullCalendar.Calendar(calendarElement, {
-            initialView: "adminThreeMonths",
+            initialView: "adminTwoMonths",
+            multiMonthMaxColumns: 2,
+            multiMonthMinWidth: 0,
 
             views: {
-                adminThreeMonths: {
+                adminTwoMonths: {
                     type: "multiMonth",
                     duration: {
-                        months: 3
+                        months: 2
                     }
                 }
             },
+            
             height: "auto",
-            selectable: true,
+            selectable: false,
             dayMaxEvents: true,
             firstDay: 1,
             events: calendarElement.dataset.eventsUrl,
@@ -287,34 +290,36 @@
                 right: ""
             },
 
-            datesSet: () => {
-                calendarEvents = calendar.getEvents();
-            },
-
-            select: (selection) => {
-                let current = new Date(selection.start);
-
-                while (current < selection.end) {
-                    const dateString = current.toISOString().slice(0, 10);
-
-                    const hasBooking = calendarEvents.some((event) => {
-                        return event.startStr === dateString &&
-                            event.extendedProps.type === "booking";
-                    });
-
-                    if (!hasBooking) {
-                        if (selectedDates.has(dateString)) {
-                            selectedDates.delete(dateString);
-                        } else {
-                            selectedDates.add(dateString);
-                        }
-                    }
-
-                    current.setDate(current.getDate() + 1);
+            eventDidMount: (info) => {
+                if (info.event.extendedProps.type !== "blocked") {
+                    return;
                 }
 
-                calendar.unselect();
-                updateSelectedDates();
+                const dayCell = calendarElement.querySelector(
+                    `.fc-daygrid-day[data-date="${info.event.startStr}"]`
+                );
+
+                if (dayCell) {
+                    dayCell.classList.add("admin-calendar-blocked-day");
+                }
+            },
+
+            eventWillUnmount: (info) => {
+                if (info.event.extendedProps.type !== "blocked") {
+                    return;
+                }
+
+                const dayCell = calendarElement.querySelector(
+                    `.fc-daygrid-day[data-date="${info.event.startStr}"]`
+                );
+
+                if (dayCell) {
+                    dayCell.classList.remove("admin-calendar-blocked-day");
+                }
+            },
+
+            datesSet: () => {
+                calendarEvents = calendar.getEvents();
             },
 
             dateClick: (info) => {
@@ -367,10 +372,14 @@
                 JSON.stringify(Array.from(selectedDates))
             );
 
-            await fetch(calendarElement.dataset.updateUrl, {
+            const response = await fetch(calendarElement.dataset.updateUrl, {
                 method: "POST",
                 body: formData,
             });
+
+            if (!response.ok) {
+                return;
+            }
 
             selectedDates.clear();
             calendar.refetchEvents();

@@ -132,22 +132,32 @@ def admin_unit_detail(request, unit_id):
             image.delete()
             messages.success(request, "Gallery image deleted.")
 
-        elif action == "block_date":
-            blocked_date = request.POST.get("blocked_date")
+        elif action in {"block_dates", "unblock_dates"}:
+            try:
+                selected_dates = [
+                    date.fromisoformat(value)
+                    for value in json.loads(request.POST.get("dates", "[]"))
+                ]
+            except (TypeError, ValueError, json.JSONDecodeError):
+                selected_dates = []
 
-            if blocked_date:
-                UnitBlockedDate.objects.get_or_create(
-                    unit=unit,
-                    date=blocked_date,
-                )
-                messages.success(request, "Date marked unavailable.")
-
-        elif action == "unblock_date":
-            UnitBlockedDate.objects.filter(
-                unit=unit,
-                id=request.POST.get("blocked_date_id"),
-            ).delete()
-            messages.success(request, "Date made available.")
+            if selected_dates:
+                if action == "block_dates":
+                    for selected_date in selected_dates:
+                        UnitBlockedDate.objects.get_or_create(
+                            unit=unit,
+                            date=selected_date,
+                        )
+                    messages.success(
+                        request,
+                        "Selected dates marked unavailable.",
+                    )
+                else:
+                    UnitBlockedDate.objects.filter(
+                        unit=unit,
+                        date__in=selected_dates,
+                    ).delete()
+                    messages.success(request, "Selected dates made available.")
 
         return redirect("admin_unit_detail", unit_id=unit.id)
 
@@ -350,10 +360,10 @@ def admin_booking_list(request):
     bookings = (
         Booking.objects.prefetch_related("change_requests")
         .all()
-        .order_by("-check_in_date")
+        .order_by("check_in_date")
     )
 
-    status_filter = request.GET.get("status")
+    status_filter = request.GET.get("status") or "active"
     date_from = request.GET.get("from")
     date_to = request.GET.get("to")
     today = date.today()
@@ -367,6 +377,8 @@ def admin_booking_list(request):
         )
     elif status_filter == "upcoming":
         bookings = bookings.filter(check_in_date__gt=today)
+    else:
+        bookings = bookings.filter(check_out_date__gte=today)
 
     if date_from:
         bookings = bookings.filter(check_in_date__gte=date_from)

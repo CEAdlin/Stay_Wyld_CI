@@ -28,7 +28,21 @@
 <body>
     <!-- Top Utility Bar -->
     <nav class="topbar d-flex justify-content-end align-items-center px-3">
-        {% if user.is_authenticated %} {% if user.is_staff %}
+        {% if user.is_authenticated %}
+        <span class="topbar-user-status">
+            Logged in as:
+            <strong>
+                {% if user.is_superuser %}
+                {{ user.get_full_name|default:user.username }}
+                {% elif user.customerprofile %}
+                {{ user.customerprofile.full_name }}
+                {% else %}
+                {{ user.username }}
+                {% endif %}
+            </strong>
+        </span>
+
+        {% if user.is_staff %}
         <!-- ADMIN ONLY -->
         <a href="{% url 'admin_dashboard' %}" class="crud-btn">Admin Dashboard</a>
         {% else %}
@@ -70,9 +84,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'index' %}#photo-gallery">Gallery</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'index' %}#contact">Contact</a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -101,11 +112,32 @@
                 <div class="footer-left">
                     <h3>The Wyld Collective</h3>
                     <p>A little escape from the everyday.</p>
-                    <p class="footer-location">The Wyld Collective.</p>
+                    <address class="footer-address">
+                        <i class="bi bi-geo-alt" aria-hidden="true"></i>
+                        <span>
+                            The Wyld Collective,<br>
+                            Keepers Lane,<br>
+                            Codsall, WV8 2DR
+                        </span>
+                    </address>
                 </div>
+
+                <!-- CONTACT DETAILS -->
+                <address class="footer-contact">
+                    <h3>Get In Touch</h3>
+                    <a href="mailto:bookings@staywyld.co.uk">
+                        <i class="bi bi-envelope" aria-hidden="true"></i>
+                        bookings@staywyld.co.uk
+                    </a>
+                    <a href="tel:+447868289634">
+                        <i class="bi bi-telephone" aria-hidden="true"></i>
+                        07868 289634
+                    </a>
+                </address>
 
                 <!-- RIGHT COLUMN -->
                 <div class="footer-right">
+                    <h3>Follow Us</h3>
                     <div class="footer-social">
                         <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
                             <i class="bi bi-instagram"></i> Instagram
@@ -166,73 +198,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     {% block scripts %}
-    <!-- CONTACT FORM JAVASCRIPT -->
-    <script>
-        const contactForm = document.getElementById("contactForm");
-
-        if (contactForm) {
-            contactForm.addEventListener("submit", async function (event) {
-                event.preventDefault();
-
-                const submitButton = contactForm.querySelector(
-                    'button[type="submit"]',
-                );
-
-                const formMessage = document.getElementById("formMessage");
-
-                const formData = {
-                    fullName: document.getElementById("fullName").value.trim(),
-
-                    contactNumber: document
-                        .getElementById("contactNumber")
-                        .value.trim(),
-
-                    emailAddress: document.getElementById("emailAddress").value.trim(),
-
-                    queryType: document.getElementById("queryType").value,
-
-                    message: document.getElementById("messageBox").value.trim(),
-                };
-
-                submitButton.disabled = true;
-                submitButton.textContent = "Sending...";
-
-                try {
-                    const response = await fetch(
-                        "https://staywyld-contact-form.corrinead.workers.dev/", {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-
-                            body: JSON.stringify(formData),
-                        },
-                    );
-
-                    const result = await response.json();
-
-                    if (result.success) {
-                        formMessage.innerHTML =
-                            "<p>Thank you for getting in touch! We've received your enquiry and will get back to you as soon as possible.</p>";
-
-                        contactForm.reset();
-                    } else {
-                        formMessage.innerHTML =
-                            "<p>Sorry, something went wrong. Please try again.</p>";
-                    }
-                } catch (error) {
-                    console.error("Contact form error:", error);
-
-                    formMessage.innerHTML =
-                        "<p>Sorry, something went wrong. Please try again.</p>";
-                }
-
-                submitButton.disabled = false;
-                submitButton.textContent = "Submit";
-            });
-        }
-    </script>
     <!-- Admin_unit_detail Availability Calendar-->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js">
     </script>
