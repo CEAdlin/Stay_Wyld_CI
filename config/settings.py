@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 from pathlib import Path
 import os
+import secrets
 
 import dj_database_url
 from dotenv import load_dotenv
@@ -24,13 +25,20 @@ load_dotenv(BASE_DIR / ".env")
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY", "django-insecure-bke-@+v+glb55uo3)(c54wr6luk-e(7_iwx+iz20!$cqdnij+k"
-)
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
+if not SECRET_KEY:
+    if os.environ.get("DYNO"):
+        raise RuntimeError("SECRET_KEY must be set in the Heroku environment.")
+    SECRET_KEY = secrets.token_urlsafe(50)
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False").lower() in {
+    "true",
+    "1",
+    "yes",
+}
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
