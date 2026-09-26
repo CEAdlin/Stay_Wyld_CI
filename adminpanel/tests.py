@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
+from accounts.models import CustomerProfile
 from bookings.models import Booking, Unit, UnitBlockedDate
 
 
@@ -152,3 +153,52 @@ class AdminBookingListTests(TestCase):
 			[selected_booking],
 		)
 		self.assertNotIn(other_booking, response.context["bookings"])
+
+
+class AdminCustomerListTests(TestCase):
+	def setUp(self):
+		self.admin_user = User.objects.create_user(
+			username="customer-list-admin",
+			password="test-password",
+			is_superuser=True,
+			is_staff=True,
+		)
+		self.client.force_login(self.admin_user)
+
+	def create_customer(self, username, full_name):
+		customer = User.objects.create_user(
+			username=username,
+			password="test-password",
+		)
+		CustomerProfile.objects.create(
+			user=customer,
+			full_name=full_name,
+			address="123 Woodland Lane, Codsall, Staffordshire",
+			phone_number="01234567890",
+		)
+		return customer
+
+	def test_customer_name_search_is_case_insensitive_and_partial(self):
+		sophie = self.create_customer("sophie@example.com", "Sophie Jones")
+		sam = self.create_customer("sam@example.com", "Samuel Smith")
+		self.create_customer("alex@example.com", "Alex Brown")
+
+		response = self.client.get(
+			reverse("admin_customers_list"),
+			{"search": "S"},
+		)
+
+		self.assertEqual(
+			{customer.id for customer in response.context["customers"]},
+			{sophie.id, sam.id},
+		)
+
+		response = self.client.get(
+			reverse("admin_customers_list"),
+			{"search": "sophie"},
+		)
+
+		self.assertEqual(
+			[customer.id for customer in response.context["customers"]],
+			[sophie.id],
+		)

@@ -21,6 +21,19 @@
                     <a href="?sort=active" class="crud-btn {% if sort_by == 'active' %}active{% endif %}">
                         Active Booking
                     </a>
+
+                    <form method="get" class="customer-search-form">
+                        <input
+                            type="search"
+                            name="search"
+                            value="{{ search_query }}"
+                            placeholder="Search by customer name"
+                            aria-label="Search by customer name"
+                        >
+                        <input type="hidden" name="sort" value="{{ sort_by }}">
+                        <button type="submit" class="crud-btn">Search</button>
+                        <a href="?sort={{ sort_by }}" class="crud-btn">Reset</a>
+                    </form>
                 </div>
                 <div class="admin-table-scroll">
                     <table class="admin-table">

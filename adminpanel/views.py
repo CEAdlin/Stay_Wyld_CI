@@ -256,6 +256,15 @@ def admin_customers_list(request):
         )
 
     sort_by = request.GET.get("sort", "name")
+    search_query = request.GET.get("search", "").strip()
+
+    if search_query:
+        search_value = search_query.casefold()
+        customers = [
+            customer
+            for customer in customers
+            if search_value in customer.customer_name.casefold()
+        ]
 
     if sort_by == "active":
         customers.sort(
@@ -273,6 +282,7 @@ def admin_customers_list(request):
         {
             "customers": customers,
             "sort_by": sort_by,
+            "search_query": search_query,
         },
     )
 
