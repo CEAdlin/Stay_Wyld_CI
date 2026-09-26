@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.contrib import messages
 from datetime import datetime
 from .models import Unit, Booking, BookingChangeRequest, UnitBlockedDate
@@ -9,6 +10,7 @@ from accounts.models import CustomerProfile
 
 
 # Homepage
+@xframe_options_exempt
 def index_view(request):
     units = Unit.objects.filter(active=True)
     return render(request, "index.html", {"units": units})
