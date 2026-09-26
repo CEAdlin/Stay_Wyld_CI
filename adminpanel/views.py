@@ -375,6 +375,7 @@ def admin_booking_list(request):
 
     status_filter = request.GET.get("status") or "active"
     unit_filter = request.GET.get("unit")
+    booking_id_filter = request.GET.get("booking_id", "").strip()
     date_from = request.GET.get("from")
     date_to = request.GET.get("to")
     today = date.today()
@@ -400,6 +401,12 @@ def admin_booking_list(request):
     if unit_filter:
         bookings = bookings.filter(unit_id=unit_filter)
 
+    if booking_id_filter:
+        if booking_id_filter.isdigit():
+            bookings = bookings.filter(id=int(booking_id_filter))
+        else:
+            bookings = bookings.none()
+
     for booking in bookings:
         booking.latest_request = (
             booking.change_requests.all().order_by("-created_at").first()
@@ -413,6 +420,7 @@ def admin_booking_list(request):
             "status_choices": Booking.STATUS_CHOICES,
             "status_filter": status_filter,
             "unit_filter": unit_filter,
+            "booking_id_filter": booking_id_filter,
             "units": Unit.objects.order_by("name"),
         },
     )

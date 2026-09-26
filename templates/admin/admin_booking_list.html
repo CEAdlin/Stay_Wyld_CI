@@ -35,6 +35,14 @@
                         {% endfor %}
                     </select>
 
+                    <input
+                        type="search"
+                        name="booking_id"
+                        value="{{ booking_id_filter }}"
+                        placeholder="Booking ID"
+                        aria-label="Search by booking ID"
+                    />
+
                     <input type="date" name="from" value="{{ request.GET.from }}" />
                     <input type="date" name="to" value="{{ request.GET.to }}" />
 

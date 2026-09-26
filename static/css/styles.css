@@ -1172,14 +1172,19 @@ section.bg-light {
 }
 
 .filter-form select,
-.filter-form input[type="date"] {
+.filter-form input[type="date"],
+.filter-form input[type="search"] {
   background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 10px;
+  border: 1px solid var(--colour-accent);
+  border-radius: 50px;
   padding: 10px 14px;
   color: var(--colour-blue);
   font-family: var(--font-secondary);
   font-size: 0.95rem;
+}
+
+.filter-form input[type="search"] {
+  width: 125px;
 }
 
 .filter-form button {

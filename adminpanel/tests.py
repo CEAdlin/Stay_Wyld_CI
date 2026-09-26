@@ -154,6 +154,28 @@ class AdminBookingListTests(TestCase):
 		)
 		self.assertNotIn(other_booking, response.context["bookings"])
 
+	def test_booking_id_filter_matches_only_exact_id(self):
+		today = date.today()
+		booking = self.create_booking(
+			today,
+			today + timedelta(days=2),
+		)
+		other_booking = self.create_booking(
+			today + timedelta(days=4),
+			today + timedelta(days=6),
+		)
+
+		response = self.client.get(
+			reverse("admin_booking_list"),
+			{"booking_id": str(booking.id)},
+		)
+
+		self.assertEqual(
+			list(response.context["bookings"]),
+			[booking],
+		)
+		self.assertNotIn(other_booking, response.context["bookings"])
+
 
 class AdminCustomerListTests(TestCase):
 	def setUp(self):
