@@ -1212,7 +1212,46 @@ section.bg-light {
 }
 
 /* admin_customers_list Page */
-/* (Add page-specific styles here if needed) */
+.admin-table-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.sort-label {
+  color: var(--colour-blue);
+  font-family: var(--font-secondary);
+  font-weight: 600;
+}
+
+.customer-search-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.customer-search-form input[type="search"] {
+  width: 220px;
+  padding: 8px 14px;
+  border: 1px solid var(--colour-accent);
+  border-radius: 50px;
+  color: var(--colour-blue);
+  font-family: var(--font-secondary);
+  font-size: 0.95rem;
+}
+
+.customer-search-form input[type="search"]:focus {
+  border-color: var(--colour-accent);
+  box-shadow: 0 0 0 0.2rem rgba(193, 189, 136, 0.25);
+  outline: none;
+}
+
+.customer-search-form .crud-btn {
+  margin-left: 0;
+}
 
 /* admin_customer_detail Page */
 
@@ -1261,6 +1300,16 @@ section.bg-light {
   .filter-form {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .customer-search-form {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .customer-search-form input[type="search"] {
+    flex: 1;
+    width: auto;
   }
 
   .filter-form select,
