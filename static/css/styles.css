@@ -164,6 +164,10 @@ li {
   font-weight: 700;
 }
 
+.admin-dashboard-short-label {
+  display: none;
+}
+
 /* Push main navbar down */
 .main-navbar {
   margin-top: 48px;
@@ -201,6 +205,38 @@ li {
 
 .header-spacer {
   height: 40px;
+}
+
+@media (max-width: 600px) {
+  .topbar {
+    justify-content: flex-end;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    gap: 4px;
+    white-space: nowrap;
+  }
+
+  .topbar-user-status {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.78rem;
+  }
+
+  .crud-btn {
+    flex: 0 0 auto;
+    margin-left: 4px;
+    padding: 3px 8px;
+    font-size: 0.78rem;
+  }
+
+  .admin-dashboard-full-label {
+    display: none;
+  }
+
+  .admin-dashboard-short-label {
+    display: inline;
+  }
 }
 
 .hero-banner {

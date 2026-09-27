@@ -45,7 +45,10 @@
 
         {% if user.is_staff %}
         <!-- ADMIN ONLY -->
-        <a href="{% url 'admin_dashboard' %}" class="crud-btn">Admin Dashboard</a>
+        <a href="{% url 'admin_dashboard' %}" class="crud-btn admin-dashboard-link">
+            <span class="admin-dashboard-full-label">Admin Dashboard</span>
+            <span class="admin-dashboard-short-label">Dashboard</span>
+        </a>
         {% else %}
         <!-- CUSTOMER ONLY -->
         <a href="{% url 'my_bookings' %}" class="crud-btn">My Bookings</a>

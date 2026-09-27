@@ -455,19 +455,12 @@ erDiagram
 
 ## Workflow Notes
 
-- A customer booking is initially stored with a `PENDING` status. Staff can
-    review it and change the status to `CONFIRMED`, `CANCELLED` or `COMPLETED`.
-- Customer modification and cancellation requests are stored separately in
-    `BookingChangeRequest`. Staff approval is represented by the request status
-    changing from `OPEN` to `APPROVED` or the internal `REJECTED` value, which is
-    displayed to users as **Declined**.
-- A booking is not considered available only because it is pending. The booking
-    availability logic checks date overlap and ignores cancelled bookings.
-- Staff can create `UnitBlockedDate` records for maintenance or private use.
-    Blocked nights are displayed as unavailable and rejected by the booking
-    validation logic.
-- A following booking can check in on the previous booking's checkout date,
-    because the checkout date is treated as the exclusive end of the stay.
+A customer booking is initially stored with a `PENDING` status. Staff can review it and change the status to `CONFIRMED`, `CANCELLED` or `COMPLETED`.
+Customer modification and cancellation requests are stored separately in `BookingChangeRequest`. Staff approval is represented by the request status changing from `OPEN` to `APPROVED` or the internal `REJECTED` value, which is displayed to users as **Declined**.
+A booking is not considered available only because it is pending. The booking availability logic checks date overlap and ignores cancelled bookings.
+Staff can create `UnitBlockedDate` records for maintenance or private use. Blocked nights are displayed as unavailable and rejected by the booking validation logic.
+A following booking can check in on the previous booking's checkout date,
+because the checkout date is treated as the exclusive end of the stay.
 
 ## Features
 
@@ -519,7 +512,6 @@ are clickable and open the full-page design evidence.
 | --- | --- | --- |
 | Request form | Customers can submit requested date, guest and dog changes for staff approval. | ![Booking Update Request](documentation\features\customer_booking_detail_update_request.png) |
 | Request Submitted | The customer can see that their update request has been submitted and awaiting admin approval. | ![Booking Update Request Feedback](documentation\features\customer_booking_update_request_feedback.png) |
-
 
 ### Delete Booking Request
 
@@ -621,6 +613,17 @@ Django migrations manage the schema for customer profiles, accommodation units, 
 - [Pillow](https://python-pillow.org/) provides image processing support for uploaded images.
 - [WhiteNoise](https://whitenoise.readthedocs.io/) serves static files through the deployed WSGI application.
 
+## Bugs
+
+| Bug encountered | Fix implemented |
+| --- | --- |
+| Blocked dates were not consistently shown or enforced in the booking calendar. | Normalised blocked dates to ISO format, passed them safely from Django to JavaScript, displayed them in the calendar and checked them again during booking validation. |
+| Data tables disappeared or became unusable on mobile screens, removing access to important information and actions. | Added responsive table wrappers with horizontal scrolling and adjusted mobile table display, sizing and spacing so the content remains available on smaller screens. |
+| Administrators could be redirected to the customer `my_bookings.html` page instead of the staff `admin_bookings_list.html` page. | Separated customer and administrator routing and redirects, using the correct destination for each authenticated user role. |
+| The accent gold colour had insufficient contrast against white backgrounds across the site. | Reviewed the colour usage across shared components, changed low-contrast text and controls to darker accessible colours, and checked the result with Lighthouse. |
+| The accommodation capacity field changed from `max_guests` to separate `max_adults` and `max_children` values, but some forms, views and templates still used the old field. | Updated the model references, migration, admin pages, forms, views and templates so capacity is handled consistently for adults and children. |
+| Uploaded accommodation images were being saved in the project root instead of the intended media locations. | Set the correct `upload_to` paths for main and gallery images and configured Django's Cloudinary storage backend for production media. |
+
 ## Deployment
 
 This project can be copied from GitHub, run locally with SQLite, and deployed to Heroku with PostgreSQL and Cloudinary-backed media storage.
@@ -687,27 +690,13 @@ Heroku installs the dependencies from `requirements.txt` and uses the `Procfile`
 
 When GitHub integration is connected, push changes to the selected branch and redeploy from Heroku. With manual deployment enabled, select **Deploy Branch** after each push.
 
-
-# >��� Testing
+## Testing
 
 Please see TESTING.md 
 
-
-
-
-
-
-
-
-
-## >�� AI Usage
-
-
+## AI Usage
 
 AI tools were used throughout this project to support:
-
-
-
 - Drafting documentation sections  
 
 - Structuring Agile artefacts such as user stories and backlog items  
@@ -718,151 +707,36 @@ AI tools were used throughout this project to support:
 
 - Troubleshooting layout and styling issues  
 
-- Improving readability and organisation of the README and supporting documents  
+- Creating original site images inspired by real-world glamping designs and builds, which were reviewed and edited before being used in the project
 
-
+- Improving readability and organisation of the README and supporting documents
 
 All AI generated content was manually reviewed, edited, and validated to ensure accuracy and alignment with project requirements.  
 
-AI was used as a **supporting tool**, not a replacement for development, decision making, or problem solving.
-
-
-
----
-
-
-
-## =�L� Credits
-
-
-
-This project was made possible with the help of the following resources:
-
-
-
-- **Django Documentation**   backend framework guidance  
-
-- **Bootstrap Documentation**   styling and responsive layout support  
-
-- **Cloudinary Documentation**   media storage configuration  
-
-- **Heroku Deployment Guides**   hosting and deployment instructions  
-
-- **Course Tutors & Support Materials**   project structure, assessment criteria, and technical support  
-
-- **Copilot**   assistance with documentation, planning, debugging, and content refinement  
-
-
-
-Special thanks to everyone who contributed feedback during development and testing.
-
-
-
----
-
-
-
-## =��� Project Summary
-
-
-
-This project delivers a fully functional glampsite booking system built using Django and modern web technologies.  
-
-Key achievements include:
-
-
-
-- Full CRUD functionality across accommodation, bookings, and customer profiles  
-
-- Responsive, mobile friendly frontend design  
-
-- Secure authentication and admin management  
-
-- Cloud based media storage using Cloudinary  
-
-- PostgreSQL database integration for deployment  
-
-- Live deployment on Heroku  
-
-- Comprehensive Agile documentation including backlog, user stories, and sprint planning  
-
-
-
-The project demonstrates strong understanding of:
-
-
-
-- Full stack development  
-
-- Agile methodologies  
-
-- UX/UI planning and responsive design  
-
-- Testing and debugging  
-
-- Cloud deployment workflows  
-
-- Version control and repository management  
-
-
-
----
-
-
-
-## >��� Final Reflection
-
-
-
-This project has been a significant learning experience, combining frontend design, backend logic, database management, and deployment.
-
-
-
-### What Went Well
-
-- Agile planning helped maintain structure and momentum throughout development.  
-
-- Django s model view template architecture strengthened backend understanding.  
-
-- Implementing CRUD functionality improved confidence with database interactions.  
-
-- Deployment challenges built resilience and problem solving skills.  
-
-- Testing highlighted the importance of validating user flows early and often.
-
-
-
-### Challenges Faced
-
-- Managing media storage and responsive images required careful configuration.  
-
-- Ensuring consistent styling across devices took multiple iterations.  
-
-- Debugging deployment issues on Heroku was time consuming but rewarding.
-
-
-
-### Key Takeaways
-
-- Planning and documentation are just as important as coding.  
-
-- Small, iterative improvements lead to a polished final product.  
-
-- Real world deployment teaches lessons that local development cannot.  
-
-- Combining creativity with technical skill results in a richer user experience.
-
-
-
-Overall, this project represents a major step forward in full stack development skills and real world application building.  
-
-It has strengthened confidence in both frontend and backend development and provided a solid foundation for future projects.
-
-
-
----
-
-
-
+## Credits
+
+This project was completed as part of the Code Institute four-month bootcamp. I would like to thank Code Institute for providing the course structure, learning resources, project guidance and technical material that supported my development throughout the programme.
+
+Special thanks to the Code Institute mentors for their time, advice and knowledge, and for helping me work through challenges in development, testing and deployment.
+
+### Software and Services Used
+
+- **Visual Studio Code** for writing and organising the project code.
+- **Python and Django** for the application backend, booking logic, authentication and database-driven features.
+- **Bootstrap and Bootstrap Icons** for responsive layout components and interface icons.
+- **JavaScript and FullCalendar** for client-side interaction and the accommodation availability calendar.
+- **Adobe Photoshop** for editing images and creating the Stay Wyld logo and favicon.
+- **ChatGPT** for generating original image assets and supporting visual content creation.
+- **Chrome DevTools** for responsive testing, browser inspection and debugging.
+- **Google Lighthouse** for auditing performance, accessibility, best practices and SEO.
+- **Git and GitHub** for version control, source-code management and the project board.
+- **Cloudinary** for storing and delivering accommodation images in production.
+- **Heroku** for hosting and deploying the live application.
+- **W3C Markup Validation Service** for checking the validity of the HTML structure.
+- **W3C CSS Validation Service** for checking CSS syntax and standards compliance.
+- **JSHint** for identifying potential errors and quality issues in JavaScript.
+- **PEP 8** for checking Python style and formatting conventions.
+- **Chrome DevTools** for browser inspection, responsive layout testing and debugging.
+- **Google Lighthouse** for testing performance, accessibility, best practices and SEO.
 
 
