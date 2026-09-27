@@ -1,5 +1,8 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 
+{% block title %}Book {{ unit.name }} | Stay Wyld{% endblock %}
+{% block meta_description %}Book {{ unit.name }} at Stay Wyld. Check availability, choose your dates and review your stay details online.{% endblock %}
+
 <!-- Hidden fields to pass preselected dates into JS -->
 <input type="hidden" id="preselected-checkin" value="{{ request.GET.check_in }}" />
 <input type="hidden" id="preselected-checkout" value="{{ request.GET.check_out }}" />
