@@ -508,172 +508,184 @@ are clickable and open the full-page design evidence.
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Availability calendar | Shows booked and blocked dates and lets customers select valid dates. | [![Booking wireframe](documentation/wireframes/booking_create-full.svg)](documentation/wireframes/booking_create-full.svg) |
-| Booking validation | Enforces the two-night minimum, prevents overlaps and allows check-in on an existing checkout date. | Screenshot to add |
-| Pricing and confirmation | Calculates nights, nightly price and dog surcharge before confirmation. | [![Booking wireframe](documentation/wireframes/booking_create-full.svg)](documentation/wireframes/booking_create-full.svg) |
+| Availability calendar | Shows booked and blocked dates and lets customers select valid dates. | ![Create a Booking Calendar](documentation\features\customer_create_booking_available_date_validation.png)  |
+| Booking validation | Enforces the two-night minimum, prevents overlaps and allows check-in on an existing checkout date. | ![Minimum Stay Enforcement](documentation\features\customer-unit_detail_minimum_stay_validation.png)  |
+| Pricing and confirmation | Calculates nights, nightly price and dog surcharge before confirmation. | ![Create Booking Total Price Display](documentation\features\customer_create_booking_arrival_time_validation.png) ![Create Booking Feedback](documentation\features\customer_create_booking_feedback.png) |
+| My Bookings - View My Bookings | User can log in to view 'My Bookings' section and view all bookings along with status. | ![My Bookings List View](documentation\features\customer_my_bookings.png) ![Customer Booking Detail](documentation\features\customer_booking_detail.png) |
 
 ### Update Booking Request
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Request form | Customers can submit requested date, guest and dog changes for staff approval. | [![Booking update wireframe](documentation/wireframes/booking_update-full.svg)](documentation/wireframes/booking_update-full.svg) |
-| Request status | The customer can see that a change request is awaiting staff action. | Screenshot to add |
+| Request form | Customers can submit requested date, guest and dog changes for staff approval. | ![Booking Update Request](documentation\features\customer_booking_detail_update_request.png) |
+| Request Submitted | The customer can see that their update request has been submitted and awaiting admin approval. | ![Booking Update Request Feedback](documentation\features\customer_booking_update_request_feedback.png) |
+
 
 ### Delete Booking Request
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Cancellation request | Customers submit a cancellation request rather than directly deleting protected booking data. | [![Booking detail wireframe](documentation/wireframes/booking_detail-full.svg)](documentation/wireframes/booking_detail-full.svg) |
-| Staff decision | Staff can approve or decline the request, with the user-facing status displayed as Declined when appropriate. | Screenshot to add |
+| Cancellation request | Customers submit a cancellation request rather than directly deleting protected booking data. | ![Booking Cancel Request](documentation/features/customer_booking_detail_cancel_request.png) |
+| Staff decision | Staff can approve or decline the request, with the user-facing status displayed as Declined when appropriate. | ![Admin Can Accept Or Reject Cancel Request](documentation\features\admin_booking_detail_request_open.png) |
+| Customer cancellation request accepted | If the cancellation request was accepted by the admin this is reflected within the customers 'My Bookings' and booking detail. | ![Customer Cancellation Request Accepted](documentation\features\customer_booking_cancel_request_accepted.png) |
+| Customer cancellation request rejected | If the cancellation request was rejected by the admin this is reflected within the customers 'My Bookings' and booking detail and the booking stays open. | ![Customer cancellation request rejected](documentation\features\customer_booking_cancel_request_declined.png) |
 
 ### Admin Dashboard
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Staff overview | Provides navigation and summary access to units, customers, bookings and availability management. | [![Admin dashboard wireframe](documentation/wireframes/admin_dashboard-full.svg)](documentation/wireframes/admin_dashboard-full.svg) |
+| Staff overview | Provides navigation and summary access to units, customers, bookings and availability management. | ![Admin dashboard](documentation\features\admin_dashboard.png) |
 
 ### Admin Booking List
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Booking table | Shows customer, unit, dates, status, request status and actions. | [![Admin bookings wireframe](documentation/wireframes/admin_bookings_list-full.svg)](documentation/wireframes/admin_bookings_list-full.svg) |
-| Filters | Filters by current/upcoming, past, current, upcoming, unit, date range and exact booking ID. | [![Admin bookings wireframe](documentation/wireframes/admin_bookings_list-full.svg)](documentation/wireframes/admin_bookings_list-full.svg) |
-| Clear control | Resets all booking filters and returns to the default current/upcoming view. | Screenshot to add |
+| Booking table | Shows customer, unit, dates, status, request status and actions. | ![Admin bookings list](documentation\features\admin_bookings_list.png) |
+| Filters | Filters by current/upcoming, past, current, upcoming, unit, date range and exact booking ID. | ![Admin bookings list filter ID](documentation\features\admin_bookings_list_filter_ID.png) ![Admin bookings list filter by date](documentation\features\admin_bookings_list_filter_date.png) ![Admin bookings list filter by 'past'](documentation\features\admin_bookings_list_filter_past.png) |
+| Clear control | Resets all booking filters and returns to the default current/upcoming view. | ![Admin bookings list filter clear button](documentation\features\admin_bookings_list.png) |
 
 ### Admin Detail (including requests and modify)
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Booking details | Staff can view customer contact details, dates, guests, price and status. | [![Admin booking detail wireframe](documentation/wireframes/admin_booking_detail-full.svg)](documentation/wireframes/admin_booking_detail-full.svg) |
-| Modify booking | Staff can update booking dates, guests, dogs and status. | [![Admin booking detail wireframe](documentation/wireframes/admin_booking_detail-full.svg)](documentation/wireframes/admin_booking_detail-full.svg) |
-| Change requests | Staff can review open modification or cancellation requests and approve or decline them. | Screenshot to add |
+| Booking details | Staff can view customer contact details, dates, guests, price and status. | ![Admin booking detail](documentation\features\admin_booking_detail.png) |
+| Modify booking | Staff can update booking dates, guests, dogs and status. | ![Admin booking detail modify](documentation\features\admin_booking_modify.png) |
+| Change requests | Staff can review open modification or cancellation requests and approve or decline them. | ![Admin accept or decline request](documentation\features\admin_booking_detail_request_open.png) |
 
 ### Customer List
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Customer records | Superusers can view registered customer names, email, phone, booking count and active-booking state. | [![Admin customers wireframe](documentation/wireframes/admin_customers_list-full.svg)](documentation/wireframes/admin_customers_list-full.svg) |
-| Search and sorting | Customers can be sorted A-Z or by active booking and searched by partial name with reset control. | [![Admin customers wireframe](documentation/wireframes/admin_customers_list-full.svg)](documentation/wireframes/admin_customers_list-full.svg) |
+| Customer records | Superusers can view registered customer names, email, phone, booking count and active-booking state. | ![Admin customers list](documentation\features\admin_customers_list.png) |
+| Search and sorting | Customers can be sorted A-Z or by active booking and searched by partial name with reset control. | ![Admin customer list filter by name](documentation\features\admin_customers_list_filter_name.png) ![Admin customer list filter by active](documentation\features\admin_customers_list_filter_active.png) |
 
 ### Customer Detail (including modify and delete)
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Customer profile | Superusers can view and update customer name, email, address and phone details. | [![Admin customer detail wireframe](documentation/wireframes/admin_customer_detail-full.svg)](documentation/wireframes/admin_customer_detail-full.svg) |
-| Customer bookings | Displays bookings associated with the selected customer. | [![Admin customer detail wireframe](documentation/wireframes/admin_customer_detail-full.svg)](documentation/wireframes/admin_customer_detail-full.svg) |
-| Protected account actions | Customer deletion and sensitive actions require authorised staff access and confirmation. | Screenshot to add |
+| Customer profile | Superusers can view and update customer name, email, address and phone details. | ![Admin customer detail](documentation\features\admin_customer_detail.png) |
+| Customer bookings | Displays bookings associated with the selected customer. | ![Admin customer detail bookings](documentation\features\admin_customer_detail_cont..png) |
+| Admin customer update feedback | Admin can update the customers profile, feedback is then shown once the changes are saved. | ![Admin customer update feedback](documentation\features\admin_customer_update_feedback.png) |
 
 ### Unit List
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Unit overview | Staff can view the available unit records and access each unit's management page. | [![Admin units wireframe](documentation/wireframes/admin_units_list-full.svg)](documentation/wireframes/admin_units_list-full.svg) |
+| Unit overview | Staff can view the available unit records and access each unit's management page. | ![Admin units wireframe](documentation\features\admin_units_list.png) |
 
 ### Unit Detail (including update)
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Unit editing | Staff can update name, descriptions, capacity, pricing, dog settings and active status. | [![Admin unit detail wireframe](documentation/wireframes/admin_unit_detail-full.svg)](documentation/wireframes/admin_unit_detail-full.svg) |
-| Media management | Staff can upload, order and delete main and gallery images stored through Cloudinary. | [![Admin unit detail wireframe](documentation/wireframes/admin_unit_detail-full.svg)](documentation/wireframes/admin_unit_detail-full.svg) |
-| Blocked availability | Staff can select dates and mark them unavailable or available. Booked dates cannot be changed. | [![Admin unit detail wireframe](documentation/wireframes/admin_unit_detail-full.svg)](documentation/wireframes/admin_unit_detail-full.svg) |
+| Unit editing | Staff can update name, descriptions, capacity, pricing, dog settings and active status. | ![Admin unit detail](documentation\features\admin_unit_detail.png) ![Admin unit detail cont.](documentation\features\admin_unit_detail_cont..png) |
+| Media management | Staff can upload, order and delete main and gallery images stored through Cloudinary. | ![Admin unit detail wireframe](documentation\features\admin_unit_detail_gallery.png) |
+| Blocked availability | Staff can select dates and mark them unavailable or available. Booked dates cannot be changed. | ![Admin unit availability](documentation\features\admin_unit_detail_availability.png) |
 
----
-# =ػ� Technologies Used
+## Technologies Used
 
+### Overview
 
+Stay Wyld is a full-stack web application for browsing glamping accommodation, checking availability and managing bookings. It is built with Django and uses Python for booking logic, customer accounts, authentication, database models and staff administration.
 
-<!-- TODO:
-
-Keep this list updated as you build the project. Only list technologies you actually use.
-
--->
-
-
+Django templates generate the HTML pages. Bootstrap provides responsive components, custom CSS provides the Stay Wyld visual design, and JavaScript adds client-side interaction such as image galleries, booking forms and the availability calendar.
 
 ### Frontend
 
-
-
-- **HTML5**   Semantic structure and content.
-
-- **CSS3**   Styling, layout and responsive design.
-
-- **JavaScript**   Client-side interaction and validation.
-
-
+- [HTML5](https://developer.mozilla.org/en-US/docs/Web/HTML) for semantic page structure and content.
+- [CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS) for responsive layouts and custom styling.
+- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) for client-side interaction and validation.
+- [Bootstrap 5](https://getbootstrap.com/) and [Bootstrap Icons](https://icons.getbootstrap.com/) for responsive components and interface icons.
+- [FullCalendar](https://fullcalendar.io/) for displaying accommodation availability.
 
 ### Backend
 
-
-
-- **Python**   Backend programming and booking/business logic.
-
-- **Django**   Web framework, routing, templates, forms, authentication and administration.
-
-- **Django ORM**   Database interaction and model relationships.
-
-
+- [Python](https://www.python.org/) and [Django](https://www.djangoproject.com/) for the application, routing, templates, forms, authentication, sessions and administration.
+- [Django ORM](https://docs.djangoproject.com/en/stable/topics/db/queries/) for database queries and model relationships.
+- [django-admin-sortable2](https://github.com/jrief/django-admin-sortable2) for ordering accommodation gallery images in the admin area.
+- [python-dotenv](https://pypi.org/project/python-dotenv/) for loading local settings from `.env`.
+- [dj-database-url](https://pypi.org/project/dj-database-url/) for parsing the database connection URL.
 
 ### Database
 
+The application uses Django's database abstraction, allowing separate databases for development and deployment:
 
+- [SQLite](https://www.sqlite.org/) is the default local database stored in `db.sqlite3`.
+- [PostgreSQL](https://www.postgresql.org/) is used by the deployed Heroku application.
+- [psycopg2-binary](https://www.psycopg.org/) provides the PostgreSQL database adapter.
 
-<!-- TODO:
+Django migrations manage the schema for customer profiles, accommodation units, gallery images, blocked dates, bookings and booking change requests.
 
-Add the actual database technology you use.
+### Media and Static Files
 
--->
+- [Cloudinary](https://cloudinary.com/) and [django-cloudinary-storage](https://pypi.org/project/django-cloudinary-storage/) store and deliver accommodation images in production.
+- [Pillow](https://python-pillow.org/) provides image processing support for uploaded images.
+- [WhiteNoise](https://whitenoise.readthedocs.io/) serves static files through the deployed WSGI application.
 
+## Deployment
 
+This project can be copied from GitHub, run locally with SQLite, and deployed to Heroku with PostgreSQL and Cloudinary-backed media storage.
 
-- **PostgreSQL**   Production relational database.
+### Fork the Repository
 
+Forking creates your own GitHub copy of the project, which you can modify and deploy independently.
 
+1. Sign in to [GitHub](https://github.com/).
+2. Open the [Stay Wyld repository](https://github.com/CEAdlin/capstone_staywyld) and select **Fork**.
+3. Choose your GitHub account as the destination and create the fork.
 
-### Media
+### Clone the Repository
 
+Clone your fork to your computer after forking it:
 
+```powershell
+git clone https://github.com/<your-github-username>/capstone_staywyld.git
+cd capstone_staywyld
+```
 
-- **Cloudinary**   Cloud-based storage and optimisation of accommodation images and other media.
+### Run Locally
 
+Create a virtual environment and install the pinned dependencies:
 
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
 
-### Deployment
+Create a `.env` file in the project root. The local configuration can use the included SQLite database:
 
+```env
+SECRET_KEY=your-local-secret-key
+DEBUG=True
+DATABASE_URL=sqlite:///db.sqlite3
+```
 
+Create the database tables and start the development server:
 
-- **Heroku**   Hosting and deployment of the Django application.
+```powershell
+python manage.py migrate
+python manage.py runserver
+```
 
-- **Git & GitHub**   Version control and source-code management.
+The application will be available at `http://127.0.0.1:8000/`.
 
+### Deploy to Heroku
 
+1. Create a [Heroku](https://www.heroku.com/) account and select **Create new app** from the dashboard.
+2. Give the app a unique name and choose a region.
+3. In the app's **Settings**, open **Config Vars** and add:
+    - `SECRET_KEY`: a secure production secret.
+    - `DEBUG`: `False`.
+    - `DATABASE_URL`: the PostgreSQL database connection URL.
+    - `CLOUDINARY_URL`: the Cloudinary connection URL used for uploaded accommodation images.
+4. Open the **Deploy** tab, select GitHub as the deployment method and connect the forked repository.
+5. Select the branch to deploy and choose **Deploy Branch**.
 
-### Development Tools
+Heroku installs the dependencies from `requirements.txt` and uses the `Procfile` command `gunicorn config.wsgi` to serve the Django application. WhiteNoise serves static files, while Cloudinary stores production media. After deployment, run migrations from the Heroku app's terminal or release process if they have not been applied automatically.
 
+### Updating a Deployment
 
-
-<!-- TODO:
-
-Add any tools you actually use, for example:
-
--->
-
-
-
-- Visual Studio Code
-
-- GitHub
-
-- Chrome DevTools
-
-- Figma / Balsamiq / Canva / other design tool
-
-- Google Lighthouse
-
-
-
----
-
+When GitHub integration is connected, push changes to the selected branch and redeploy from Heroku. With manual deployment enabled, select **Deploy Branch** after each push.
 
 
 # >��� Testing
@@ -685,62 +697,6 @@ Please see TESTING.md
 
 
 
-
-
-
-## Deployment
-
-This website is deployed to Heroku from a GitHub repository, the following steps were taken:
-
-
-
-#### Creating Repository on GitHub
-
-- First make sure you are signed into [Github](https://github.com/) and go to the code institutes template, which can be found [here](https://github.com/Code-Institute-Org/gitpod-full-template).
-
-- Then click on **use this template** and select **Create a new repository** from the drop-down. Enter the name for the repository and click **Create repository from template**.
-
-- Once the repository was created, I clicked the green **gitpod** button to create a workspace in gitpod so that I could write the code for the site.
-
-
-
-#### Creating an app on Heroku
-
-- After creating the repository on GitHub, head over to [heroku](https://www.heroku.com/) and sign in.
-
-- On the home page, click **New** and **Create new app** from the drop down.
-
-- Give the app a name(this must be unique) and select a **region** I chose **Europe** as I am in Europe, Then click **Create app**.
-
-
-
-#### Create a database 
-
-- Log into [CIdatabase maker](https://www.heroku.com/](https://dbs.ci-dbs.net/))
-
-- add your email address in input field and submit the form
-
-- open database link in your email
-
-- paste dabase URL in your DATABASE_URL variable in env.py file and in Heroku config vars
-
-
-
-#### Deploying to Heroku.
-
-- Head back over to [heroku](https://www.heroku.com/) and click on your **app** and then go to the **Settings tab**
-
-- On the **settings page** scroll down to the **config vars** section and enter the **DATABASE_URL** which you will set equal to the elephantSQL URL, create **Secret key** this can be anything,
-
-**CLOUDINARY_URL** this will be set to your cloudinary url and finally **Port** which will be set to 8000.
-
-- Then scroll to the top and go to the **deploy tab** and go down to the **Deployment method** section and select **Github** and then sign into your account.
-
-- Below that in the **search for a repository to connect to** search box enter the name of your repository that you created on **GitHub** and click **connect**
-
-- Once it has been connected scroll down to the **Manual Deploy** and click **Deploy branch** when it has deployed you will see a **view app** button below and this will bring you to your newly deployed app.
-
-- Please note that when deploying manually you will have to deploy after each change you make to your repository.
 
 
 
