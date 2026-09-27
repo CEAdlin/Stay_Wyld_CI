@@ -225,774 +225,359 @@ The implemented CSS variables are:
 
 ![Stay Wyld colour palette](documentation\staywyld_colourpalette.png)
 
-### Accessibility and Responsive Planning
+### UX, Accessibility and Responsive Planning
 
 The templates use semantic headings, labelled form controls, descriptive image
 alternative text, native buttons and links, and responsive CSS media queries.
 The heading structure was reviewed so pages use a logical `h1`, `h2` and `h3`
-sequence. 
-
-### Lighthouse Evidence
-
-Lighthouse audits the deployed page for Performance, Accessibility, Best
-Practices and SEO. Run Lighthouse against the deployed site and add the report
-or screenshot here:
-
-```markdown
-![Lighthouse results](documentation/Lighthouse_Results.png)
-```
-
-| Lighthouse category | Score | Notes and improvements |
-| --- | --- | --- |
-| Performance | Add score | Add issues investigated |
-| Accessibility | Add score | Add contrast, alt-text and heading results |
-| Best Practices | Add score | Add deployment and security results |
-| SEO | Add score | Add title and metadata results |
-
-Add the Lighthouse screenshot and any contrast-check evidence to
-`documentation/` before final submission.
-
-## Agile Methodology
-### Implemented UX and accessibility work includes:
+sequence. The implementation also includes:
 
 - Clear navigation and booking calls to action.
 - Separate customer and staff workflows.
-- Logical `h1`, `h2` and `h3` heading hierarchy.
-- Descriptive alternative text for content images.
-- Labels on form controls and clear validation messages.
+- Clear validation messages and user feedback.
 - Keyboard-friendly native controls and visible focus styling.
 - Responsive layouts without loss of core functionality.
 
-## Project Board- Showing MoSCoW Prioritisation
+### Responsive Planning
+
+Responsive behaviour was considered during the planning and wireframing stages.
+The layouts were designed for desktop, tablet and mobile screen sizes using CSS
+media queries, Flexbox and Grid.
+
+On the homepage, the three accommodation units remain as full-width rows rather
+than being forced into narrow columns. On booking pages, the availability
+calendar and booking form sit beside each other on larger screens and stack
+vertically on smaller screens. Tables and administration filters are allowed to
+wrap or scroll where necessary so that functionality remains usable on mobile
+devices.
+
+Responsive testing was carried out using browser developer tools and the
+deployed site. The main checks included readable text, usable navigation,
+accessible form controls, correctly scaled images, no unnecessary horizontal
+scrolling and buttons that remain easy to use on touch screens.
+
+### Lighthouse Evidence
+
+Lighthouse was used to audit the deployed site across Performance,
+Accessibility, Best Practices and SEO. The evidence below includes a mobile
+homepage audit and a desktop unit-page audit. Scores can vary depending on
+network conditions, device emulation and the page being tested.
+
+Homepage - Mobile:
+![Lighthouse results mobile](documentation\lighthouse_homepage_mobile.png)
+Units page - Desktop:
+![Lighthouse results desktop](documentation\lighthouse_unitpage_desktop.png)
+
+
+| Lighthouse category | Score | Notes and improvements |
+| --- | --- | --- |
+| Performance | 78 | The site contains image-rich accommodation content. Images were compressed and converted to WebP to reduce transfer size. Remaining opportunities include reducing render-blocking CSS and external font requests. |
+| Accessibility | 97 | The remaining deduction is related to colour contrast in the availability calendar, where blocked dates use a muted grey treatment. This is documented as a future improvement while preserving the visual distinction between available, booked and blocked dates. |
+| Best Practices | 100 | No Lighthouse best-practice failures were reported in the tested audit. Production settings were checked separately to ensure `DEBUG` is disabled and secrets are stored as environment variables. |
+| SEO | 100 | The audit found no SEO issues in the tested pages. Page titles and meta descriptions are present. |
+
+## Agile Methodology
+
+Agile methodology was used to develop Stay Wyld in small, manageable feature
+slices rather than attempting to build the complete application at once. The
+work was planned around the needs of visitors, customers and administrators,
+then refined as features were implemented and tested.
+
+### User Stories and Acceptance Criteria
+
+The product backlog was organised into user stories on the GitHub Project Board.
+Each story described the user type, desired outcome and reason for the feature.
+Acceptance criteria were used to define what successful completion looked like.
+For example, the booking story required date selection, availability checking,
+price calculation, the two-night minimum and successful database storage.
+
+Stories were broken into practical development tasks, such as creating models,
+views, templates, validation, permissions and tests. The full story tables are
+documented earlier in this README and the detailed issue-style stories are in
+`documentation/github_issues.md`.
+
+### Kanban Board
 
 ![Project Board:](documentation\Project_Board.png)
 
-### MoSCoW Priorities For Stay Wyld
+The GitHub Project Board was used as a Kanban board. Cards were organised by
+status and moved as work progressed:
+
+Completed features were checked manually and with automated tests before being
+treated as Done. The board provided a visible record of planned, active and
+completed work.
+
+![User Story:](documentation\user-story.png)
+
+Story points were not used. Work was prioritised using MoSCoW labels and user-story priority.
+
+### MoSCoW Prioritisation
+
+The stories were prioritised using MoSCoW:
+
 - **Must:** Essential booking, account and administration functionality.
 - **Should:** Important improvements that support the main workflows.
 - **Could:** Useful extensions that are outside the minimum viable product.
 - **Won't:** Outside the scope of this project, but could be useful additions further down the line.
 
-
-
-
-
-<!-- TODO:
-
-Explain how you used Agile throughout the project.
-
-
-
-Include:
-
-- Your Kanban board
-
-- Product backlog
-
-- User stories
-
-- Acceptance criteria
-
-- Tasks
-
-- MoSCoW prioritisation
-
-- Story points, if used
-
-- Sprint planning
-
-- Sprint reviews
-
-- Retrospectives
-
-- How requirements changed during development
-
-- How you moved cards between To Do / In Progress / Testing / Done
-
-
-
-Add screenshots of your project board at different stages.
-
-
-
-Explain that development was broken into small, manageable user stories rather than attempting to build the entire website at once.
-
--->
-
-
-
-### MoSCoW Prioritisation
-
-
-
-The project requirements were prioritised using the MoSCoW method:
-
-
-
-- **Must Have**   Essential functionality required for the website to fulfil its purpose.
-
-- **Should Have**   Important functionality that improves the user experience but is not essential for the minimum viable product.
-
-- **Could Have**   Additional functionality that would improve the website if time allows.
-
-- **Won't Have**   Functionality deliberately excluded from the current version but potentially suitable for future development.
-
-
-
-<!-- TODO:
-
-Add your MoSCoW board/screenshot here.
-
--->
-
-
-
-### Example Sprint Structure
-
-
-
-<!-- TODO:
-
-Replace this with your actual sprint information and dates.
-
--->
-
-
-
-| Sprint | Goal | Main Stories |
-
-|---|---|---|
-
-| Sprint 1 | Build the responsive frontend | Homepage, navigation, accommodation |
-
-| Sprint 2 | Build customer functionality | Registration, login, enquiries |
-
-| Sprint 3 | Build booking functionality | Availability, booking, two-night minimum |
-
-| Sprint 4 | Build administration | Units, customers, bookings |
-
-| Sprint 5 | Integrate external services | Cloudinary, database, deployment |
-
-| Sprint 6 | Testing and refinement | Testing, accessibility, bug fixes |
-
-
+This prioritisation kept the core booking and authentication journeys ahead of
+optional features such as reviews, reminder emails and online payments.
+
+### Iteration and Review
+
+Development changed in response to testing, browser behaviour and deployment
+feedback. Iterative improvements included:
+
+- Refining responsive layouts for mobile, tablet and desktop.
+- Correcting booking date validation and allowing check-in on checkout dates.
+- Adding blocked-date availability management.
+- Adding booking ID, unit, date and status filters.
+- Adding customer-name search and reset controls.
+- Moving uploaded media to Cloudinary for reliable production storage.
+- Improving heading hierarchy, alternative text and meta descriptions.
+- Removing invalid CDN references identified through Lighthouse.
+
+### Agile Reflection
+
+The board and user stories helped keep the work visible and prioritised. Testing
+each feature as it was completed made it easier to identify issues early and
+adapt the design without losing sight of the main booking purpose. Features
+that were not required for the first version were kept as future scope rather
+than delaying the core release.
+
+# Stay Wyld Database Diagram
+
+```mermaid
+erDiagram
+    USER ||--o| CUSTOMER_PROFILE : has
+    USER ||--o{ BOOKING : makes
+    USER ||--o{ BOOKING_CHANGE_REQUEST : submits
+    UNIT ||--o{ BOOKING : receives
+    UNIT ||--o{ UNIT_GALLERY_IMAGE : contains
+    UNIT ||--o{ UNIT_BLOCKED_DATE : blocks
+    BOOKING ||--o{ BOOKING_CHANGE_REQUEST : receives
+
+    USER {
+        int id PK
+        string username
+        string email
+        boolean is_staff
+        boolean is_superuser
+    }
+
+    CUSTOMER_PROFILE {
+        int id PK
+        int user_id FK
+        string full_name
+        text address
+        string phone_number
+    }
+
+    UNIT {
+        int id PK
+        string name
+        string slug
+        string short_description
+        text description
+        image main_image
+        int max_adults
+        int max_children
+        decimal price_per_night
+        decimal dog_surcharge
+        string dog_charge_type
+        boolean dogs_allowed
+        boolean active
+    }
+
+    UNIT_GALLERY_IMAGE {
+        int id PK
+        int unit_id FK
+        image image
+        int position
+    }
+
+    UNIT_BLOCKED_DATE {
+        int id PK
+        int unit_id FK
+        date date
+    }
+
+    BOOKING {
+        int id PK
+        int customer_id FK
+        int unit_id FK
+        string customer_name
+        email customer_email
+        string customer_phone
+        date check_in_date
+        date check_out_date
+        int adults
+        int children
+        int infants
+        int dogs
+        decimal dog_surcharge
+        decimal nightly_price
+        int total_nights
+        decimal total_amount
+        text special_requests
+        boolean agreed_terms
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    BOOKING_CHANGE_REQUEST {
+        int id PK
+        int booking_id FK
+        int customer_id FK
+        string request_type
+        text message
+        date requested_check_in
+        date requested_check_out
+        int requested_adults
+        int requested_children
+        int requested_dogs
+        string status
+        datetime created_at
+    }
+```
+
+## Relationship Notes
+
+ Each registered customer has one `CustomerProfile` linked to exactly one Django `User`, enforced by the one-to-one relationship. 
+ Staff and superuser accounts use Django's built-in `User` account for administration and are intentionally exempt from the customer-specific profile. `CustomerProfile.user_id` is therefore unique. 
+ `Unit.slug` is also unique in Django, although those uniqueness markers are omitted from the Mermaid field syntax for parser compatibility.
+ An authenticated customer can have many bookings. An administrator-created booking may have no linked user because the customer's name, email and phone are stored directly on the booking.
+ A unit can have many bookings, gallery images and blocked dates.
+ A booking can have multiple modification or cancellation requests, each submitted by a customer user, only one request per unit can be open at any one time.
+ The unique unit/date constraint prevents the same date being blocked more than
+ once for a particular unit.
+
+## Workflow Notes
+
+- A customer booking is initially stored with a `PENDING` status. Staff can
+    review it and change the status to `CONFIRMED`, `CANCELLED` or `COMPLETED`.
+- Customer modification and cancellation requests are stored separately in
+    `BookingChangeRequest`. Staff approval is represented by the request status
+    changing from `OPEN` to `APPROVED` or the internal `REJECTED` value, which is
+    displayed to users as **Declined**.
+- A booking is not considered available only because it is pending. The booking
+    availability logic checks date overlap and ignores cancelled bookings.
+- Staff can create `UnitBlockedDate` records for maintenance or private use.
+    Blocked nights are displayed as unavailable and rejected by the booking
+    validation logic.
+- A following booking can check in on the previous booking's checkout date,
+    because the checkout date is treated as the exclusive end of the stay.
+
+## Features
+
+The tables below summarise the main implemented features. Wireframe thumbnails
+are clickable and open the full-page design evidence. 
+
+### Navigation (including login and registration)
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Public navigation | Main navigation bar with top, user-nav-bar showing login status | ![Index Navigation](documentation\features\index_navbarsandhero.png) |
+| Login and registration | Customers can register, log in and log out. Navigation changes according to authentication state and role. | ![Login Page](documentation\features\login.png)![Register Page](documentation\features\register_validation.png) |
+
+### Security
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Defensive programming | Forms validate required values, dates, guest numbers, passwords and booking rules. Invalid input receives clear feedback. | ![Register Field Required](documentation\features\register_validation.png) ![Arrival Time Field Required](documentation\features\customer_create_booking_arrival_time_validation.png) ![Date Availability Validation](documentation\features\customer_create_booking_available_date_validation.png) ![Name Field Required](documentation\features\customer_create_booking_name_validation.png) ![Minimum Stay Enforcement](documentation\features\customer-unit_detail_minimum_stay_validation.png) ![Admin Delete Booking Confirmation](documentation\features\admin_bookings_list_delete_prompt.png) |
+| Authentication and authorisation | If not logged in - directed to login-page to access user/super-user restricted content. If user is logged in and attempts to access super-user restricted content request will be ignored and they will be re-drected to index.html. | ![Re-direct To Login Page](documentation\features\login.png) |
+
+### Homepage
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Brand introduction | Hero content introduces Stay Wyld and provides clear booking calls to action. | ![Homepage Hero](documentation\features\index_navbarsandhero.png)![Homepage Booking Call To Action](documentation\features\index_booknow_cta.png) |
+| Unit rows | Three accommodation units are shown as full-width stacked rows with images, descriptions, facilities and booking links. | ![Index Stay With Us Section](documentation\features\index_booknow_cta.png) |
+| About and gallery | The homepage continues with the About section, photo gallery and footer contact details. | ![Index Gallery](documentation\features\index_gallery.png) ![Index Gallery & Footer](documentation\features\index_footer.png)|
+
+### Unit Details
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Unit information | Displays unit name, description, facilities, capacity, pricing and main image. | ![Customer Unit Detail](documentation\features\customer_unit_detail.png) ![Customer Unit Detail Gallery & Facilities](documentation\features\customer_unit_detail_facilities_and_gallery.png) ![Customer Unit Occupancy etc.](documentation\features\Customer_Unit_Detail_Occupancy.png) ![Customer Unit Detail Availability Calendar](documentation\features\customer-unit_detail_availability_calendar.png) |
+| Gallery | Displays additional Cloudinary-backed gallery images. | ![Customer Unit Detail Cloudinary Gallery](documentation\features\customer_unit_detail_booknow_cta.png) |
+| Booking call to action | Links the visitor to the booking flow for the selected unit. | ![Customer Unit Book Now Call To Action](documentation\features\customer-unit_detail_availability_calendar.png) |
+
+### Create A Booking
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Availability calendar | Shows booked and blocked dates and lets customers select valid dates. | [![Booking wireframe](documentation/wireframes/booking_create-full.svg)](documentation/wireframes/booking_create-full.svg) |
+| Booking validation | Enforces the two-night minimum, prevents overlaps and allows check-in on an existing checkout date. | Screenshot to add |
+| Pricing and confirmation | Calculates nights, nightly price and dog surcharge before confirmation. | [![Booking wireframe](documentation/wireframes/booking_create-full.svg)](documentation/wireframes/booking_create-full.svg) |
+
+### Update Booking Request
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Request form | Customers can submit requested date, guest and dog changes for staff approval. | [![Booking update wireframe](documentation/wireframes/booking_update-full.svg)](documentation/wireframes/booking_update-full.svg) |
+| Request status | The customer can see that a change request is awaiting staff action. | Screenshot to add |
+
+### Delete Booking Request
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Cancellation request | Customers submit a cancellation request rather than directly deleting protected booking data. | [![Booking detail wireframe](documentation/wireframes/booking_detail-full.svg)](documentation/wireframes/booking_detail-full.svg) |
+| Staff decision | Staff can approve or decline the request, with the user-facing status displayed as Declined when appropriate. | Screenshot to add |
+
+### Admin Dashboard
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Staff overview | Provides navigation and summary access to units, customers, bookings and availability management. | [![Admin dashboard wireframe](documentation/wireframes/admin_dashboard-full.svg)](documentation/wireframes/admin_dashboard-full.svg) |
+
+### Admin Booking List
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Booking table | Shows customer, unit, dates, status, request status and actions. | [![Admin bookings wireframe](documentation/wireframes/admin_bookings_list-full.svg)](documentation/wireframes/admin_bookings_list-full.svg) |
+| Filters | Filters by current/upcoming, past, current, upcoming, unit, date range and exact booking ID. | [![Admin bookings wireframe](documentation/wireframes/admin_bookings_list-full.svg)](documentation/wireframes/admin_bookings_list-full.svg) |
+| Clear control | Resets all booking filters and returns to the default current/upcoming view. | Screenshot to add |
+
+### Admin Detail (including requests and modify)
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Booking details | Staff can view customer contact details, dates, guests, price and status. | [![Admin booking detail wireframe](documentation/wireframes/admin_booking_detail-full.svg)](documentation/wireframes/admin_booking_detail-full.svg) |
+| Modify booking | Staff can update booking dates, guests, dogs and status. | [![Admin booking detail wireframe](documentation/wireframes/admin_booking_detail-full.svg)](documentation/wireframes/admin_booking_detail-full.svg) |
+| Change requests | Staff can review open modification or cancellation requests and approve or decline them. | Screenshot to add |
+
+### Customer List
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Customer records | Superusers can view registered customer names, email, phone, booking count and active-booking state. | [![Admin customers wireframe](documentation/wireframes/admin_customers_list-full.svg)](documentation/wireframes/admin_customers_list-full.svg) |
+| Search and sorting | Customers can be sorted A-Z or by active booking and searched by partial name with reset control. | [![Admin customers wireframe](documentation/wireframes/admin_customers_list-full.svg)](documentation/wireframes/admin_customers_list-full.svg) |
+
+### Customer Detail (including modify and delete)
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Customer profile | Superusers can view and update customer name, email, address and phone details. | [![Admin customer detail wireframe](documentation/wireframes/admin_customer_detail-full.svg)](documentation/wireframes/admin_customer_detail-full.svg) |
+| Customer bookings | Displays bookings associated with the selected customer. | [![Admin customer detail wireframe](documentation/wireframes/admin_customer_detail-full.svg)](documentation/wireframes/admin_customer_detail-full.svg) |
+| Protected account actions | Customer deletion and sensitive actions require authorised staff access and confirmation. | Screenshot to add |
+
+### Unit List
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Unit overview | Staff can view the available unit records and access each unit's management page. | [![Admin units wireframe](documentation/wireframes/admin_units_list-full.svg)](documentation/wireframes/admin_units_list-full.svg) |
+
+### Unit Detail (including update)
+
+| Feature | Description | Screenshot |
+| --- | --- | --- |
+| Unit editing | Staff can update name, descriptions, capacity, pricing, dog settings and active status. | [![Admin unit detail wireframe](documentation/wireframes/admin_unit_detail-full.svg)](documentation/wireframes/admin_unit_detail-full.svg) |
+| Media management | Staff can upload, order and delete main and gallery images stored through Cloudinary. | [![Admin unit detail wireframe](documentation/wireframes/admin_unit_detail-full.svg)](documentation/wireframes/admin_unit_detail-full.svg) |
+| Blocked availability | Staff can select dates and mark them unavailable or available. Booked dates cannot be changed. | [![Admin unit detail wireframe](documentation/wireframes/admin_unit_detail-full.svg)](documentation/wireframes/admin_unit_detail-full.svg) |
 
 ---
-
-
-
-## Typography
-
-
-
-<!-- TODO:
-
-Explain the fonts you have actually used.
-
-
-
-Include:
-
-- Primary font
-
-- Secondary font
-
-- Why you chose them
-
-- Where each font is used
-
-- Where the fonts were sourced from
-
-
-
-Add a screenshot if appropriate.
-
--->
-
-
-
----
-
-
-
-## Colour Scheme
-
-
-
-<!-- TODO:
-
-Add an image/screenshot of your colour palette.
-
-
-
-Explain:
-
-- Primary colour
-
-- Secondary colours
-
-- Background colours
-
-- Text colours
-
-- Why the colours were chosen
-
-- How contrast and accessibility were considered
-
-
-
-Example:
-
-
-
-![Colour Palette](docs/images/colour-palette.png)
-
--->
-
-
-
----
-
-
-
-## Database Diagram
-
-
-
-<!-- TODO:
-
-Insert your completed Entity Relationship Diagram/database diagram here.
-
-
-
-Show the relationships between your models.
-
-
-
-Likely models may include:
-
-- User
-
-- Customer/Profile
-
-- Unit
-
-- Booking
-
-- Enquiry
-
-- Image
-
-
-
-Explain the relationships between the models and why they were structured this way.
-
-
-
-For example:
-
-- A customer can have multiple bookings.
-
-- A unit can have multiple bookings.
-
-- A booking belongs to one customer.
-
-- A booking belongs to one accommodation unit.
-
-- An administrator can manage units and bookings.
-
-
-
-Add your actual diagram here:
-
-
-
-![Database Diagram](docs/images/database-diagram.png)
-
--->
-
-
-
----
-
-
-
-# P+ Features
-
-
-
-The website provides a range of features designed to give visitors a straightforward way to discover the glampsite and make a booking, while providing administrators with the tools required to manage the site.
-
-
-
-<!-- TODO:
-
-Add screenshots throughout this section showing the finished features.
-
--->
-
-
-
-## Navigation
-
-
-
-<!-- TODO:
-
-Explain your navigation.
-
-
-
-Include:
-
-- Logo/branding
-
-- Navigation links
-
-- Responsive/mobile navigation
-
-- Links to accommodation
-
-- Links to enquiries
-
-- Login/register
-
-- Customer account
-
-- Booking
-
-- Admin access if displayed
-
-
-
-Add screenshots of desktop and mobile navigation.
-
-
-
-![Navigation](docs/images/navigation.png)
-
--->
-
-
-
----
-
-
-
-## Footer
-
-
-
-<!-- TODO:
-
-Explain what is included in your footer.
-
-
-
-Possible content:
-
-- Logo
-
-- Navigation links
-
-- Social media links
-
-- Contact details
-
-- Copyright
-
-- Privacy/cookie information
-
-
-
-Add screenshot.
-
-
-
-![Footer](docs/images/footer.png)
-
--->
-
-
-
----
-
-
-
-## Home Page
-
-
-
-<!-- TODO:
-
-Describe the homepage and its purpose.
-
-
-
-Explain:
-
-- Hero image
-
-- Introduction
-
-- Calls to action
-
-- Accommodation preview
-
-- Site information
-
-- Links to booking/enquiry
-
-- Responsive design
-
-
-
-Add screenshots.
-
-
-
-![Home Page](docs/images/home-page.png)
-
--->
-
-
-
----
-
-
-
-## Accommodation
-
-
-
-<!-- TODO:
-
-Explain how the three accommodation units are displayed.
-
-
-
-Include:
-
-- Unit photographs
-
-- Descriptions
-
-- Facilities
-
-- Occupancy
-
-- Pricing if applicable
-
-- Availability
-
-- Booking CTA
-
-- Individual unit pages if applicable
-
-
-
-Explain how the accommodation information is retrieved from the Django database rather than hard-coded.
-
-
-
-Add screenshots.
-
--->
-
-
-
----
-
-
-
-## Enquiries
-
-
-
-<!-- TODO:
-
-Explain the customer enquiry form.
-
-
-
-Include:
-
-- Name
-
-- Email
-
-- Message
-
-- Required fields
-
-- Validation
-
-- Success/error messages
-
-- How enquiries are stored
-
-- How administrators access enquiries
-
-
-
-Add screenshots of:
-
-- Empty form
-
-- Validation error
-
-- Successful submission
-
--->
-
-
-
----
-
-
-
-## Booking System
-
-
-
-<!-- TODO:
-
-This is one of the most important features.
-
-
-
-Explain the complete booking journey:
-
-
-
-1. Customer registers/logs in.
-
-2. Customer selects accommodation.
-
-3. Customer selects arrival date.
-
-4. Customer selects departure date.
-
-5. System calculates number of nights.
-
-6. System checks availability.
-
-7. System enforces the two-night minimum.
-
-8. Customer confirms booking.
-
-9. Booking is stored in the database.
-
-10. Customer receives confirmation.
-
-11. Administrator can view/manage the booking.
-
-
-
-Explain how Django/Python handles the business logic.
-
-
-
-Mention that server-side validation prevents customers from bypassing booking rules.
-
--->
-
-
-
-### Two-Night Minimum
-
-
-
-The booking system requires a minimum stay of two nights.
-
-
-
-<!-- TODO:
-
-Explain how you implemented this in Python/Django and show the relevant user-facing behaviour.
-
-
-
-For example:
-
-- A one-night booking is rejected.
-
-- A two-night booking is accepted.
-
-- Longer stays are accepted.
-
--->
-
-
-
----
-
-
-
-## CRUD
-
-
-
-CRUD functionality allows data to be:
-
-
-
-- **C**reate
-
-- **R**ead
-
-- **U**pdate
-
-- **D**elete
-
-
-
-<!-- TODO:
-
-Explain which parts of your application use CRUD functionality.
-
-
-
-For example:
-
-
-
-### Accommodation
-
-- Create a new accommodation unit
-
-- Read/view existing units
-
-- Update accommodation information
-
-- Delete/deactivate a unit
-
-
-
-### Bookings
-
-- Create a booking
-
-- Read bookings
-
-- Update booking information
-
-- Delete/cancel a booking
-
-
-
-### Enquiries
-
-- Create an enquiry
-
-- Read enquiries
-
-- Update enquiry status
-
-- Delete/archive enquiries
-
-
-
-Explain how Django Admin provides the administrator with access to these operations.
-
--->
-
-
-
----
-
-
-
-## Authentication & Authorisation
-
-
-
-<!-- TODO:
-
-Explain the difference between authentication and authorisation and how you implemented both.
-
-
-
-Authentication:
-
-- Registration
-
-- Login
-
-- Logout
-
-- Password handling
-
-- Sessions
-
-
-
-Authorisation:
-
-- Customers can access their own account/bookings.
-
-- Customers cannot access other customers' information.
-
-- Only authorised administrators can access management functionality.
-
-
-
-Explain how Django's built-in authentication system was used.
-
--->
-
-
-
----
-
-
-
-## Admin Area
-
-
-
-<!-- TODO:
-
-Explain your Django admin functionality.
-
-
-
-Include screenshots showing:
-
-- Admin login
-
-- Accommodation management
-
-- Customer management
-
-- Booking management
-
-- Enquiry management
-
-
-
-Explain how the administrator can:
-
-- Add/edit/remove units
-
-- View customers
-
-- View bookings
-
-- Modify bookings
-
-- Manage enquiries
-
-- Manage images if implemented
-
--->
-
-
-
----
-
-
-
 # =ػ� Technologies Used
 
 
