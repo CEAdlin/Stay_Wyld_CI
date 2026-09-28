@@ -19,8 +19,9 @@
                         <tr>
                             <th>Name</th>
                             <th>Active</th>
-                            <th>Max Guests</th>
-                            <th>Base Price</th>
+                            <th>Max Adults</th>
+                            <th>Max Children</th>
+                            <th>Nightly Price</th>
                             <th>Today’s Status</th>
                             <th>Actions</th>
                         </tr>
@@ -31,8 +32,9 @@
                         <tr>
                             <td>{{ unit.name }}</td>
                             <td>{{ unit.active }}</td>
-                            <td>{{ unit.max_guests }}</td>
-                            <td>£{{ unit.base_price }}</td>
+                            <td>{{ unit.max_adults }}</td>
+                            <td>{{ unit.max_children }}</td>
+                            <td>£{{ unit.price_per_night }}</td>
                             <td>{{ unit.today_status }}</td>
 
                             <td>
