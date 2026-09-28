@@ -30,6 +30,11 @@ def admin_booking_status_update(request, booking_id):
 
         if status not in dict(Booking.STATUS_CHOICES):
             messages.error(request, "Invalid booking status.")
+        elif status == "COMPLETED" and booking.check_out_date > date.today():
+            messages.error(
+                request,
+                "A booking cannot be marked completed before its checkout date.",
+            )
         else:
             booking.status = status
             booking.save(update_fields=["status"])
@@ -419,6 +424,7 @@ def admin_booking_list(request):
         booking.latest_request = (
             booking.change_requests.all().order_by("-created_at").first()
         )
+        booking.can_complete = booking.check_out_date <= today
 
     return render(
         request,
@@ -473,6 +479,13 @@ def admin_booking_detail(request, booking_id):
             messages.error(request, validation_error)
             return redirect(request.path)
 
+        if status == "COMPLETED" and check_out > date.today():
+            messages.error(
+                request,
+                "A booking cannot be marked completed before its checkout date.",
+            )
+            return redirect(request.path)
+
         nights = (check_out - check_in).days
         dog_surcharge = (
             Decimal("20.00")
@@ -496,6 +509,7 @@ def admin_booking_detail(request, booking_id):
         return redirect("admin_booking_list")
 
     change_requests = booking.change_requests.order_by("-created_at")
+    can_complete = booking.check_out_date <= date.today()
 
     return render(
         request,
@@ -504,6 +518,7 @@ def admin_booking_detail(request, booking_id):
             "booking": booking,
             "status_choices": Booking.STATUS_CHOICES,
             "change_requests": change_requests,
+            "can_complete": can_complete,
         },
     )
 

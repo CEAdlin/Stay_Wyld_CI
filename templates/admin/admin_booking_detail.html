@@ -68,7 +68,8 @@
                         class="form-select status-{{ booking.status|lower }}">
                     {% for value, label in status_choices %}
                         <option value="{{ value }}"
-                            {% if booking.status == value %}selected{% endif %}>
+                            {% if booking.status == value %}selected{% endif %}
+                            {% if value == "COMPLETED" and not can_complete %}disabled{% endif %}>
                             {{ label }}
                         </option>
                     {% endfor %}

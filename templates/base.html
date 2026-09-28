@@ -95,10 +95,11 @@
 
     {% if request.user.is_authenticated and request.user.is_staff %}
     {% if messages %}
-    <div class="messages">
+    <div class="messages message-popup" role="status" aria-live="polite">
         {% for message in messages %}
         <div class="alert alert-{{ message.tags }}">
             {{ message }}
+            <button type="button" class="message-popup-close" aria-label="Close message">&times;</button>
         </div>
         {% endfor %}
     </div>
@@ -186,6 +187,18 @@
 
     <!-- Modal Javascript -->
     <script>
+        document.querySelectorAll(".message-popup-close").forEach((closeButton) => {
+            closeButton.addEventListener("click", () => {
+                closeButton.parentElement.remove();
+            });
+        });
+
+        setTimeout(() => {
+            document.querySelectorAll(".message-popup .alert").forEach((message) => {
+                message.remove();
+            });
+        }, 5000);
+
         function openPasswordModal(actionType, objectId) {
             document.getElementById("modalActionType").value = actionType;
             document.getElementById("modalObjectId").value = objectId;

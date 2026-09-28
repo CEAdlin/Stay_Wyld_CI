@@ -61,7 +61,7 @@
                             <th>Check Out</th>
                             <th>Status</th>
                             <th>Request status</th>
-                            <th>Actions</th>
+                            <th colspan="2">Actions</th>
                         </tr>
                     </thead>
 
@@ -79,7 +79,9 @@
                                     <select name="status" class="status-button status-{{ booking.status|lower }}"
                                         onchange="this.form.submit()">
                                         {% for value, label in status_choices %}
-                                        <option value="{{ value }}" {% if booking.status == value %}selected{% endif %}>
+                                        <option value="{{ value }}"
+                                            {% if booking.status == value %}selected{% endif %}
+                                            {% if value == "COMPLETED" and not booking.can_complete %}disabled{% endif %}>
                                             {{ label }}
                                         </option>
                                         {% endfor %}
@@ -100,7 +102,9 @@
                                 <a href="{% url 'admin_booking_detail' booking.id %}" class="crud-btn">
                                     View &amp; Modify
                                 </a>
+                            </td>
 
+                            <td class="booking-actions">
                                 {% if booking.status == "CANCELLED" %}
                                 <form method="post" action="{% url 'admin_booking_delete' booking.id %}"
                                     class="inline-form">
@@ -110,6 +114,11 @@
                                         Delete
                                     </button>
                                 </form>
+                                {% else %}
+                                <button type="button" class="crud-btn delete-btn disabled-delete-btn"
+                                    onclick="alert(&quot;Can only delete 'Cancelled' bookings.&quot;);">
+                                    Delete
+                                </button>
                                 {% endif %}
                             </td>
                         </tr>
