@@ -203,12 +203,12 @@ li {
 
 .crud-btn:hover {
   background: var(--colour-blue);
-  color: #ffffff;
+  color: var(--colour-accent);
 }
 
 .crud-btn.active {
-  background: #ffffff;
-  color: var(--colour-blue);
+  background: var(--colour-blue);
+  color: var(--colour-accent);
 }
 
 .auth-toolbar-btn {
@@ -218,8 +218,8 @@ li {
 }
 
 .auth-toolbar-btn:hover {
-  background: #ffffff;
-  color: var(--colour-blue);
+  background: var(--colour-blue);
+  color: var(--colour-accent);
 }
 
 /* HERO SECTION (FIXED BG) */
@@ -1677,7 +1677,7 @@ section.bg-light {
 /* WRAPPER */
 .admin-card-wrapper {
     width: 90vw;
-    background: rgba(255, 255, 255, 0.85);
+  background: rgba(40, 41, 62, 0.82);
     border: 2px solid #C1BD88;
     border-radius: 16px;
     margin: 0 auto;            /* centers the wrapper */
