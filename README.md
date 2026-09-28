@@ -10,6 +10,11 @@ Deployed Site: [StayWyld](https://staywyld-capstone-b19305edb31c.herokuapp.com/)
 
 Developer: Corrine Adlington ([CEAdlin](https://www.github.com/CEAdlin))
 
+### SuperUser Login Credentials:
+Username: CorrineAd
+
+Password: Test1234
+
 ## Project Overview:
 
 A responsive, full-stack Django web application designed to allow visitors to explore three glamping units, make enquiries, register as customers and book available accommodation for a minimum two-night stay. The website will include customer authentication, a database-driven booking and availability system, and a secure admin area where accommodation, customers and bookings can be managed. The project will demonstrate the use of HTML, CSS, JavaScript, Python, Django, Cloudinary and Heroku, following Agile development principles and MoSCoW prioritisation.
