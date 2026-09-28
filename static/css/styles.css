@@ -211,6 +211,17 @@ li {
   color: var(--colour-blue);
 }
 
+.auth-toolbar-btn {
+  background: var(--colour-accent);
+  color: var(--colour-blue);
+  border-color: var(--colour-accent);
+}
+
+.auth-toolbar-btn:hover {
+  background: #ffffff;
+  color: var(--colour-blue);
+}
+
 /* HERO SECTION (FIXED BG) */
 .hero {
   height: auto;
@@ -622,19 +633,6 @@ section.bg-light {
   background: #ffffff;
   color: var(--colour-blue);
 }
-/* TELL ME MORE BUTTON */
-.more-info-btn {
-  background: #ffffff;
-  border: 2px solid var(--colour-blue);
-  color: var(--colour-blue);
-}
-
-.more-info-btn:hover {
-  background: #ffffff;
-  color: var(--colour-blue);
-}
-
-
 /* ===============================
    HOMEPAGE BANNER SECTION (unchanged)
    =============================== */
@@ -3495,38 +3493,66 @@ section.bg-light {
 }
 
 /* Calendar contrast overrides */
-.fc-toolbar-title,
-.fc-col-header-cell-cushion,
-.fc-daygrid-day-number {
-  color: var(--colour-blue) !important;
+body .fc-toolbar-title,
+body .fc-col-header-cell-cushion,
+body .fc-daygrid-day-number,
+body #admin-availability-calendar .fc-toolbar-title,
+body #admin-availability-calendar .fc-daygrid-day-number {
+  color: var(--colour-blue);
 }
 
-.fc-button,
-#admin-availability-calendar .fc-button {
-  background: #ffffff !important;
-  border-color: var(--colour-blue) !important;
-  color: var(--colour-blue) !important;
+body .fc-button,
+body #admin-availability-calendar .fc-button {
+  background: #ffffff;
+  border-color: var(--colour-blue);
+  color: var(--colour-blue);
 }
 
-.fc-button:hover,
-.fc-button:focus,
-#admin-availability-calendar .fc-button:hover,
-#admin-availability-calendar .fc-button:focus {
-  background: var(--colour-blue) !important;
-  border-color: var(--colour-blue) !important;
-  color: #ffffff !important;
+body .fc-button:hover,
+body .fc-button:focus,
+body #admin-availability-calendar .fc-button:hover,
+body #admin-availability-calendar .fc-button:focus {
+  background: var(--colour-blue);
+  border-color: var(--colour-blue);
+  color: #ffffff;
 }
 
-.fc-daygrid-day.selected-checkin,
-.fc-daygrid-day.selected-checkout,
-.fc-daygrid-day.selected-range,
-#admin-availability-calendar .admin-calendar-selected {
-  background: var(--colour-blue) !important;
-  color: #ffffff !important;
+body .fc-daygrid-day.selected-checkin,
+body .fc-daygrid-day.selected-checkout,
+body .fc-daygrid-day.selected-range,
+body #admin-availability-calendar .admin-calendar-selected {
+    background: var(--colour-blue);
+    color: #ffffff;
 }
 
-.fc-daygrid-day.selected-checkin .fc-daygrid-day-number,
-.fc-daygrid-day.selected-checkout .fc-daygrid-day-number,
-.fc-daygrid-day.selected-range .fc-daygrid-day-number {
-  color: #ffffff !important;
+body .fc-daygrid-day.selected-checkin .fc-daygrid-day-number,
+body .fc-daygrid-day.selected-checkout .fc-daygrid-day-number,
+body .fc-daygrid-day.selected-range .fc-daygrid-day-number {
+    color: #ffffff;
+}
+
+/* Minimum sizes for secondary-font text */
+body p,
+body li,
+body label,
+body th,
+body td,
+body a,
+body span,
+body input,
+body textarea,
+body select,
+body option {
+  font-size: max(1.3rem, 1em);
+}
+
+body button,
+body .crud-btn,
+body .auth-btn,
+body .book-now-btn,
+body .booking-submit-btn,
+body .book-now-summary-btn,
+body .admin-unit-detail-button,
+body .filter-form button {
+  font-size: 1rem;
 }

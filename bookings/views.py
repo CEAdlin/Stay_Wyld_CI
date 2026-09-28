@@ -118,6 +118,11 @@ def booking_create_view(request, unit_slug):
 
         # Calculate nights
         nights = (check_out_date - check_in_date).days
+
+        if nights < 2:
+            messages.error(request, "Minimum stay is 2 nights.")
+            return redirect(request.path)
+
         base_price = nights * unit.price_per_night
 
         # DOG SURCHARGE

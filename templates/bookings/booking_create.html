@@ -48,10 +48,10 @@
                         {% endif %}
 
                         <label class="booking-label">Check-in Date</label>
-                        <input type="date" name="check_in" readonly class="booking-input" />
+                        <input type="date" name="check_in" class="booking-input" />
 
                         <label class="booking-label">Check-out Date</label>
-                        <input type="date" name="check_out" readonly class="booking-input" />
+                        <input type="date" name="check_out" class="booking-input" />
 
                         <label class="booking-label">Adults</label>
                         <input type="number" name="adults" min="1" max="{{ unit.max_adults }}" required
@@ -146,9 +146,15 @@
 
         const preCheckIn = document.getElementById("preselected-checkin").value;
         const preCheckOut = document.getElementById("preselected-checkout").value;
+        const checkInField = document.querySelector("input[name='check_in']");
+        const checkOutField = document.querySelector("input[name='check_out']");
 
         let checkIn = preCheckIn || null;
         let checkOut = preCheckOut || null;
+
+        const today = new Date().toISOString().split("T")[0];
+        checkInField.min = today;
+        checkOutField.min = today;
 
         if (checkIn) {
             document.querySelector("input[name='check_in']").value = checkIn;
@@ -202,6 +208,49 @@
             }
 
             updatePrice();
+        }
+
+        function validateDateRange(startDate, endDate) {
+            if (!startDate || !endDate) {
+                return "Please enter both check-in and check-out dates.";
+            }
+
+            const start = new Date(`${startDate}T00:00:00Z`);
+            const end = new Date(`${endDate}T00:00:00Z`);
+            const nights = (end - start) / (1000 * 60 * 60 * 24);
+
+            if (end <= start) {
+                return "Check-out must be after check-in.";
+            }
+
+            if (nights < 2) {
+                return "Minimum stay is 2 nights.";
+            }
+
+            for (let date = new Date(start); date < end; date.setUTCDate(date.getUTCDate() + 1)) {
+                const iso = date.toISOString().split("T")[0];
+                if (blockedDates.has(iso)) {
+                    return "Your selected range includes unavailable dates.";
+                }
+            }
+
+            return "";
+        }
+
+        function syncManualDates() {
+            checkIn = checkInField.value || null;
+            checkOut = checkOutField.value || null;
+
+            if (checkIn && checkOut) {
+                const error = validateDateRange(checkIn, checkOut);
+                if (error) {
+                    alert(error);
+                    checkOutField.value = "";
+                    checkOut = null;
+                }
+            }
+
+            markSelectedDates();
         }
 
         function buildEvents() {
@@ -317,6 +366,9 @@
 
         createCalendar("availability-calendar");
 
+        checkInField.addEventListener("change", syncManualDates);
+        checkOutField.addEventListener("change", syncManualDates);
+
         /* PRICE CALCULATION */
         function updatePrice() {
             if (!checkIn || !checkOut) return;
@@ -367,10 +419,8 @@
 
             event.preventDefault();
 
-            const checkinField =
-                document.querySelector("input[name='check_in']").value;
-            const checkoutField =
-                document.querySelector("input[name='check_out']").value;
+            const checkinField = checkInField.value;
+            const checkoutField = checkOutField.value;
             const adults =
                 document.querySelector("input[name='adults']").value;
             const children =
@@ -378,6 +428,12 @@
 
             if (!checkinField || !checkoutField) {
                 alert("Please select your check-in and check-out dates.");
+                return;
+            }
+
+            const dateError = validateDateRange(checkinField, checkoutField);
+            if (dateError) {
+                alert(dateError);
                 return;
             }
 

@@ -696,20 +696,29 @@ Please see TESTING.md
 
 ## AI Usage
 
-AI tools were used throughout this project to support:
-- Drafting documentation sections  
+AI tools, including GitHub Copilot and ChatGPT, were used as development support throughout the project. The following summary focuses on the outcomes of that use.
 
-- Structuring Agile artefacts such as user stories and backlog items  
+### Code Creation
 
-- Generating boilerplate code snippets  
+Copilot helped generate and refine Django views, URL patterns, templates, CSS rules and JavaScript for the booking flow, availability calendars, customer accounts and administration features. Generated suggestions were adapted to the existing project structure and helped accelerate implementation of features such as date validation, image management and responsive layouts.
 
-- Refining written content for clarity and consistency  
+### Debugging
 
-- Troubleshooting layout and styling issues  
+AI assistance helped identify and resolve issues including blocked dates not being carried correctly into the calendar, incorrect customer and administrator redirects, the `max_guests` to `max_adults` and `max_children` model change, media files being stored in the wrong location, and tables becoming unusable on mobile screens. It also helped trace deployment and static-file problems by comparing settings, templates and server output.
 
-- Creating original site images inspired by real-world glamping designs and builds, which were reviewed and edited before being used in the project
+### Performance and User Experience
 
-- Improving readability and organisation of the README and supporting documents
+AI suggestions supported improvements to responsive layouts, mobile table scrolling, image handling through Cloudinary, accessible colour contrast, heading structure and form feedback. Lighthouse results and browser testing were used to assess these changes, with the final decisions based on observed behaviour rather than generated suggestions alone.
+
+### Automated Unit Tests
+
+GitHub Copilot was used to create Django unit-test structures for booking availability, blocked dates, checkout-date reuse, admin date blocking and booking-list behaviour. The generated tests were reviewed and adjusted so that dates, redirects, database records and availability rules matched the actual application logic. This provided focused coverage for important customer and staff workflows.
+
+### Reflection on the Development Process
+
+AI reduced time spent searching for syntax, alternative implementations and documentation wording, allowing more time for testing and design decisions. It worked best as a review and problem-solving partner rather than an automatic source of final code. Manual testing, Django checks, browser inspection and personal understanding of the generated code remained necessary throughout development.
+
+AI was also used to create original site images inspired by real-world glamping designs and builds. These images were reviewed and edited before being used in the project.
 
 All AI generated content was manually reviewed, edited, and validated to ensure accuracy and alignment with project requirements.  
 
