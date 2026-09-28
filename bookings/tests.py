@@ -1,10 +1,12 @@
 from datetime import date, timedelta
+from decimal import Decimal
 
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
 from .models import Booking, Unit, UnitBlockedDate
+from .validation import calculate_dog_surcharge
 
 
 class BookingAvailabilityTests(TestCase):
@@ -84,3 +86,39 @@ class BookingAvailabilityTests(TestCase):
             reverse("booking_create", args=[self.unit.slug]),
         )
         self.assertFalse(Booking.objects.filter(unit=self.unit).exists())
+
+    def test_per_dog_surcharge_uses_unit_configuration(self):
+        self.unit.dogs_allowed = True
+        self.unit.dog_surcharge = "50.00"
+        self.unit.dog_charge_type = "PER_DOG_PER_STAY"
+        self.unit.save()
+
+        check_in = date(2026, 10, 10)
+        check_out = date(2026, 10, 12)
+        response = self.client.post(
+            reverse("booking_create", args=[self.unit.slug]),
+            {**self.booking_data(check_in, check_out), "dogs": "2"},
+        )
+
+        self.assertRedirects(response, reverse("my_bookings"))
+        booking = Booking.objects.get(unit=self.unit)
+        self.assertEqual(booking.dog_surcharge, Decimal("100.00"))
+        self.assertEqual(booking.total_amount, Decimal("300.00"))
+
+    def test_per_stay_surcharge_uses_unit_configuration(self):
+        self.unit.dogs_allowed = True
+        self.unit.dog_surcharge = "50.00"
+        self.unit.dog_charge_type = "PER_STAY"
+        self.unit.save()
+
+        check_in = date(2026, 10, 10)
+        check_out = date(2026, 10, 12)
+        response = self.client.post(
+            reverse("booking_create", args=[self.unit.slug]),
+            {**self.booking_data(check_in, check_out), "dogs": "2"},
+        )
+
+        self.assertRedirects(response, reverse("my_bookings"))
+        booking = Booking.objects.get(unit=self.unit)
+        self.assertEqual(booking.dog_surcharge, Decimal("50.00"))
+        self.assertEqual(booking.total_amount, Decimal("250.00"))

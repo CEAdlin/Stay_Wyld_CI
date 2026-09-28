@@ -4,12 +4,11 @@ from django.contrib import messages
 from django.http import HttpResponseForbidden, JsonResponse
 from django.contrib.auth.models import User
 from datetime import date, datetime, timedelta
-from decimal import Decimal
 from bookings.models import Booking, Unit, UnitGalleryImage, UnitBlockedDate, BookingChangeRequest
 from accounts.models import CustomerProfile
 import json
 from django.db import transaction
-from bookings.validation import validate_booking_change
+from bookings.validation import calculate_dog_surcharge, validate_booking_change
 
 
 @login_required
@@ -487,11 +486,7 @@ def admin_booking_detail(request, booking_id):
             return redirect(request.path)
 
         nights = (check_out - check_in).days
-        dog_surcharge = (
-            Decimal("20.00")
-            if booking.unit.dogs_allowed and dogs > 0
-            else Decimal("0.00")
-        )
+        dog_surcharge = calculate_dog_surcharge(booking.unit, dogs)
         total_amount = nights * booking.unit.price_per_night + dog_surcharge
 
         booking.check_in_date = check_in
@@ -567,10 +562,9 @@ def admin_change_request_action(request, request_id):
                 booking.total_nights = (
                     booking.check_out_date - booking.check_in_date
                 ).days
-                booking.dog_surcharge = (
-                    Decimal("20.00")
-                    if booking.unit.dogs_allowed and booking.dogs > 0
-                    else Decimal("0.00")
+                booking.dog_surcharge = calculate_dog_surcharge(
+                    booking.unit,
+                    booking.dogs,
                 )
                 booking.total_amount = (
                     booking.total_nights * booking.nightly_price + booking.dog_surcharge

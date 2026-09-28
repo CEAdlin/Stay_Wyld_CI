@@ -1,4 +1,17 @@
+from decimal import Decimal
+
 from bookings.models import Booking, UnitBlockedDate
+
+
+def calculate_dog_surcharge(unit, dog_count):
+    if not unit.dogs_allowed or dog_count <= 0:
+        return Decimal("0.00")
+
+    surcharge = unit.dog_surcharge
+    if unit.dog_charge_type == "PER_DOG_PER_STAY":
+        return surcharge * dog_count
+
+    return surcharge
 
 
 def validate_booking_change(

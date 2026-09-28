@@ -5,9 +5,8 @@ from django.contrib import messages
 from datetime import datetime
 from .models import Unit, Booking, BookingChangeRequest, UnitBlockedDate
 from django.contrib.auth.models import User
-from decimal import Decimal
 from accounts.models import CustomerProfile
-from .validation import validate_booking_change
+from .validation import calculate_dog_surcharge, validate_booking_change
 
 
 # Homepage
@@ -132,9 +131,7 @@ def booking_create_view(request, unit_slug):
         except (TypeError, ValueError):
             dog_count = 0
 
-        dog_fee = (
-            Decimal("20.00") if unit.dogs_allowed and dog_count > 0 else Decimal("0.00")
-        )
+        dog_fee = calculate_dog_surcharge(unit, dog_count)
 
         # Final total
         total_price = base_price + dog_fee

@@ -61,7 +61,7 @@ h2 {
   font-weight: 550;
   font-size: 2.8rem;
   letter-spacing: 2px;
-  color: var(--colour-tertiary);
+  color: var(--colour-primary);
   text-align: center;
 }
 
@@ -2937,6 +2937,10 @@ section.bg-light {
     width: 100%;
     box-sizing: border-box;
     margin: 10 auto;
+}
+
+.admin-booking-detail-page .crud-btn:hover {
+  border-color: var(--colour-accent);
 }
 
 .admin-booking-summary p {
