@@ -633,6 +633,74 @@ section.bg-light {
   background: #ffffff;
   color: var(--colour-blue);
 }
+
+/* Stay With Us responsive layout */
+@media (max-width: 900px) {
+  .unit-row-card {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .unit-row-image-wrapper {
+    flex: 0 0 auto;
+    width: 100%;
+    height: 240px;
+  }
+
+  .unit-row-image {
+    height: 240px;
+  }
+
+  .unit-row-content {
+    width: 100%;
+  }
+
+  .unit-description {
+    max-height: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .units-panel {
+    padding: 28px 12px 20px;
+  }
+
+  .unit-row-card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .unit-row-image-wrapper,
+  .unit-row-image {
+    height: 190px;
+  }
+
+  .unit-title {
+    font-size: 2rem;
+  }
+
+  .unit-description {
+    line-height: 1.45;
+  }
+
+  .unit-facilities-table th,
+  .unit-facilities-table td {
+    padding: 6px 4px;
+  }
+
+  .unit-buttons {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .unit-buttons .book-now-btn {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
 /* ===============================
    HOMEPAGE BANNER SECTION (unchanged)
    =============================== */
