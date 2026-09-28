@@ -189,7 +189,7 @@ li {
 
 .crud-btn {
   color: var(--colour-blue);
-  background: #ffffff;
+  background: var(--colour-accent);
   border: 1px solid var(--colour-blue);
   padding: 4px 16px;
   margin-left: 12px;
@@ -2094,7 +2094,7 @@ section.bg-light {
 
 .booking-summary-bar span {
     font-size: 18px;
-    color: var(--colour-accent);
+  color: var(--colour-blue);
 }
 
 .book-now-summary-btn {
@@ -3543,7 +3543,7 @@ body input,
 body textarea,
 body select,
 body option {
-  font-size: max(1.3rem, 1em);
+  font-size: max(1.3rem, 1.0em);
 }
 
 body button,
