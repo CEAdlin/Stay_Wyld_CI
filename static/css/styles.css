@@ -1879,6 +1879,12 @@ section.bg-light {
     border: 1px solid var(--colour-blue);
 }
 
+.customer-bookings-table .status-button {
+  padding-right: 14px;
+  background-image: none;
+  cursor: default;
+}
+
 /* Titles */
 .customer-dashboard-title {
     font-size: 36px;
@@ -2102,6 +2108,30 @@ section.bg-light {
     background: #ffffff;
     border-radius: 12px;
     padding: 10px;
+}
+
+.calendar-navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.calendar-navigation-button {
+  padding: 0.55rem 1rem;
+  background: #ffffff;
+  border: 1px solid var(--colour-blue);
+  border-radius: 999px;
+  color: var(--colour-blue);
+  cursor: pointer;
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+}
+
+.calendar-navigation-button:hover,
+.calendar-navigation-button:focus {
+  background: var(--colour-blue);
+  color: #ffffff;
 }
 
 /* Grey out past dates */

@@ -5,6 +5,14 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
 <div class="calendar-wrapper">
+    <div class="calendar-navigation" aria-label="Calendar navigation">
+        <button type="button" id="calendar-prev" class="calendar-navigation-button">
+            Previous month
+        </button>
+        <button type="button" id="calendar-next" class="calendar-navigation-button">
+            Next month
+        </button>
+    </div>
 
     <div class="row g-4">
         <div class="col-md-4">
@@ -29,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let checkIn = null;
     let checkOut = null;
+    const calendars = [];
 
     // Convert booked ranges into a Set of blocked dates
     const blockedDates = new Set();
@@ -181,11 +190,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         calendar.gotoDate(startMonth);
         calendar.render();
+        calendars.push(calendar);
     }
 
     createCalendar('calendar1', 0);
     createCalendar('calendar2', 1);
     createCalendar('calendar3', 2);
+
+    document.getElementById("calendar-prev").addEventListener("click", function() {
+        calendars.forEach(calendar => calendar.prev());
+    });
+
+    document.getElementById("calendar-next").addEventListener("click", function() {
+        calendars.forEach(calendar => calendar.next());
+    });
 
     // BOOK NOW BUTTON
     document.getElementById("book-now-btn").addEventListener("click", function() {
