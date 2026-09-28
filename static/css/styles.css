@@ -1387,6 +1387,13 @@ section.bg-light {
   font-weight: 600;
 }
 
+.admin-table-toolbar .crud-btn.active,
+.admin-table-toolbar .crud-btn.active:hover {
+  background: var(--colour-blue);
+  color: var(--colour-accent);
+  border: 2px solid var(--colour-accent);
+}
+
 .customer-search-form {
   display: flex;
   align-items: center;
