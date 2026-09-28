@@ -240,8 +240,15 @@ li {
 }
 
 .crud-btn.active {
+  background: var(--colour-accent);
+  color: var(--colour-blue);
+  border-color: var(--colour-accent);
+}
+
+.crud-btn.active:hover {
   background: var(--colour-blue);
   color: var(--colour-accent);
+  border-color: var(--colour-blue);
 }
 
 .auth-toolbar-btn {
