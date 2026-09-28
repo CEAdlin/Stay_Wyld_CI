@@ -3572,3 +3572,42 @@ section.bg-light {
     font-size: 0.78rem;
   }
 }
+
+/* Calendar contrast overrides */
+body .fc-toolbar-title,
+body .fc-col-header-cell-cushion,
+body .fc-daygrid-day-number,
+body #admin-availability-calendar .fc-toolbar-title,
+body #admin-availability-calendar .fc-daygrid-day-number {
+  color: var(--colour-blue);
+}
+
+body .fc-button,
+body #admin-availability-calendar .fc-button {
+  background: #ffffff;
+  border-color: var(--colour-blue);
+  color: var(--colour-blue);
+}
+
+body .fc-button:hover,
+body .fc-button:focus,
+body #admin-availability-calendar .fc-button:hover,
+body #admin-availability-calendar .fc-button:focus {
+  background: var(--colour-blue);
+  border-color: var(--colour-blue);
+  color: #ffffff;
+}
+
+body .fc-daygrid-day.selected-checkin,
+body .fc-daygrid-day.selected-checkout,
+body .fc-daygrid-day.selected-range,
+body #admin-availability-calendar .admin-calendar-selected {
+    background: var(--colour-blue);
+    color: #ffffff;
+}
+
+body .fc-daygrid-day.selected-checkin .fc-daygrid-day-number,
+body .fc-daygrid-day.selected-checkout .fc-daygrid-day-number,
+body .fc-daygrid-day.selected-range .fc-daygrid-day-number {
+    color: #ffffff;
+}
