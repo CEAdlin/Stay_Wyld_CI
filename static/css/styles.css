@@ -2213,19 +2213,18 @@ section.bg-light {
     cursor: pointer;
 }
 
-/* Selected check-in date */
-.fc-daygrid-day.selected-checkin {
-    background: #C1BD88; /* your gold-beige brand colour */
+/* Selected dates */
+.fc-daygrid-day.selected-checkin,
+.fc-daygrid-day.selected-checkout,
+.fc-daygrid-day.selected-range {
+  background: var(--colour-blue);
+  color: #ffffff;
+  border-radius: 6px;
 }
-body #admin-availability-calendar .admin-calendar-selected {
-/* Selected check-out date */
-.fc-daygrid-day.selected-checkout {
-    background: #759075; /* your green brand colour */
 
 body #admin-availability-calendar .admin-calendar-selected {
   background: #d9d9d9;
   color: var(--colour-blue);
-}
 }
 
 .booking-summary-bar {
