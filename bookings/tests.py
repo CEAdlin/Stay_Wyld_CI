@@ -2,7 +2,7 @@ from datetime import date, timedelta
 from decimal import Decimal
 
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from .models import Booking, Unit, UnitBlockedDate
@@ -86,6 +86,13 @@ class BookingAvailabilityTests(TestCase):
             reverse("booking_create", args=[self.unit.slug]),
         )
         self.assertFalse(Booking.objects.filter(unit=self.unit).exists())
+
+    @override_settings(DEBUG=False)
+    def test_invalid_url_returns_custom_404_page(self):
+        response = self.client.get("/this-page-does-not-exist/")
+
+        self.assertEqual(response.status_code, 404)
+        self.assertContains(response, "Page Not Found", status_code=404)
 
     def test_per_dog_surcharge_uses_unit_configuration(self):
         self.unit.dogs_allowed = True

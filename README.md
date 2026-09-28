@@ -263,23 +263,7 @@ scrolling and buttons that remain easy to use on touch screens.
 
 ### Lighthouse Evidence
 
-Lighthouse was used to audit the deployed site across Performance,
-Accessibility, Best Practices and SEO. The evidence below includes a mobile
-homepage audit and a desktop unit-page audit. Scores can vary depending on
-network conditions, device emulation and the page being tested.
-
-Homepage - Mobile:
-![Lighthouse results mobile](documentation\lighthouse_homepage_mobile.png)
-Units page - Desktop:
-![Lighthouse results desktop](documentation\lighthouse_unitpage_desktop.png)
-
-
-| Lighthouse category | Score | Notes and improvements |
-| --- | --- | --- |
-| Performance | 78 | The site contains image-rich accommodation content. Images were compressed and converted to WebP to reduce transfer size. Remaining opportunities include reducing render-blocking CSS and external font requests. |
-| Accessibility | 97 | The remaining deduction is related to colour contrast in the availability calendar, where blocked dates use a muted grey treatment. This is documented as a future improvement while preserving the visual distinction between available, booked and blocked dates. |
-| Best Practices | 100 | No Lighthouse best-practice failures were reported in the tested audit. Production settings were checked separately to ensure `DEBUG` is disabled and secrets are stored as environment variables. |
-| SEO | 100 | The audit found no SEO issues in the tested pages. Page titles and meta descriptions are present. |
+Please see TESTING.md
 
 ## Agile Methodology
 

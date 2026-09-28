@@ -21,6 +21,16 @@ Testing included:
 - Manual bug testing
 
 ---
+# Automated Testing
+
+The Django system check completed successfully with no configuration issues.
+![Django system check passed](documentation\automated_testing\manage.py_check.png)
+
+The test suite completed successfully with all tests passing.
+![Django Automated Tests](documentation\automated_testing\manage.py_test.png)
+
+Python Syntax was checked, no syntax errors were found:
+![Python Syntax Test](documentation\automated_testing\python_syntax_validation.png)
 
 # Manual Testing – User Stories
 
@@ -118,7 +128,6 @@ Each major feature was manually tested to ensure that it works as intended acros
 | Booking Filtering | Filter bookings by status. | Only bookings matching the selected status are displayed. | Only bookings matching the selected status were displayed. | ![Booking Status Filter Test](documentation/features/admin_bookings_list_filter_past.png) | Pass |
 | Booking Statistics | Open booking statistics by accommodation unit. | Accurate booking statistics are displayed for each unit. | Accurate booking statistics were displayed for each accommodation unit. | ![Booking Statistics Test](documentation/features/admin_bookings_by_unit.png) | Pass |
 | Blocked Dates | Block dates for a specific accommodation for maintenance or private use. | Selected dates become unavailable for customer bookings. | Selected dates became unavailable for customer bookings. | ![Blocked Dates Test](documentation/features/admin_unit_detail_availability.png) | Pass |
-| Responsive Design | Test the website at desktop, tablet and mobile widths. | Website remains functional, readable and visually consistent at different screen sizes. | The website remained functional, readable and visually consistent at the tested widths. | ![Responsive Design Test](placeholder) | Pass |
 | Error Handling | Trigger common validation and booking errors. | User receives clear and understandable error messages. | Clear and understandable error messages were displayed. | ![Error Handling Test](documentation/features/customer_create_booking_name_validation.png) | Pass |
 | 404 Error Page | Navigate to a non-existent page. | A custom 404 page is displayed instead of an unhandled server error. | The custom 404 page was displayed instead of an unhandled server error. | ![404 Error Test](placeholder) | Pass |
 
@@ -126,36 +135,35 @@ Each major feature was manually tested to ensure that it works as intended acros
 
 # 🔦 Lighthouse
 
-Google Lighthouse was used to assess the website's performance, accessibility, best practices and SEO.
+Lighthouse was used to audit the deployed site across Performance,
+Accessibility, Best Practices and SEO. The evidence below includes a mobile
+homepage audit and a desktop unit-page audit. Scores can vary depending on
+network conditions, device emulation and the page being tested.
 
 Testing was carried out on the deployed website.
 
 ### Lighthouse Results
 
-![Lighthouse Results](file)
+![Lighthouse Results Desktop](documentation\lighthouse_unitpage_desktop.png)
+![Lighthouse Results Mobile](documentation\lighthouse_homepage_mobile.png)
 
-| Category | Score | Notes |
-|---|---|---|
-| Performance | TODO | TODO |
-| Accessibility | TODO | TODO |
-| Best Practices | TODO | TODO |
-| SEO | TODO | TODO |
+| Lighthouse category | Score | Notes and improvements |
+| --- | --- | --- |
+| Performance | 78 | The site contains image-rich accommodation content. Images were compressed and converted to WebP to reduce transfer size. Remaining opportunities include reducing render-blocking CSS and external font requests. |
+| Accessibility | 97 | The remaining deduction is related to colour contrast in the availability calendar, where blocked dates use a muted grey treatment. This is documented as a future improvement while preserving the visual distinction between available, booked and blocked dates. |
+| Best Practices | 100 | No Lighthouse best-practice failures were reported in the tested audit. Production settings were checked separately to ensure `DEBUG` is disabled and secrets are stored as environment variables. |
+| SEO | 100 | The audit found no SEO issues in the tested pages. Page titles and meta descriptions are present. |
 
 ### Lighthouse Improvements
 
 Any issues identified through Lighthouse testing were reviewed and improvements were made where appropriate.
 
-Examples may include:
+Examples include:
 
-- Optimising image sizes.
-- Improving image alt text.
-- Improving colour contrast.
-- Improving page structure.
+- Converting images from .png to .webp.
+- Adding in a missing alt text.
+- Improving colour contrast, especially on the calendars.
 - Improving heading hierarchy.
-- Removing unnecessary code.
-- Improving page loading performance.
-
----
 
 # 🌐 Browser Compatibility
 

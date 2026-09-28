@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found | Stay Wyld{% endblock %}
+{% block meta_description %}The page you requested could not be found.{% endblock %}
+
+{% block content %}
+<section class="error-page" aria-labelledby="error-page-title">
+    <div class="error-page-panel">
+        <p class="error-page-code">404</p>
+        <h1 id="error-page-title">Page Not Found</h1>
+        <p>The page you requested could not be found. It may have moved or the address may be incorrect.</p>
+        <a href="{% url 'index' %}" class="crud-btn">Return Home</a>
+    </div>
+</section>
+{% endblock %}
