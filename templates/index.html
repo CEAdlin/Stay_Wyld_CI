@@ -56,8 +56,11 @@
               <!-- FACILITIES TABLE -->
               <table class="unit-facilities-table">
                 <tr>
-                  <th>Max Guests</th>
-                  <td>{{ unit.max_guests }}</td>
+                  <th>Occupancy</th>
+                  <td>
+                    Adults: {{ unit.max_adults }}<br>
+                    Children: {{ unit.max_children }}
+                  </td>
                 </tr>
                 <tr>
                   <th>Dog Friendly</th>
