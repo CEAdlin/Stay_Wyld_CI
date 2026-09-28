@@ -52,6 +52,7 @@
                            name="adults"
                            value="{{ booking.adults }}"
                            min="1"
+                           max="{{ booking.unit.max_adults }}"
                            class="form-control"
                            required>
 
@@ -61,6 +62,7 @@
                            name="children"
                            value="{{ booking.children }}"
                            min="0"
+                           max="{{ booking.unit.max_children }}"
                            class="form-control">
 
                     <label for="dogs">Dogs</label>

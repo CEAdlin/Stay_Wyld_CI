@@ -9,6 +9,7 @@ from bookings.models import Booking, Unit, UnitGalleryImage, UnitBlockedDate, Bo
 from accounts.models import CustomerProfile
 import json
 from django.db import transaction
+from bookings.validation import validate_booking_change
 
 
 @login_required
@@ -443,9 +444,6 @@ def admin_booking_detail(request, booking_id):
             dogs = int(request.POST.get("dogs", 0))
             status = request.POST.get("status")
 
-            if check_out <= check_in:
-                raise ValueError("Check-out must be after check-in.")
-
             if adults < 1 or children < 0 or dogs < 0:
                 raise ValueError("Guest values cannot be negative.")
 
@@ -454,6 +452,18 @@ def admin_booking_detail(request, booking_id):
 
         except (KeyError, TypeError, ValueError):
             messages.error(request, "Please enter valid booking details.")
+            return redirect(request.path)
+
+        validation_error = validate_booking_change(
+            unit=booking.unit,
+            check_in=check_in,
+            check_out=check_out,
+            adults=adults,
+            children=children,
+            exclude_booking_id=booking.pk,
+        )
+        if validation_error:
+            messages.error(request, validation_error)
             return redirect(request.path)
 
         nights = (check_out - check_in).days
@@ -512,6 +522,21 @@ def admin_change_request_action(request, request_id):
                 booking.save(update_fields=["status"])
 
             elif change_request.request_type == "MODIFY":
+                validation_error = validate_booking_change(
+                    unit=booking.unit,
+                    check_in=change_request.requested_check_in,
+                    check_out=change_request.requested_check_out,
+                    adults=change_request.requested_adults,
+                    children=change_request.requested_children,
+                    exclude_booking_id=booking.pk,
+                )
+                if validation_error:
+                    messages.error(request, validation_error)
+                    return redirect(
+                        "admin_booking_detail",
+                        booking_id=change_request.booking_id,
+                    )
+
                 booking.check_in_date = change_request.requested_check_in
                 booking.check_out_date = change_request.requested_check_out
                 booking.adults = change_request.requested_adults

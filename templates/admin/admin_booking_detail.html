@@ -41,12 +41,14 @@
                 <input id="adults" type="number" name="adults"
                        form="save-booking-form"
                        value="{{ booking.adults }}" min="1"
+                      max="{{ booking.unit.max_adults }}"
                        class="form-control">
 
                 <label for="children">Children</label>
                 <input id="children" type="number" name="children"
                        form="save-booking-form"
                        value="{{ booking.children }}" min="0"
+                      max="{{ booking.unit.max_children }}"
                        class="form-control">
 
                 <label for="dogs">Dogs</label>

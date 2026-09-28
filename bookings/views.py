@@ -7,6 +7,7 @@ from .models import Unit, Booking, BookingChangeRequest, UnitBlockedDate
 from django.contrib.auth.models import User
 from decimal import Decimal
 from accounts.models import CustomerProfile
+from .validation import validate_booking_change
 
 
 # Homepage
@@ -285,22 +286,6 @@ def booking_update_view(request, pk):
             messages.error(request, "Check-out date must be after check-in date.")
             return redirect(request.path)
 
-        overlapping = (
-            Booking.objects.filter(
-                unit=unit,
-                check_in_date__lt=check_out_date,
-                check_out_date__gt=check_in_date,
-            )
-            .exclude(pk=booking.pk)
-            .exclude(status="CANCELLED")
-        )
-
-        if overlapping.exists():
-            messages.error(
-                request, "This unit is not available for the selected dates."
-            )
-            return redirect(request.path)
-
         try:
             dog_count = int(dogs or 0)
             adult_count = int(adults or 1)
@@ -310,6 +295,18 @@ def booking_update_view(request, pk):
                 raise ValueError
         except (TypeError, ValueError):
             messages.error(request, "Please enter valid guest numbers.")
+            return redirect(request.path)
+
+        validation_error = validate_booking_change(
+            unit=unit,
+            check_in=check_in_date,
+            check_out=check_out_date,
+            adults=adult_count,
+            children=child_count,
+            exclude_booking_id=booking.pk,
+        )
+        if validation_error:
+            messages.error(request, validation_error)
             return redirect(request.path)
 
         BookingChangeRequest.objects.create(
