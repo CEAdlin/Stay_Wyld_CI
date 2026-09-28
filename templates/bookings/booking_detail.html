@@ -38,35 +38,102 @@
         <!-- filepath: c:\Users\corri\Documents\AA_CI_Projects\capstone_staywyld\templates\bookings\booking_detail.html -->
         <div class="booking-detail-status status-{{ booking.status|lower }}">
             <strong>Status:</strong>
-
-            {% if open_request %}
-            {% if open_request.request_type == "CANCEL" %}
-            <span class="status-badge status-pending">
-                Cancel Request Pending
-            </span>
-            {% else %}
-            <span class="status-badge status-pending">
-                Update Request Pending
-            </span>
-            {% endif %}
-            {% else %}
             <span class="status-badge status-{{ booking.status|lower }}">
                 {{ booking.get_status_display }}
             </span>
-            {% endif %}
         </div>
 
-        {% if booking.status != "CANCELLED" and not open_request %}
+        {% if latest_request and latest_request.request_type == "MODIFY" %}
+        <section class="booking-request-status">
+            <h3>Booking Request</h3>
+
+            {% if latest_request.status == "OPEN" %}
+            <span class="request-status request-status-open">Pending Approval</span>
+            <p>Your booking request has been sent and is awaiting approval.</p>
+            {% elif latest_request.status == "APPROVED" %}
+            <span class="request-status request-status-approved">Approved</span>
+            <p>Your booking request has been approved and your booking has been updated.</p>
+            {% elif latest_request.status == "REJECTED" %}
+            <span class="request-status request-status-rejected">Declined</span>
+            <p>Please contact a member of the team for more information. Your booking remains unchanged.</p>
+            {% endif %}
+        </section>
+        {% endif %}
+
+        {% if booking.status != "CANCELLED" %}
         <div class="customer-actions-cell">
+            {% if open_request and open_request.request_type == "MODIFY" %}
+            <p class="booking-open-request-message">
+                You have an open booking update request - no further requests can be made until this has been approved or declined by admin.
+            </p>
+            {% else %}
             <a href="{% url 'booking_update' booking.pk %}" class="crud-btn">
                 Request To Update Booking
             </a>
+            {% endif %}
 
-            <a href="{% url 'booking_delete' booking.pk %}" class="crud-btn delete-btn">
-                Request To Cancel Booking
-            </a>
+            <button type="button" id="openCancelModal" class="crud-btn delete-btn">
+                Cancel Booking
+            </button>
         </div>
         {% endif %}
     </div>
 </div>
+
+{% if booking.status != "CANCELLED" %}
+<div id="cancelBookingModal" class="modal-overlay" style="display: none">
+    <div class="modal-content">
+        <button type="button" id="cancelModalClose" class="modal-close" aria-label="Close cancellation dialog">&times;</button>
+        <h2>Confirm Booking Cancellation</h2>
+        <p>
+            Are you sure you want to cancel your booking for
+            <strong>{{ booking.unit.name }}</strong> from
+            <strong>{{ booking.check_in_date }}</strong> to
+            <strong>{{ booking.check_out_date }}</strong>?
+        </p>
+
+        <form method="post" action="{% url 'booking_delete' booking.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="booking-submit-btn">
+                Confirm Booking Cancellation
+            </button>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+{% if request.GET.cancelled == "1" %}
+<div id="cancelledSuccessModal" class="modal-overlay" style="display: flex">
+    <div class="modal-content">
+        <button type="button" id="cancelledSuccessClose" class="modal-close" aria-label="Close cancellation confirmation">&times;</button>
+        <h2>Booking Cancelled</h2>
+        <p>Your booking has been cancelled successfully.</p>
+    </div>
+</div>
+<script>
+    document.getElementById("cancelledSuccessClose").addEventListener("click", function () {
+        document.getElementById("cancelledSuccessModal").style.display = "none";
+    });
+
+    setTimeout(function () {
+        document.getElementById("cancelledSuccessModal").style.display = "none";
+    }, 3000);
+</script>
+{% endif %}
+
+{% if booking.status != "CANCELLED" %}
+<script>
+    const cancelModal = document.getElementById("cancelBookingModal");
+    const openCancelModal = document.getElementById("openCancelModal");
+    const cancelModalClose = document.getElementById("cancelModalClose");
+
+    openCancelModal.addEventListener("click", function () {
+        cancelModal.style.display = "flex";
+    });
+
+    cancelModalClose.addEventListener("click", function () {
+        cancelModal.style.display = "none";
+    });
+</script>
+{% endif %}
 {% endblock %}

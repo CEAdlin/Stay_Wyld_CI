@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
-from .models import Booking, Unit, UnitBlockedDate
+from .models import Booking, BookingChangeRequest, Unit, UnitBlockedDate
 from .validation import calculate_dog_surcharge
 
 
@@ -129,3 +129,42 @@ class BookingAvailabilityTests(TestCase):
         booking = Booking.objects.get(unit=self.unit)
         self.assertEqual(booking.dog_surcharge, Decimal("50.00"))
         self.assertEqual(booking.total_amount, Decimal("250.00"))
+
+    def test_customer_can_cancel_booking_directly(self):
+        booking = Booking.objects.create(
+            unit=self.unit,
+            customer=self.staff_user,
+            customer_name="Existing Customer",
+            customer_email="existing@example.com",
+            customer_phone="01234567890",
+            check_in_date=date(2026, 10, 10),
+            check_out_date=date(2026, 10, 12),
+            nightly_price="100.00",
+            total_nights=2,
+            total_amount="200.00",
+            status="CONFIRMED",
+        )
+        BookingChangeRequest.objects.create(
+            booking=booking,
+            customer=self.staff_user,
+            request_type="CANCEL",
+            message="Old cancellation request",
+            status="OPEN",
+        )
+
+        response = self.client.post(
+            reverse("booking_delete", args=[booking.pk])
+        )
+
+        self.assertRedirects(
+            response,
+            f"{reverse('booking_detail', args=[booking.pk])}?cancelled=1",
+        )
+        booking.refresh_from_db()
+        self.assertEqual(booking.status, "CANCELLED")
+        self.assertFalse(
+            BookingChangeRequest.objects.filter(
+                booking=booking,
+                status="OPEN",
+            ).exists()
+        )

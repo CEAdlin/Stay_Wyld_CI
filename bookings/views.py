@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect, render
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.contrib import messages
@@ -355,23 +356,18 @@ def booking_delete(request, pk):
     )
 
     if request.method == "POST":
-        BookingChangeRequest.objects.get_or_create(
+        booking.status = "CANCELLED"
+        booking.save(update_fields=["status", "updated_at"])
+        BookingChangeRequest.objects.filter(
             booking=booking,
             customer=request.user,
-            request_type="CANCEL",
             status="OPEN",
-            defaults={"message": "Customer requested cancellation."},
-        )
+        ).delete()
 
-        return redirect("booking_detail", pk=booking.pk)
+        detail_url = reverse("booking_detail", args=[booking.pk])
+        return redirect(f"{detail_url}?cancelled=1")
 
-    return render(
-        request,
-        "bookings/booking_delete.html",
-        {
-            "booking": booking,
-        },
-    )
+    return redirect("booking_detail", pk=booking.pk)
 
 # Admin Dashboard
 @login_required
