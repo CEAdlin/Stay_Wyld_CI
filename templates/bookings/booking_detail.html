@@ -48,13 +48,19 @@
             <h3>Booking Request</h3>
 
             {% if latest_request.status == "OPEN" %}
-            <span class="request-status request-status-open">Pending Approval</span>
+            <p class="booking-request-status-line">
+                <strong>Booking Request Status:</strong> Currently Pending Approval
+            </p>
             <p>Your booking request has been sent and is awaiting approval.</p>
             {% elif latest_request.status == "APPROVED" %}
-            <span class="request-status request-status-approved">Approved</span>
+            <p class="booking-request-status-line">
+                <strong>Booking Request Status:</strong> Accepted
+            </p>
             <p>Your booking request has been approved and your booking has been updated.</p>
             {% elif latest_request.status == "REJECTED" %}
-            <span class="request-status request-status-rejected">Declined</span>
+            <p class="booking-request-status-line">
+                <strong>Booking Request Status:</strong> Declined
+            </p>
             <p>Please contact a member of the team for more information. Your booking remains unchanged.</p>
             {% endif %}
         </section>

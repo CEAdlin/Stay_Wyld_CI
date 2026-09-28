@@ -2720,6 +2720,18 @@ body #admin-availability-calendar .admin-calendar-selected {
   font-size: 1.35rem;
 }
 
+.booking-request-status-line {
+  margin: 0;
+  color: var(--colour-blue);
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  text-align: center;
+}
+
+.booking-request-status-line strong {
+  font-weight: 600;
+}
+
 .booking-request-status p {
   margin: 0.75rem 0 0;
   color: var(--colour-blue);
@@ -2754,7 +2766,8 @@ body #admin-availability-calendar .admin-calendar-selected {
 .booking-open-request-message {
   flex-basis: 100%;
   margin: 0;
-  color: var(--colour-blue);
+  color: #ffffff;
+  font-weight: 700;
   text-align: center;
 }
 
