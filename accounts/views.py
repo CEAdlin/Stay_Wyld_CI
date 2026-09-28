@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from .models import CustomerProfile
+from .phone_validation import normalize_phone_number
 from bookings.models import Booking, Unit
 
 
@@ -43,8 +44,12 @@ def register_view(request):
     if request.method == "POST":
         full_name = request.POST.get("full_name")
         email = request.POST.get("email")
-        phone = request.POST.get("phone")
+        phone = normalize_phone_number(request.POST.get("phone"))
         address = request.POST.get("address", "").strip()
+
+        if phone is None:
+            messages.error(request, "Phone number must contain exactly 11 digits.")
+            return render(request, "accounts/register.html")
 
         if len(address) < 20:
             messages.error(

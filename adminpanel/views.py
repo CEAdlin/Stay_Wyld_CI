@@ -9,6 +9,7 @@ from accounts.models import CustomerProfile
 import json
 from django.db import transaction
 from bookings.validation import calculate_dog_surcharge, validate_booking_change
+from accounts.phone_validation import normalize_phone_number
 
 
 @login_required
@@ -310,11 +311,14 @@ def admin_customer_detail(request, customer_id):
     if request.method == "POST":
         full_name = request.POST.get("full_name", "").strip()
         email = request.POST.get("email", "").strip().lower()
-        phone = request.POST.get("phone", "").strip()
+        phone = normalize_phone_number(request.POST.get("phone", ""))
         address = request.POST.get("address", "").strip()
 
-        if not full_name or not email or not phone:
-            messages.error(request, "Please complete all required fields.")
+        if not full_name or not email or phone is None:
+            messages.error(
+                request,
+                "Please complete all required fields and enter an 11-digit phone number.",
+            )
         elif len(address) < 20:
             messages.error(
                 request,

@@ -42,6 +42,10 @@
                            id="phone"
                            name="phone"
                            value="{{ profile.phone_number|default:'' }}"
+                           inputmode="tel"
+                           pattern="[0-9 ]{11,14}"
+                           maxlength="14"
+                           title="Enter exactly 11 digits; spaces are optional."
                            required>
                 </div>
 

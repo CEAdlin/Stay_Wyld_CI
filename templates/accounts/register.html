@@ -31,7 +31,9 @@
 
             <div class="auth-field">
                 <label>Phone Number</label>
-                <input type="text" name="phone" placeholder="Your contact number" required>
+                  <input type="tel" name="phone" placeholder="Your contact number" inputmode="tel"
+                      pattern="[0-9 ]{11,14}" maxlength="14"
+                      title="Enter exactly 11 digits; spaces are optional." required>
             </div>
 
             <div class="auth-field">

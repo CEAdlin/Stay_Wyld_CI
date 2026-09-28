@@ -6,6 +6,7 @@ from datetime import datetime
 from .models import Unit, Booking, BookingChangeRequest, UnitBlockedDate
 from django.contrib.auth.models import User
 from accounts.models import CustomerProfile
+from accounts.phone_validation import normalize_phone_number
 from .validation import calculate_dog_surcharge, validate_booking_change
 
 
@@ -143,7 +144,15 @@ def booking_create_view(request, unit_slug):
 
             customer_name = request.POST.get("customer_name")
             customer_email = request.POST.get("customer_email")
-            customer_phone = request.POST.get("customer_phone")
+            customer_phone = normalize_phone_number(
+                request.POST.get("customer_phone")
+            )
+            if customer_phone is None:
+                messages.error(
+                    request,
+                    "Phone number must contain exactly 11 digits.",
+                )
+                return redirect(request.path)
         else:
             # Customer booking themselves
             customer = request.user

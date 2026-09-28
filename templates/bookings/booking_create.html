@@ -44,7 +44,9 @@
                         <input type="email" name="customer_email" required class="booking-input">
 
                         <label class="booking-label">Customer Phone</label>
-                        <input type="text" name="customer_phone" required class="booking-input">
+                        <input type="tel" name="customer_phone" required class="booking-input"
+                            inputmode="tel" pattern="[0-9 ]{11,14}" maxlength="14"
+                            title="Enter exactly 11 digits; spaces are optional.">
                         {% endif %}
 
                         <label class="booking-label">Check-in Date</label>
