@@ -93,7 +93,6 @@
         </div>
     </nav>
 
-    {% if request.user.is_authenticated and request.user.is_staff %}
     {% if messages %}
     <div class="messages message-popup" role="status" aria-live="polite">
         {% for message in messages %}
@@ -103,7 +102,6 @@
         </div>
         {% endfor %}
     </div>
-    {% endif %}
     {% endif %}
 
     <!-- Main content -->
