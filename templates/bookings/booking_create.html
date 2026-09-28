@@ -106,6 +106,12 @@
     <div class="modal-content">
         <button type="button" id="modalClose" class="modal-close">×</button>
 
+        {% if request.user.is_staff %}
+        <h2>Booking Created &amp; Confirmed Successfully!</h2>
+        <p>
+            The booking has been created and confirmed successfully.
+        </p>
+        {% else %}
         <h2>Thank you for your booking request</h2>
         <p>
             All bookings are <strong>pending</strong> until approved by a member of
@@ -116,13 +122,18 @@
             You can log back in at any time to check or modify your booking prior to
             arrival.
         </p>
+        {% endif %}
 
         <p class="modal-date">
             We look forward to welcoming you on <strong id="modalCheckin"></strong>.
         </p>
 
         <button type="button" class="booking-submit-btn" id="confirmBookingBtn">
+            {% if request.user.is_staff %}
+            Go To Bookings List
+            {% else %}
             Go To My Bookings
+            {% endif %}
         </button>
 
     </div>
@@ -143,6 +154,8 @@
             document.getElementById("blocked-dates").textContent
         );
         const pricePerNight = parseFloat("{{ unit.price_per_night }}");
+        const dogSurcharge = parseFloat("{{ unit.dog_surcharge }}") || 0;
+        const dogChargeType = "{{ unit.dog_charge_type }}";
 
         const preCheckIn = document.getElementById("preselected-checkin").value;
         const preCheckOut = document.getElementById("preselected-checkout").value;
@@ -385,7 +398,9 @@
                 0;
 
             if (dogCount > 0) {
-                total += 20; // flat fee
+                total += dogChargeType === "PER_DOG_PER_STAY"
+                    ? dogSurcharge * dogCount
+                    : dogSurcharge;
             }
 
             document.getElementById("totalPrice").textContent = total.toFixed(2);

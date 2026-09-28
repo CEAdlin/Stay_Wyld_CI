@@ -60,7 +60,7 @@ class BookingAvailabilityTests(TestCase):
             self.booking_data(existing_check_out, new_check_out),
         )
 
-        self.assertRedirects(response, reverse("my_bookings"))
+        self.assertRedirects(response, reverse("admin_booking_list"))
         self.assertTrue(
             Booking.objects.filter(
                 unit=self.unit,
@@ -100,7 +100,7 @@ class BookingAvailabilityTests(TestCase):
             {**self.booking_data(check_in, check_out), "dogs": "2"},
         )
 
-        self.assertRedirects(response, reverse("my_bookings"))
+        self.assertRedirects(response, reverse("admin_booking_list"))
         booking = Booking.objects.get(unit=self.unit)
         self.assertEqual(booking.dog_surcharge, Decimal("100.00"))
         self.assertEqual(booking.total_amount, Decimal("300.00"))
@@ -118,7 +118,7 @@ class BookingAvailabilityTests(TestCase):
             {**self.booking_data(check_in, check_out), "dogs": "2"},
         )
 
-        self.assertRedirects(response, reverse("my_bookings"))
+        self.assertRedirects(response, reverse("admin_booking_list"))
         booking = Booking.objects.get(unit=self.unit)
         self.assertEqual(booking.dog_surcharge, Decimal("50.00"))
         self.assertEqual(booking.total_amount, Decimal("250.00"))

@@ -153,6 +153,8 @@ def booking_create_view(request, unit_slug):
             customer_email = request.user.email
             customer_phone = profile.phone_number
 
+        booking_status = "CONFIRMED" if request.user.is_staff else "PENDING"
+
         # Create booking
         booking = Booking.objects.create(
             unit=unit,
@@ -169,10 +171,12 @@ def booking_create_view(request, unit_slug):
             total_nights=nights,
             dog_surcharge=dog_fee,
             total_amount=total_price,
-            status="PENDING",
+            status=booking_status,
         )
 
-        return redirect("my_bookings")
+        return redirect(
+            "admin_booking_list" if request.user.is_staff else "my_bookings"
+        )
 
     return render(
         request,

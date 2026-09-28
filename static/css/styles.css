@@ -1726,7 +1726,7 @@ section.bg-light {
 
 .admin-dashboard-subtitle {
     font-size: 16px;
-    color: #759075;
+    color: var(--colour-accent);
     margin-bottom: 40px;
 }
 
