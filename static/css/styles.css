@@ -2595,7 +2595,7 @@ body #admin-availability-calendar .admin-calendar-selected {
 
 .modal-content h2 {
     font-family: var(--font-primary);
-    color: var(--colour-accent);
+    color: var(--colour-blue);
     font-size: 2.6rem;
     margin-bottom: 20px;
 }
@@ -2854,6 +2854,10 @@ body #admin-availability-calendar .admin-calendar-selected {
     -webkit-backdrop-filter: blur(5px);
     margin: 80px auto;
 }
+
+  .admin-booking-detail-card h2 {
+    color: #ffffff;
+  }
 
 .admin-booking-grid {
     display: grid;
