@@ -14,7 +14,8 @@
         <div class="customer-section-block">
             <h2 class="customer-section-title">Bookings</h2>
 
-            <table class="admin-table customer-bookings-table">
+            <div class="customer-section block table-responsive">
+                <table class="admin-table customer-bookings-table">
                 <thead>
                     <tr>
                         <th>Unit</th>
@@ -57,7 +58,8 @@
                     </tr>
                     {% endfor %}
                 </tbody>
-            </table>
+                </table>
+            </div>
         </div>
 
         {% else %}

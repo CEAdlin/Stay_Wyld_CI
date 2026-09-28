@@ -263,9 +263,10 @@
 
         const selectedDates = new Set();
         let calendarEvents = [];
+        const mobileCalendarQuery = window.matchMedia("(max-width: 600px)");
 
         const calendar = new FullCalendar.Calendar(calendarElement, {
-            initialView: "adminTwoMonths",
+            initialView: mobileCalendarQuery.matches ? "dayGridMonth" : "adminTwoMonths",
             multiMonthMaxColumns: 2,
             multiMonthMinWidth: 0,
 
@@ -402,6 +403,12 @@
             "admin-unblock-dates-button"
         ).addEventListener("click", () => {
             updateAvailability("unblock_dates");
+        });
+
+        mobileCalendarQuery.addEventListener("change", (event) => {
+            calendar.changeView(
+                event.matches ? "dayGridMonth" : "adminTwoMonths"
+            );
         });
 
         calendar.render();
