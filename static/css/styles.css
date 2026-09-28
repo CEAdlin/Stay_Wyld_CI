@@ -1869,7 +1869,7 @@ section.bg-light {
 /* Improve spacing inside admin-card */
 .admin-card {
     text-align: left;
-    padding: 40px;
+    padding: 22px;
 }
 
 /* Wider wrapper for table-heavy pages */
