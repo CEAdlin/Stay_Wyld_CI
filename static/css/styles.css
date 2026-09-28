@@ -2217,10 +2217,15 @@ section.bg-light {
 .fc-daygrid-day.selected-checkin {
     background: #C1BD88; /* your gold-beige brand colour */
 }
-
+body #admin-availability-calendar .admin-calendar-selected {
 /* Selected check-out date */
 .fc-daygrid-day.selected-checkout {
     background: #759075; /* your green brand colour */
+
+body #admin-availability-calendar .admin-calendar-selected {
+  background: #d9d9d9;
+  color: var(--colour-blue);
+}
 }
 
 .booking-summary-bar {
@@ -3685,8 +3690,7 @@ body #admin-availability-calendar .fc-button:focus {
 
 body .fc-daygrid-day.selected-checkin,
 body .fc-daygrid-day.selected-checkout,
-body .fc-daygrid-day.selected-range,
-body #admin-availability-calendar .admin-calendar-selected {
+body .fc-daygrid-day.selected-range {
     background: var(--colour-blue);
     color: #ffffff;
 }

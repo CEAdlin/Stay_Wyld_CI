@@ -283,11 +283,11 @@ def admin_customers_list(request):
         customers.sort(
             key=lambda customer: (
                 not customer.has_active_booking,
-                customer.username.lower(),
+                customer.customer_name.casefold(),
             )
         )
     else:
-        customers.sort(key=lambda customer: customer.username.lower())
+        customers.sort(key=lambda customer: customer.customer_name.casefold())
 
     return render(
         request,
