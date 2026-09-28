@@ -402,7 +402,7 @@ section.bg-light {
 
 .about-content p.lead {
   color: var(--colour-tertiary);
-  font-size: 1.15rem;
+  font-size: 1.3rem;
   line-height: 1.8;
 }
 
@@ -768,7 +768,7 @@ section.bg-light {
   }
 
   .welcome-card p:not(.welcome-eyebrow) {
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 1.7;
   }
 
@@ -3558,71 +3558,6 @@ section.bg-light {
     display: table-cell;
     visibility: visible;
     opacity: 0.45;
-}
-
-/* Calendar contrast overrides */
-body .fc-toolbar-title,
-body .fc-col-header-cell-cushion,
-body .fc-daygrid-day-number,
-body #admin-availability-calendar .fc-toolbar-title,
-body #admin-availability-calendar .fc-daygrid-day-number {
-  color: var(--colour-blue);
-}
-
-body .fc-button,
-body #admin-availability-calendar .fc-button {
-  background: #ffffff;
-  border-color: var(--colour-blue);
-  color: var(--colour-blue);
-}
-
-body .fc-button:hover,
-body .fc-button:focus,
-body #admin-availability-calendar .fc-button:hover,
-body #admin-availability-calendar .fc-button:focus {
-  background: var(--colour-blue);
-  border-color: var(--colour-blue);
-  color: #ffffff;
-}
-
-body .fc-daygrid-day.selected-checkin,
-body .fc-daygrid-day.selected-checkout,
-body .fc-daygrid-day.selected-range,
-body #admin-availability-calendar .admin-calendar-selected {
-    background: var(--colour-blue);
-    color: #ffffff;
-}
-
-body .fc-daygrid-day.selected-checkin .fc-daygrid-day-number,
-body .fc-daygrid-day.selected-checkout .fc-daygrid-day-number,
-body .fc-daygrid-day.selected-range .fc-daygrid-day-number {
-    color: #ffffff;
-}
-
-/* Minimum sizes for secondary-font text */
-body p,
-body li,
-body label,
-body th,
-body td,
-body a,
-body span,
-body input,
-body textarea,
-body select,
-body option {
-  font-size: max(1.3rem, 1.0em);
-}
-
-body button,
-body .crud-btn,
-body .auth-btn,
-body .book-now-btn,
-body .booking-submit-btn,
-body .book-now-summary-btn,
-body .admin-unit-detail-button,
-body .filter-form button {
-  font-size: 1rem;
 }
 
 /* Keep the top toolbar controls at a consistent size */

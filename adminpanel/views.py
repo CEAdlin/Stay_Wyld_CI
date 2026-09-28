@@ -46,6 +46,13 @@ def admin_booking_delete(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)
 
     if request.method == "POST":
+        if booking.status != "CANCELLED":
+            messages.error(
+                request,
+                "Only cancelled bookings can be deleted.",
+            )
+            return redirect("admin_booking_list")
+
         booking.delete()
         messages.success(request, "Booking deleted.")
 

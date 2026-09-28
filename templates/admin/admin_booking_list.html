@@ -101,14 +101,16 @@
                                     View &amp; Modify
                                 </a>
 
+                                {% if booking.status == "CANCELLED" %}
                                 <form method="post" action="{% url 'admin_booking_delete' booking.id %}"
                                     class="inline-form">
                                     {% csrf_token %}
                                     <button type="submit" class="crud-btn delete-btn"
-                                        onclick="return confirm('Delete this booking?');">
+                                        onclick="return confirm('Delete this cancelled booking?');">
                                         Delete
                                     </button>
                                 </form>
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
