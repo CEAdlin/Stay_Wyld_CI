@@ -1677,11 +1677,11 @@ section.bg-light {
 /* WRAPPER */
 .admin-card-wrapper {
     width: 90vw;
-  background: rgba(40, 41, 62, 0.82);
+    background: rgba(40, 41, 62, 0.82);
     border: 2px solid #C1BD88;
     border-radius: 16px;
     margin: 0 auto;            /* centers the wrapper */
-    padding: 10px 30px;           /* optional spacing */
+    padding: 50px 30px;           /* optional spacing */
 }
 
 .admin-dashboard-subtitle {
@@ -1875,7 +1875,6 @@ section.bg-light {
 .customer-bookings-table .crud-btn {
     margin: 0;
     white-space: nowrap;
-    color: var(--colour-blue);
     border: 1px solid var(--colour-blue);
 }
 
