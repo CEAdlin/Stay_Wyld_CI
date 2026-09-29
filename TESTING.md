@@ -195,48 +195,45 @@ My features & user stories testing screenshots comprehensively cover desktop dev
 
 | Page | Screenshot | 
 |---|---|
-| index.html | ![Tablet Index 1](documentation/devices_tablet/tablet_index_1.png) ![Tablet Index 2](documentation/devices_tablet/tablet_index_2.png) ![Tablet Index 3](documentation/devices_tablet/tablet_index_3.png) |
-| register.html | ![Tablet Register](documentation/devices_tablet/tablet-register.png) |
-| booking_create.html | ![Tablet Create Booking](documentation/devices_tablet/tablet_create_booking.png) ![Tablet Create Booking Feedback](documentation/devices_tablet/tablet_create_booking_feedback.png) |
-| booking_delete.html | ![Tablet Cancel Confirmation](documentation/devices_tablet/tablet_cancel_confirmation.png) |
-| base.html | N/A |
-| 404.html | ![Tablet 404](documentation/devices_tablet/tablet_404.png) |
-| login.html | ![Tablet Login](documentation/devices_tablet/tablet_login.png) |
-| booking_detail.html | ![Tablet Booking Detail](documentation/devices_tablet/tablet_booking_detail.png) |
-| booking_page.html | N/A |
-| booking_update.html | ![Tablet Booking Update](documentation/devices_tablet/tablet_booking_update.png) ![Tablet Update Feedback](documentation/devices_tablet/tablet_update_feedback.png) |
-| calendar.html | N/A |
-| my_bookings.html | ![Tablet My Bookings](documentation/devices_tablet/tablet_my_bookings.png) |
-| unit_detail.html | ![Tablet Unit Detail 1](documentation/devices_tablet/tablet_unit_detail_1.png) ![Tablet Unit Detail 2](documentation/devices_tablet/tablet_unit_detail_2.png) ![Tablet Unit Detail 3](documentation/devices_tablet/tablet_unit_detail_3.png) |
-| admin_dashboard.html | ![Tablet Admin Dashboard](documentation/devices_tablet/tablet_admin_dashboard.png) |
-| admin_booking_list.html | ![Tablet Admin Booking List](documentation/devices_tablet/tablet_admin_booking_list.png) |
-| admin_booking_detail.html | ![Tablet Admin Booking Detail](documentation/devices_tablet/tablet_admin_booking_detail.png) |
-| admin_customers_list.html | ![Tablet Admin Customers List](documentation/devices_tablet/tablet_admin_customers_list.png) |
-| admin_customer_detail.html | ![Tablet Admin Customer Detail](documentation/devices_tablet/tablet_admin_customer_detail.png) |
-| admin_units_list.html | ![Tablet Admin Unit List](documentation/devices_tablet/tablet_admin_unit_list.png) |
-| admin_unit_detail.html | ![Tablet Admin Unit Detail 1](documentation/devices_tablet/tablet_admin_unit_detail.png) ![Tablet Admin Unit Detail 2](documentation/devices_tablet/tablet_admin_unit_detail_2.png) ![Tablet Admin Unit Detail 3](documentation/devices_tablet/tablet_admin_unit_detail_3.png) |
+| index.html | <img src="documentation/devices_tablet/tablet_index_1.png" alt="Tablet Index 1" width="150"> <img src="documentation/devices_tablet/tablet_index_2.png" alt="Tablet Index 2" width="150"> <img src="documentation/devices_tablet/tablet_index_3.png" alt="Tablet Index 3" width="150"> |
+| register.html | <img src="documentation/devices_tablet/tablet-register.png" alt="Tablet Register" width="150"> |
+| booking_create.html | <img src="documentation/devices_tablet/tablet_create_booking.png" alt="Tablet Create Booking" width="150"> <img src="documentation/devices_tablet/tablet_create_booking_feedback.png" alt="Tablet Create Booking Feedback" width="150"> |
+| booking_delete.html | <img src="documentation/devices_tablet/tablet_cancel_confirmation.png" alt="Tablet Cancel Confirmation" width="150"> |
+| 404.html | <img src="documentation/devices_tablet/tablet_404.png" alt="Tablet 404" width="150"> |
+| login.html | <img src="documentation/devices_tablet/tablet_login.png" alt="Tablet Login" width="150"> |
+| booking_detail.html | <img src="documentation/devices_tablet/tablet_booking_detail.png" alt="Tablet Booking Detail" width="150"> |
+| booking_update.html | <img src="documentation/devices_tablet/tablet_booking_update.png" alt="Tablet Booking Update" width="150"> <img src="documentation/devices_tablet/tablet_update_feedback.png" alt="Tablet Update Feedback" width="150"> |
+| my_bookings.html | <img src="documentation/devices_tablet/tablet_my_bookings.png" alt="Tablet My Bookings" width="150"> |
+| unit_detail.html | <img src="documentation/devices_tablet/tablet_unit_detail_1.png" alt="Tablet Unit Detail 1" width="150"> <img src="documentation/devices_tablet/tablet_unit_detail_2.png" alt="Tablet Unit Detail 2" width="150"> <img src="documentation/devices_tablet/tablet_unit_detail_3.png" alt="Tablet Unit Detail 3" width="150"> |
+| admin_dashboard.html | <img src="documentation/devices_tablet/tablet_admin_dashboard.png" alt="Tablet Admin Dashboard" width="150"> |
+| admin_booking_list.html | <img src="documentation/devices_tablet/tablet_admin_booking_list.png" alt="Tablet Admin Booking List" width="150"> |
+| admin_booking_detail.html | <img src="documentation/devices_tablet/tablet_admin_booking_detail.png" alt="Tablet Admin Booking Detail" width="150"> |
+| admin_customers_list.html | <img src="documentation/devices_tablet/tablet_admin_customers_list.png" alt="Tablet Admin Customers List" width="150"> |
+| admin_customer_detail.html | <img src="documentation/devices_tablet/tablet_admin_customer_detail.png" alt="Tablet Admin Customer Detail" width="150"> |
+| admin_units_list.html | <img src="documentation/devices_tablet/tablet_admin_unit_list.png" alt="Tablet Admin Unit List" width="150"> |
+| admin_unit_detail.html | <img src="documentation/devices_tablet/tablet_admin_unit_detail.png" alt="Tablet Admin Unit Detail 1" width="150"> <img src="documentation/devices_tablet/tablet_admin_unit_detail_2.png" alt="Tablet Admin Unit Detail 2" width="150"> <img src="documentation/devices_tablet/tablet_admin_unit_detail_3.png" alt="Tablet Admin Unit Detail 3" width="150"> |
 
 ### Mobile Devices
 
 | Page | Screenshot | 
 |---|---|
-| index.html | ![Mobile Index](documentation/devices_mobile/mobile_index.html.png) ![Mobile Index 2](documentation/devices_mobile/mobile_index.html_2.png) ![Mobile Index 3](documentation/devices_mobile/mobile_index.html_3.png) ![Mobile Index 4](documentation/devices_mobile/mobile_index.html_4.png) |
-| register.html | ![Mobile Register](documentation/devices_mobile/mobile_register.png) |
-| booking_create.html | ![Mobile Booking Create](documentation/devices_mobile/mobile_booking_create.html.png) ![Mobile Booking Create Confirmation](documentation/devices_mobile/mobile_booking_create_confirmation.png) |
+| index.html | <img src="documentation/devices_mobile/mobile_index.html.png" alt="Mobile Index" width="150"> <img src="documentation/devices_mobile/mobile_index.html_2.png" alt="Mobile Index 2" width="150"> <img src="documentation/devices_mobile/mobile_index.html_3.png" alt="Mobile Index 3" width="150"> <img src="documentation/devices_mobile/mobile_index.html_4.png" alt="Mobile Index 4" width="150"> |
+| register.html | <img src="documentation/devices_mobile/mobile_register.png" alt="Mobile Register" width="150"> |
+| booking_create.html | <img src="documentation/devices_mobile/mobile_booking_create.html.png" alt="Mobile Booking Create" width="150"> <img src="documentation/devices_mobile/mobile_booking_create_confirmation.png" alt="Mobile Booking Create Confirmation" width="150"> |
 | booking_delete.html | N/A |
-| 404.html | ![Mobile 404](documentation/devices_mobile/mobile_404.png) |
-| login.html | ![Mobile Login](documentation/devices_mobile/mobile_login.png) |
-| booking_detail.html | ![Mobile Booking Detail](documentation/devices_mobile/mobile_booking_detail.html.png) ![Mobile Booking Detail 2](documentation/devices_mobile/mobile_booking_detail.hml_2.png) |
-| booking_update.html | ![Mobile Booking Update](documentation/devices_mobile/mobile_booking_update_request.html.png) ![Mobile Booking Update 2](documentation/devices_mobile/mobile_booking_update_request.html_2.png) |
-| my_bookings.html | ![Mobile My Bookings](documentation/devices_mobile/mobile_my_bookings.html.png) |
-| unit_detail.html | ![Mobile Unit Detail](documentation/devices_mobile/mobile_unit_detail.html.png) |
-| admin_dashboard.html | ![Mobile Admin Dashboard](documentation/devices_mobile/mobile_admin_dashboard.html.png) |
-| admin_booking_list.html | ![Mobile Admin Booking List](documentation/devices_mobile/mobile_admin_booking_list.html.png) |
-| admin_booking_detail.html | ![Mobile Admin Booking Detail](documentation/devices_mobile/mobile_admin_booking_detail.html.png) |
-| admin_customers_list.html | ![Mobile Admin Customers List](documentation/devices_mobile/mobile_admin_customers_list.html.png) |
-| admin_customer_detail.html | ![Mobile Admin Customer Detail](documentation/devices_mobile/mobile_admin_customer_detail.html.png) |
-| admin_units_list.html | ![Mobile Admin Units List](documentation/devices_mobile/mobile_admin_units_list.html.png) |
-| admin_unit_detail.html | ![Mobile Admin Unit Detail](documentation/devices_mobile/mobile_admin_unit_detail.html.png) ![Mobile Admin Unit Detail 2](documentation/devices_mobile/mobile_admin_unit_detail.html_2.png) |
+| 404.html | <img src="documentation/devices_mobile/mobile_404.png" alt="Mobile 404" width="150"> |
+| login.html | <img src="documentation/devices_mobile/mobile_login.png" alt="Mobile Login" width="150"> |
+| booking_detail.html | <img src="documentation/devices_mobile/mobile_booking_detail.html.png" alt="Mobile Booking Detail" width="150"> <img src="documentation/devices_mobile/mobile_booking_detail.hml_2.png" alt="Mobile Booking Detail 2" width="150"> |
+| booking_update.html | <img src="documentation/devices_mobile/mobile_booking_update_request.html.png" alt="Mobile Booking Update" width="150"> <img src="documentation/devices_mobile/mobile_booking_update_request.html_2.png" alt="Mobile Booking Update 2" width="150"> |
+| my_bookings.html | <img src="documentation/devices_mobile/mobile_my_bookings.html.png" alt="Mobile My Bookings" width="150"> |
+| unit_detail.html | <img src="documentation/devices_mobile/mobile_unit_detail.html.png" alt="Mobile Unit Detail" width="150"> |
+| admin_dashboard.html | <img src="documentation/devices_mobile/mobile_admin_dashboard.html.png" alt="Mobile Admin Dashboard" width="150"> |
+| admin_booking_list.html | <img src="documentation/devices_mobile/mobile_admin_booking_list.html.png" alt="Mobile Admin Booking List" width="150"> |
+| admin_booking_detail.html | <img src="documentation/devices_mobile/mobile_admin_booking_detail.html.png" alt="Mobile Admin Booking Detail" width="150"> |
+| admin_customers_list.html | <img src="documentation/devices_mobile/mobile_admin_customers_list.html.png" alt="Mobile Admin Customers List" width="150"> |
+| admin_customer_detail.html | <img src="documentation/devices_mobile/mobile_admin_customer_detail.html.png" alt="Mobile Admin Customer Detail" width="150"> |
+| admin_units_list.html | <img src="documentation/devices_mobile/mobile_admin_units_list.html.png" alt="Mobile Admin Units List" width="150"> |
+| admin_unit_detail.html | <img src="documentation/devices_mobile/mobile_admin_unit_detail.html.png" alt="Mobile Admin Unit Detail" width="150"> <img src="documentation/devices_mobile/mobile_admin_unit_detail.html_2.png" alt="Mobile Admin Unit Detail 2" width="150"> |
 
 # ✅ Code Validation
 
