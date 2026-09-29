@@ -4,8 +4,8 @@
 {% block meta_description %}Book {{ unit.name }} at Stay Wyld. Check availability, choose your dates and review your stay details online.{% endblock %}
 
 <!-- Hidden fields to pass preselected dates into JS -->
-<input type="hidden" id="preselected-checkin" value="{{ request.GET.check_in }}" />
-<input type="hidden" id="preselected-checkout" value="{{ request.GET.check_out }}" />
+<input type="hidden" id="preselected-checkin" value="{{ request.GET.check_in }}">
+<input type="hidden" id="preselected-checkout" value="{{ request.GET.check_out }}">
 
 <div class="booking-create-wrapper">
     <!-- Outer blue-glass wrapper -->
@@ -50,10 +50,10 @@
                         {% endif %}
 
                         <label class="booking-label">Check-in Date</label>
-                        <input type="date" name="check_in" class="booking-input" />
+                        <input type="date" name="check_in" class="booking-input">
 
                         <label class="booking-label">Check-out Date</label>
-                        <input type="date" name="check_out" class="booking-input" />
+                        <input type="date" name="check_out" class="booking-input">
 
                         <label class="booking-label">Adults</label>
                         <input type="number" name="adults" min="1" max="{{ unit.max_adults }}" required

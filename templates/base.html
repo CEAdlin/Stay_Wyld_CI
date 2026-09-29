@@ -4,8 +4,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
         {% block title %}Stay Wyld | Luxury Woodland Glamping{% endblock %}
@@ -66,7 +66,7 @@
     <nav class="navbar navbar-expand-lg fixed-top main-navbar">
         <div class="container">
             <a class="navbar-brand" href="{% url 'index' %}#home">
-                <img src="{% static 'images/wyld-logo-nobg1.png' %}" alt="Stay Wyld Logo" />
+                <img src="{% static 'images/wyld-logo-nobg1.png' %}" alt="Stay Wyld Logo">
             </a>
 
             <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
@@ -170,10 +170,10 @@
 
                 <p>Please enter your password to confirm this action.</p>
 
-                <input type="password" name="password" class="form-control" required />
+                <input type="password" name="password" class="form-control" required>
 
-                <input type="hidden" name="action_type" id="modalActionType" />
-                <input type="hidden" name="object_id" id="modalObjectId" />
+                <input type="hidden" name="action_type" id="modalActionType">
+                <input type="hidden" name="object_id" id="modalObjectId">
 
                 <button type="submit" class="crud-btn danger-btn">Confirm</button>
                 <button type="button" class="crud-btn secondary-btn" onclick="closePasswordModal()">

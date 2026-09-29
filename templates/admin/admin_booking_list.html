@@ -43,8 +43,8 @@
                         aria-label="Search by booking ID"
                     />
 
-                    <input type="date" name="from" value="{{ request.GET.from }}" />
-                    <input type="date" name="to" value="{{ request.GET.to }}" />
+                    <input type="date" name="from" value="{{ request.GET.from }}">
+                    <input type="date" name="to" value="{{ request.GET.to }}">
 
                     <button type="submit" class="crud-btn">Filter</button>
                     <a href="{% url 'admin_booking_list' %}" class="crud-btn">Clear</a>
