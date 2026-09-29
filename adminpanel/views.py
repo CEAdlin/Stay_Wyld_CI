@@ -1,14 +1,24 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseForbidden, JsonResponse
 from django.contrib.auth.models import User
 from datetime import date, datetime, timedelta
-from bookings.models import Booking, Unit, UnitGalleryImage, UnitBlockedDate, BookingChangeRequest
+from bookings.models import (
+    Booking,
+    Unit,
+    UnitGalleryImage,
+    UnitBlockedDate,
+    BookingChangeRequest,
+)
 from accounts.models import CustomerProfile
 import json
 from django.db import transaction
-from bookings.validation import calculate_dog_surcharge, validate_booking_change
+from bookings.validation import (
+    calculate_dog_surcharge,
+    validate_booking_change,
+)
 from accounts.phone_validation import normalize_phone_number
 
 
@@ -30,10 +40,24 @@ def admin_booking_status_update(request, booking_id):
 
         if status not in dict(Booking.STATUS_CHOICES):
             messages.error(request, "Invalid booking status.")
+        elif (
+            booking.status == "CANCELLED"
+            and status in {"PENDING", "CONFIRMED"}
+        ):
+            messages.error(
+                request,
+                "Cancelled bookings cannot be re-activated. "
+                "A new booking must be created.",
+            )
+            return redirect(
+                f"{reverse('admin_booking_list')}"
+                "?cancelled_reactivation=1"
+            )
         elif status == "COMPLETED" and booking.check_out_date > date.today():
             messages.error(
                 request,
-                "A booking cannot be marked completed before its checkout date.",
+                "A booking cannot be marked completed before its "
+                "checkout date.",
             )
         else:
             booking.status = status
@@ -184,6 +208,7 @@ def admin_unit_detail(request, unit_id):
         },
     )
 
+
 @login_required
 def admin_unit_availability(request, unit_id):
     if not request.user.is_staff:
@@ -231,6 +256,7 @@ def admin_unit_availability(request, unit_id):
 
     return JsonResponse(events, safe=False)
 
+
 @login_required
 def admin_modify_unit(request, unit_id):
     if not request.user.is_staff:
@@ -239,20 +265,25 @@ def admin_modify_unit(request, unit_id):
     messages.info(request, "Modify unit page not yet implemented.")
     return redirect("admin_unit_detail", unit_id=unit_id)
 
+
 @login_required
 def admin_customers_list(request):
     if not request.user.is_superuser:
         return redirect("index")
 
     today = date.today()
-    customers = list(User.objects.filter(is_superuser=False).order_by("username"))  
+    customers = list(
+        User.objects.filter(is_superuser=False).order_by("username")
+    )
 
     for customer in customers:
         profile = CustomerProfile.objects.filter(user=customer).first()
         bookings = Booking.objects.filter(customer=customer)
 
         customer.customer_name = (
-            profile.full_name if profile else customer.get_full_name() or customer.username
+            profile.full_name
+            if profile
+            else customer.get_full_name() or customer.username
         )
         customer.email_address = customer.email
         customer.phone_number = (
@@ -317,7 +348,8 @@ def admin_customer_detail(request, customer_id):
         if not full_name or not email or phone is None:
             messages.error(
                 request,
-                "Please complete all required fields and enter an 11-digit phone number.",
+                "Please complete all required fields and enter an 11-digit "
+                "phone number.",
             )
         elif len(address) < 20:
             messages.error(
@@ -368,6 +400,7 @@ def admin_customer_detail(request, customer_id):
             "bookings": bookings,
         },
     )
+
 
 @login_required
 def admin_modify_customer(request, customer_id):
@@ -450,10 +483,17 @@ def admin_booking_detail(request, booking_id):
 
     booking = get_object_or_404(Booking, id=booking_id)
 
-    if request.method == "POST" and request.POST.get("action") == "save_booking":
+    if (
+        request.method == "POST"
+        and request.POST.get("action") == "save_booking"
+    ):
         try:
-            check_in = datetime.strptime(request.POST["check_in"], "%Y-%m-%d").date()
-            check_out = datetime.strptime(request.POST["check_out"], "%Y-%m-%d").date()
+            check_in = datetime.strptime(
+                request.POST["check_in"], "%Y-%m-%d"
+            ).date()
+            check_out = datetime.strptime(
+                request.POST["check_out"], "%Y-%m-%d"
+            ).date()
 
             adults = int(request.POST.get("adults", 1))
             children = int(request.POST.get("children", 0))
@@ -470,6 +510,17 @@ def admin_booking_detail(request, booking_id):
             messages.error(request, "Please enter valid booking details.")
             return redirect(request.path)
 
+        if (
+            booking.status == "CANCELLED"
+            and status in {"PENDING", "CONFIRMED"}
+        ):
+            messages.error(
+                request,
+                "Cancelled bookings cannot be re-activated. "
+                "A new booking must be created.",
+            )
+            return redirect(f"{request.path}?cancelled_reactivation=1")
+
         validation_error = validate_booking_change(
             unit=booking.unit,
             check_in=check_in,
@@ -485,7 +536,8 @@ def admin_booking_detail(request, booking_id):
         if status == "COMPLETED" and check_out > date.today():
             messages.error(
                 request,
-                "A booking cannot be marked completed before its checkout date.",
+                "A booking cannot be marked completed before its "
+                "checkout date.",
             )
             return redirect(request.path)
 
@@ -571,7 +623,8 @@ def admin_change_request_action(request, request_id):
                     booking.dogs,
                 )
                 booking.total_amount = (
-                    booking.total_nights * booking.nightly_price + booking.dog_surcharge
+                    booking.total_nights * booking.nightly_price
+                    + booking.dog_surcharge
                 )
                 booking.save()
 

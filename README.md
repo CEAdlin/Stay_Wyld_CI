@@ -10,16 +10,11 @@ Deployed Site: [StayWyld](https://staywyld-capstone-b19305edb31c.herokuapp.com/)
 
 Developer: Corrine Adlington ([CEAdlin](https://www.github.com/CEAdlin))
 
-### SuperUser Login Credentials:
-Username: CorrineAd
-
-Password: Test1234
-
 ## Project Overview:
 
 A responsive, full-stack Django web application designed to allow visitors to explore three glamping units, make enquiries, register as customers and book available accommodation for a minimum two-night stay. The website will include customer authentication, a database-driven booking and availability system, and a secure admin area where accommodation, customers and bookings can be managed. The project will demonstrate the use of HTML, CSS, JavaScript, Python, Django, Cloudinary and Heroku, following Agile development principles and MoSCoW prioritisation.
 
-![screenshot](documentation\AmIResponsive_Screenshot.png)
+![screenshot](documentation/AmIResponsive_Screenshot.png)
 
 
 ## User Stories
@@ -45,7 +40,7 @@ User stories organised by 'user'.
 | US08 | As a customer, I want to book an available unit so that I can reserve my stay. | Must | Done |
 | US09 | As a customer, I want to see live prices for selected dates. | Must | Done |
 | US10 | As a customer, I want to view my bookings and stay history. | Should | Done |
-| US11 | As a customer, I want to request a booking modification or cancellation. | Should | Done |
+| US11 | As a customer, I want to request booking modifications and cancel bookings. | Should | Done |
 | US12 | As a customer, I want to post a review. | Could | Won'tHave |
 | US13 | As a customer, I want to edit my customer profile. | Could | Todo |
 | US14 | As a customer, I want to receive booking reminder emails. | Could | Won'tHave |
@@ -214,7 +209,7 @@ The main layout decisions were:
 	interface text.
 - **Manrope** is imported as an additional interface font option.
 
-![Fonts Used](documentation\Googlefonts_fontsused.png)
+![Fonts Used](documentation/Googlefonts_fontsused.png)
 
 ### Colour Palette
 
@@ -228,7 +223,7 @@ The implemented CSS variables are:
 | `--colour-accent` | `#c1bd88` | Gold borders, buttons and highlights |
 | `--colour-blue` | `#28293e` | Dark panels, navigation and footer |
 
-![Stay Wyld colour palette](documentation\staywyld_colourpalette.png)
+![Stay Wyld colour palette](documentation/staywyld_colourpalette.png)
 
 ### UX, Accessibility and Responsive Planning
 
@@ -287,7 +282,7 @@ documented earlier in this README and the detailed issue-style stories are in
 
 ### Kanban Board
 
-![Project Board:](documentation\Project_Board.png)
+![Project Board:](documentation/Project_Board.png)
 
 The GitHub Project Board was used as a Kanban board. Cards were organised by
 status and moved as work progressed:
@@ -296,7 +291,7 @@ Completed features were checked manually and with automated tests before being
 treated as Done. The board provided a visible record of planned, active and
 completed work.
 
-![User Story:](documentation\user-story.png)
+![User Story:](documentation/user-story.png)
 
 Story points were not used. Work was prioritised using MoSCoW labels and user-story priority.
 
@@ -438,18 +433,21 @@ erDiagram
  `Unit.slug` is also unique in Django, although those uniqueness markers are omitted from the Mermaid field syntax for parser compatibility.
  An authenticated customer can have many bookings. An administrator-created booking may have no linked user because the customer's name, email and phone are stored directly on the booking.
  A unit can have many bookings, gallery images and blocked dates.
- A booking can have multiple modification or cancellation requests, each submitted by a customer user, only one request per unit can be open at any one time.
+A booking can have multiple modification requests when that workflow is used, while the customer cancellation flow marks the booking as cancelled after confirmation. Only one modification request per booking can be open at any one time.
  The unique unit/date constraint prevents the same date being blocked more than
  once for a particular unit.
 
 ## Workflow Notes
 
-A customer booking is initially stored with a `PENDING` status. Staff can review it and change the status to `CONFIRMED`, `CANCELLED` or `COMPLETED`.
-Customer modification and cancellation requests are stored separately in `BookingChangeRequest`. Staff approval is represented by the request status changing from `OPEN` to `APPROVED` or the internal `REJECTED` value, which is displayed to users as **Declined**.
-A booking is not considered available only because it is pending. The booking availability logic checks date overlap and ignores cancelled bookings.
-Staff can create `UnitBlockedDate` records for maintenance or private use. Blocked nights are displayed as unavailable and rejected by the booking validation logic.
-A following booking can check in on the previous booking's checkout date,
-because the checkout date is treated as the exclusive end of the stay.
+A customer booking is initially created with a `PENDING` status. Staff can review the booking and update its status to `CONFIRMED` or `CANCELLED`. A scheduled Heroku task runs after 11:30 each day and automatically changes bookings whose checkout date is that day to `COMPLETED`. Staff can manually mark a booking as completed only after its checkout date has passed, ensuring that the status reflects the actual stay.
+
+Customer modification requests are stored separately in `BookingChangeRequest`. Staff approval changes a request from `OPEN` to `APPROVED`; rejected requests use the internal `REJECTED` value, which is displayed to customers as **Declined**.
+
+Pending bookings reserve their selected dates and prevent overlapping bookings. The availability logic treats every overlapping booking as unavailable unless its status is `CANCELLED`; cancelled bookings are ignored.
+
+Staff can create `UnitBlockedDate` records for maintenance or private use. These blocked nights are displayed as unavailable and are rejected by the booking validation logic.
+
+A subsequent booking can check in on the previous booking's checkout date because the checkout date is treated as the exclusive end of the stay.
 
 ## Features
 
@@ -460,107 +458,105 @@ are clickable and open the full-page design evidence.
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Public navigation | Main navigation bar with top, user-nav-bar showing login status | ![Index Navigation](documentation\features\index_navbarsandhero.png) |
-| Login and registration | Customers can register, log in and log out. Navigation changes according to authentication state and role. | ![Login Page](documentation\features\login.png)![Register Page](documentation\features\register_validation.png) |
+| Public navigation | Main navigation bar with top, user-nav-bar showing login status | ![Index Navigation](documentation/features\index_navbarsandhero.png) |
+| Login and registration | Customers can register, log in and log out. Navigation changes according to authentication state and role. | ![Login Page](documentation/features\login.png)![Register Page](documentation/features\register_validation.png) |
 
 ### Security
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Defensive programming | Forms validate required values, dates, guest numbers, passwords and booking rules. Invalid input receives clear feedback. | ![Register Field Required](documentation\features\register_validation.png) ![Arrival Time Field Required](documentation\features\customer_create_booking_arrival_time_validation.png) ![Date Availability Validation](documentation\features\customer_create_booking_available_date_validation.png) ![Name Field Required](documentation\features\customer_create_booking_name_validation.png) ![Minimum Stay Enforcement](documentation\features\customer-unit_detail_minimum_stay_validation.png) ![Admin Delete Booking Confirmation](documentation\features\admin_bookings_list_delete_prompt.png) |
-| Authentication and authorisation | If not logged in - directed to login-page to access user/super-user restricted content. If user is logged in and attempts to access super-user restricted content request will be ignored and they will be re-drected to index.html. | ![Re-direct To Login Page](documentation\features\login.png) |
+| Defensive programming | Forms validate required values, dates, guest numbers, passwords and booking rules. Invalid input receives clear feedback. | ![Register Field Required](documentation/features\register_validation.png) ![Arrival Time Field Required](documentation/features\customer_create_booking_arrival_time_validation.png) ![Date Availability Validation](documentation/features\customer_create_booking_available_date_validation.png) ![Name Field Required](documentation/features\customer_create_booking_name_validation.png) ![Minimum Stay Enforcement](documentation/features\customer-unit_detail_minimum_stay_validation.png) ![Admin Delete Booking Confirmation](documentation/features\admin_bookings_list_delete_prompt.png) |
+| Authentication and authorisation | Users who are not logged in are directed to the login page for restricted content. Authenticated users without the required staff permissions are redirected to the homepage. | ![Redirect To Login Page](documentation/features\login.png) |
 
 ### Homepage
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Brand introduction | Hero content introduces Stay Wyld and provides clear booking calls to action. | ![Homepage Hero](documentation\features\index_navbarsandhero.png)![Homepage Booking Call To Action](documentation\features\index_booknow_cta.png) |
-| Unit rows | Three accommodation units are shown as full-width stacked rows with images, descriptions, facilities and booking links. | ![Index Stay With Us Section](documentation\features\index_booknow_cta.png) |
-| About and gallery | The homepage continues with the About section, photo gallery and footer contact details. | ![Index Gallery](documentation\features\index_gallery.png) ![Index Gallery & Footer](documentation\features\index_footer.png)|
+| Brand introduction | Hero content introduces Stay Wyld and provides clear booking calls to action. | ![Homepage Hero](documentation/features\index_navbarsandhero.png)![Homepage Booking Call To Action](documentation/features\index_booknow_cta.png) |
+| Unit rows | Three accommodation units are shown as full-width stacked rows with images, descriptions, facilities and booking links. | ![Index Stay With Us Section](documentation/features\index_booknow_cta.png) |
+| About and gallery | The homepage continues with the About section, photo gallery and footer contact details. | ![Index Gallery](documentation/features\index_gallery.png) ![Index Gallery & Footer](documentation/features\index_footer.png)|
 
 ### Unit Details
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Unit information | Displays unit name, description, facilities, capacity, pricing and main image. | ![Customer Unit Detail](documentation\features\customer_unit_detail.png) ![Customer Unit Detail Gallery & Facilities](documentation\features\customer_unit_detail_facilities_and_gallery.png) ![Customer Unit Occupancy etc.](documentation\features\Customer_Unit_Detail_Occupancy.png) ![Customer Unit Detail Availability Calendar](documentation\features\customer-unit_detail_availability_calendar.png) |
-| Gallery | Displays additional Cloudinary-backed gallery images. | ![Customer Unit Detail Cloudinary Gallery](documentation\features\customer_unit_detail_booknow_cta.png) |
-| Booking call to action | Links the visitor to the booking flow for the selected unit. | ![Customer Unit Book Now Call To Action](documentation\features\customer-unit_detail_availability_calendar.png) |
+| Unit information | Displays unit name, description, facilities, capacity, pricing and main image. | ![Customer Unit Detail](documentation/features\customer_unit_detail.png) ![Customer Unit Detail Gallery & Facilities](documentation/features\customer_unit_detail_facilities_and_gallery.png) ![Customer Unit Occupancy etc.](documentation/features\Customer_Unit_Detail_Occupancy.png) ![Customer Unit Detail Availability Calendar](documentation/features\customer-unit_detail_availability_calendar.png) |
+| Gallery | Displays additional Cloudinary-backed gallery images. | ![Customer Unit Detail Cloudinary Gallery](documentation/features\customer_unit_detail_booknow_cta.png) |
+| Booking call to action | Links the visitor to the booking flow for the selected unit. | ![Customer Unit Book Now Call To Action](documentation/features\customer-unit_detail_availability_calendar.png) |
 
 ### Create A Booking
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Availability calendar | Shows booked and blocked dates and lets customers select valid dates. | ![Create a Booking Calendar](documentation\features\customer_create_booking_available_date_validation.png)  |
-| Booking validation | Enforces the two-night minimum, prevents overlaps and allows check-in on an existing checkout date. | ![Minimum Stay Enforcement](documentation\features\customer-unit_detail_minimum_stay_validation.png)  |
-| Pricing and confirmation | Calculates nights, nightly price and dog surcharge before confirmation. | ![Create Booking Total Price Display](documentation\features\customer_create_booking_arrival_time_validation.png) ![Create Booking Feedback](documentation\features\customer_create_booking_feedback.png) |
-| My Bookings - View My Bookings | User can log in to view 'My Bookings' section and view all bookings along with status. | ![My Bookings List View](documentation\features\customer_my_bookings.png) ![Customer Booking Detail](documentation\features\customer_booking_detail.png) |
+| Availability calendar | Shows booked and blocked dates and lets customers select valid dates. | ![Create a Booking Calendar](documentation/features\customer_create_booking_available_date_validation.png)  |
+| Booking validation | Enforces the two-night minimum, prevents overlaps and allows check-in on an existing checkout date. | ![Minimum Stay Enforcement](documentation/features\customer-unit_detail_minimum_stay_validation.png)  |
+| Pricing and confirmation | Calculates nights, nightly price and dog surcharge before confirmation. | ![Create Booking Total Price Display](documentation/features\customer_create_booking_arrival_time_validation.png) ![Create Booking Feedback](documentation/features\customer_create_booking_feedback.png) |
+| My Bookings - View My Bookings | User can log in to view 'My Bookings' section and view all bookings along with status. | ![My Bookings List View](documentation/features\customer_my_bookings.png) ![Customer Booking Detail](documentation/features\customer_booking_detail.png) |
 
 ### Update Booking Request
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Request form | Customers can submit requested date, guest and dog changes for staff approval. | ![Booking Update Request](documentation\features\customer_booking_detail_update_request.png) |
-| Request Submitted | The customer can see that their update request has been submitted and awaiting admin approval. | ![Booking Update Request Feedback](documentation\features\customer_booking_update_request_feedback.png) |
+| Request form | Customers can submit requested date, guest and dog changes for staff approval. | ![Booking Update Request](documentation/features\customer_booking_detail_update_request.png) |
+| Request Submitted | The customer can see that their update request has been submitted and awaiting admin approval. | ![Booking Update Request Feedback](documentation/features\customer_booking_update_request_feedback.png) |
 
-### Delete Booking Request
+### Booking Cancellation
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Cancellation request | Customers submit a cancellation request rather than directly deleting protected booking data. | ![Booking Cancel Request](documentation/features/customer_booking_detail_cancel_request.png) |
-| Staff decision | Staff can approve or decline the request, with the user-facing status displayed as Declined when appropriate. | ![Admin Can Accept Or Reject Cancel Request](documentation\features\admin_booking_detail_request_open.png) |
-| Customer cancellation request accepted | If the cancellation request was accepted by the admin this is reflected within the customers 'My Bookings' and booking detail. | ![Customer Cancellation Request Accepted](documentation\features\customer_booking_cancel_request_accepted.png) |
-| Customer cancellation request rejected | If the cancellation request was rejected by the admin this is reflected within the customers 'My Bookings' and booking detail and the booking stays open. | ![Customer cancellation request rejected](documentation\features\customer_booking_cancel_request_declined.png) |
+| Cancellation | Customers confirm cancellation from the booking detail page, changing the booking status to `CANCELLED` rather than deleting the record. | ![Booking Cancel Confirmation](documentation/features/customer_booking_detail_cancel_request.png) |
+| Admin deletion protection | Staff can delete a booking only after its status has been changed to `CANCELLED`; active bookings cannot be deleted. | ![Admin Cancelled Booking Deletion](documentation/features/admin_bookings_list_delete_prompt.png) |
 
 ### Admin Dashboard
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Staff overview | Provides navigation and summary access to units, customers, bookings and availability management. | ![Admin dashboard](documentation\features\admin_dashboard.png) |
+| Staff overview | Provides navigation and summary access to units, customers, bookings and availability management. | ![Admin dashboard](documentation/features\admin_dashboard.png) |
 
 ### Admin Booking List
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Booking table | Shows customer, unit, dates, status, request status and actions. | ![Admin bookings list](documentation\features\admin_bookings_list.png) |
-| Filters | Filters by current/upcoming, past, current, upcoming, unit, date range and exact booking ID. | ![Admin bookings list filter ID](documentation\features\admin_bookings_list_filter_ID.png) ![Admin bookings list filter by date](documentation\features\admin_bookings_list_filter_date.png) ![Admin bookings list filter by 'past'](documentation\features\admin_bookings_list_filter_past.png) |
-| Clear control | Resets all booking filters and returns to the default current/upcoming view. | ![Admin bookings list filter clear button](documentation\features\admin_bookings_list.png) |
+| Booking table | Shows customer, unit, dates, status, request status and actions. | ![Admin bookings list](documentation/features\admin_bookings_list.png) |
+| Filters | Filters by current/upcoming, past, current, upcoming, unit, date range and exact booking ID. | ![Admin bookings list filter ID](documentation/features\admin_bookings_list_filter_ID.png) ![Admin bookings list filter by date](documentation/features\admin_bookings_list_filter_date.png) ![Admin bookings list filter by 'past'](documentation/features\admin_bookings_list_filter_past.png) |
+| Clear control | Resets all booking filters and returns to the default current/upcoming view. | ![Admin bookings list filter clear button](documentation/features\admin_bookings_list.png) |
 
 ### Admin Detail (including requests and modify)
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Booking details | Staff can view customer contact details, dates, guests, price and status. | ![Admin booking detail](documentation\features\admin_booking_detail.png) |
-| Modify booking | Staff can update booking dates, guests, dogs and status. | ![Admin booking detail modify](documentation\features\admin_booking_modify.png) |
-| Change requests | Staff can review open modification or cancellation requests and approve or decline them. | ![Admin accept or decline request](documentation\features\admin_booking_detail_request_open.png) |
+| Booking details | Staff can view customer contact details, dates, guests, price and status. | ![Admin booking detail](documentation/features\admin_booking_detail.png) |
+| Modify booking | Staff can update booking dates, guests, dogs and status. | ![Admin booking detail modify](documentation/features\admin_booking_modify.png) |
+| Change requests | Staff can review open modification requests and approve or decline them. Customer cancellation is handled immediately after confirmation. | ![Admin booking change request](documentation/features\admin_booking_detail_request_open.png) |
 
 ### Customer List
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Customer records | Superusers can view registered customer names, email, phone, booking count and active-booking state. | ![Admin customers list](documentation\features\admin_customers_list.png) |
-| Search and sorting | Customers can be sorted A-Z or by active booking and searched by partial name with reset control. | ![Admin customer list filter by name](documentation\features\admin_customers_list_filter_name.png) ![Admin customer list filter by active](documentation\features\admin_customers_list_filter_active.png) |
+| Customer records | Superusers can view registered customer names, email, phone, booking count and active-booking state. | ![Admin customers list](documentation/features\admin_customers_list.png) |
+| Search and sorting | Customers can be sorted A-Z or by active booking and searched by partial name with reset control. | ![Admin customer list filter by name](documentation/features\admin_customers_list_filter_name.png) ![Admin customer list filter by active](documentation/features\admin_customers_list_filter_active.png) |
 
 ### Customer Detail (including modify and delete)
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Customer profile | Superusers can view and update customer name, email, address and phone details. | ![Admin customer detail](documentation\features\admin_customer_detail.png) |
-| Customer bookings | Displays bookings associated with the selected customer. | ![Admin customer detail bookings](documentation\features\admin_customer_detail_cont..png) |
-| Admin customer update feedback | Admin can update the customers profile, feedback is then shown once the changes are saved. | ![Admin customer update feedback](documentation\features\admin_customer_update_feedback.png) |
+| Customer profile | Superusers can view and update customer name, email, address and phone details. | ![Admin customer detail](documentation/features\admin_customer_detail.png) |
+| Customer bookings | Displays bookings associated with the selected customer. | ![Admin customer detail bookings](documentation/features\admin_customer_detail_cont..png) |
+| Admin customer update feedback | Admin can update the customers profile, feedback is then shown once the changes are saved. | ![Admin customer update feedback](documentation/features\admin_customer_update_feedback.png) |
 
 ### Unit List
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Unit overview | Staff can view the available unit records and access each unit's management page. | ![Admin units wireframe](documentation\features\admin_units_list.png) |
+| Unit overview | Staff can view the available unit records and access each unit's management page. | ![Admin units wireframe](documentation/features\admin_units_list.png) |
 
 ### Unit Detail (including update)
 
 | Feature | Description | Screenshot |
 | --- | --- | --- |
-| Unit editing | Staff can update name, descriptions, capacity, pricing, dog settings and active status. | ![Admin unit detail](documentation\features\admin_unit_detail.png) ![Admin unit detail cont.](documentation\features\admin_unit_detail_cont..png) |
-| Media management | Staff can upload, order and delete main and gallery images stored through Cloudinary. | ![Admin unit detail wireframe](documentation\features\admin_unit_detail_gallery.png) |
-| Blocked availability | Staff can select dates and mark them unavailable or available. Booked dates cannot be changed. | ![Admin unit availability](documentation\features\admin_unit_detail_availability.png) |
+| Unit editing | Staff can update name, descriptions, capacity, pricing, dog settings and active status. | ![Admin unit detail](documentation/features\admin_unit_detail.png) ![Admin unit detail cont.](documentation/features\admin_unit_detail_cont..png) |
+| Media management | Staff can upload, order and delete main and gallery images stored through Cloudinary. | ![Admin unit detail wireframe](documentation/features\admin_unit_detail_gallery.png) |
+| Blocked availability | Staff can select dates and mark them unavailable or available. Booked dates cannot be changed. | ![Admin unit availability](documentation/features\admin_unit_detail_availability.png) |
 
 ## Technologies Used
 

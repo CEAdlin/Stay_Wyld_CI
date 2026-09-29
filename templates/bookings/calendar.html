@@ -103,6 +103,12 @@ document.addEventListener('DOMContentLoaded', function() {
         updateSummary();
     }
 
+    function clearDateSelection() {
+        checkIn = null;
+        checkOut = null;
+        markSelectedDates();
+    }
+
     function buildEvents() {
         let events = [];
 
@@ -138,6 +144,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Block booked dates
                 if (blockedDates.has(selected)) {
                     alert("This date is already booked.");
+                    calendar.unselect();
+                    clearDateSelection();
                     return;
                 }
 
@@ -154,6 +162,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Must be after check-in
                     if (new Date(selected) <= new Date(checkIn)) {
                         alert("Check-out must be after check-in.");
+                        calendar.unselect();
+                        clearDateSelection();
                         return;
                     }
 
@@ -161,6 +171,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     let nights = (new Date(selected) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
                     if (nights < 2) {
                         alert("Minimum stay is 2 nights.");
+                        calendar.unselect();
+                        clearDateSelection();
                         return;
                     }
 
@@ -172,6 +184,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         let iso = d.toISOString().split("T")[0];
                         if (blockedDates.has(iso)) {
                             alert("Your selected range includes booked dates.");
+                            calendar.unselect();
+                            clearDateSelection();
                             return;
                         }
                     }

@@ -104,6 +104,25 @@
     </div>
     {% endif %}
 
+    {% if request.GET.cancelled_reactivation == "1" %}
+    <div id="cancelledReactivationModal" class="modal-overlay" style="display: flex">
+        <div class="modal-content">
+            <button type="button" id="cancelledReactivationClose" class="modal-close"
+                aria-label="Close cancellation message">&times;</button>
+            <h2>Booking Cannot Be Re-activated</h2>
+            <p>Cancelled bookings cannot be re-activated. A new booking must be created.</p>
+            <a href="{% url 'index' %}#units" class="booking-submit-btn">
+                Create a New Booking
+            </a>
+        </div>
+    </div>
+    <script>
+        document.getElementById("cancelledReactivationClose").addEventListener("click", function () {
+            document.getElementById("cancelledReactivationModal").style.display = "none";
+        });
+    </script>
+    {% endif %}
+
     <!-- Main content -->
     <main class="pt-5 mt-5">{% block content %} {% endblock %}</main>
 

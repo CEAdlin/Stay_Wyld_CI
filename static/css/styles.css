@@ -417,6 +417,10 @@ li {
   text-align: center;
 }
 
+.units-panel .units-heading {
+  color: var(--colour-tertiary);
+}
+
 .home-eyebrow {
   display: block;
   margin-bottom: 8px;

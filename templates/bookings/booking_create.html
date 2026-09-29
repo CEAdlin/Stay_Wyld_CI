@@ -252,6 +252,14 @@
             return "";
         }
 
+        function clearDateSelection() {
+            checkIn = null;
+            checkOut = null;
+            checkInField.value = "";
+            checkOutField.value = "";
+            markSelectedDates();
+        }
+
         function syncManualDates() {
             checkIn = checkInField.value || null;
             checkOut = checkOutField.value || null;
@@ -260,8 +268,7 @@
                 const error = validateDateRange(checkIn, checkOut);
                 if (error) {
                     alert(error);
-                    checkOutField.value = "";
-                    checkOut = null;
+                    clearDateSelection();
                 }
             }
 
@@ -324,6 +331,8 @@
 
                         if (blockedDates.has(selected)) {
                             alert("This date is already booked.");
+                            calendar.unselect();
+                            clearDateSelection();
                             return;
                         }
 
@@ -336,6 +345,8 @@
                         if (!checkOut) {
                             if (new Date(selected) <= new Date(checkIn)) {
                                 alert("Check-out must be after check-in.");
+                                calendar.unselect();
+                                clearDateSelection();
                                 return;
                             }
 
@@ -345,6 +356,8 @@
 
                             if (nights < 2) {
                                 alert("Minimum stay is 2 nights.");
+                                calendar.unselect();
+                                clearDateSelection();
                                 return;
                             }
 
@@ -355,6 +368,8 @@
                                 let iso = d.toISOString().split("T")[0];
                                 if (blockedDates.has(iso)) {
                                     alert("Your selected range includes booked dates.");
+                                    calendar.unselect();
+                                    clearDateSelection();
                                     return;
                                 }
                             }
@@ -386,7 +401,10 @@
 
         /* PRICE CALCULATION */
         function updatePrice() {
-            if (!checkIn || !checkOut) return;
+            if (!checkIn || !checkOut) {
+                document.getElementById("totalPrice").textContent = "0.00";
+                return;
+            }
 
             let nights =
                 (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);

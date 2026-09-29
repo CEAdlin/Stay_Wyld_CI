@@ -95,7 +95,7 @@ Each major feature was manually tested to ensure that it works as intended acros
 | Accommodation Images | Open accommodation photographs/gallery. | Images load correctly and are displayed clearly. | The accommodation images loaded correctly and were displayed clearly. | ![Accommodation Images Test](documentation/features/unit_detail_a.png) | Pass |
 | Availability Calendar | Open the availability calendar. | Calendar displays available and unavailable dates correctly. | The calendar displayed available and unavailable dates correctly. | ![Availability Calendar Test](documentation/features/unit_detail_c.png) | Pass |
 | Availability Calendar | Select dates containing an existing booking. | Dates that are already booked are shown as unavailable. | Existing booking dates were shown as unavailable. | ![Booked Dates Test](documentation/features/booking_dates_taken.png) | Pass |
-| Availability Calendar | Select dates outside existing bookings. | Available dates can be selected for booking. | Dates outside existing bookings could be selected for booking. | ![Available Dates Test](documentation/features/customer_create_booking_arrival_time_validation.png) | Pass |
+| Availability Calendar | Select dates outside existing bookings. | Available dates can be selected for booking. | Dates outside existing bookings could be selected for booking. | ![Available Dates Test](documentation/features/booking_price_update_live.png) | Pass |
 | Live Pricing | Select different accommodation and dates. | The displayed price updates correctly according to the selected accommodation and dates. | The displayed price updated correctly for the selected accommodation and dates. | ![Live Pricing Test](documentation/features/booking_price_update_live.png) | Pass |
 | Minimum Stay | Attempt to book fewer nights than the configured minimum stay. | The system prevents the booking and displays an appropriate message. | The system prevented the booking and displayed the minimum-stay message. | ![Minimum Stay Error Test](documentation/features/create_booking_2nightmin.png) | Pass |
 | Minimum Stay | Attempt to book the minimum number of nights. | The booking can proceed successfully. | A booking meeting the minimum stay could proceed successfully. | ![Minimum Stay Success Test](documentation/features/minimum_2nightstay.png) | Pass |
@@ -111,7 +111,7 @@ Each major feature was manually tested to ensure that it works as intended acros
 | Booking Confirmation | Complete a booking successfully. | Confirmation is displayed with booking details, dates, accommodation and booking reference. | Confirmation displayed the booking details, dates, accommodation and booking reference. | ![Booking Confirmation Test](documentation/features/booking_status_confirmed.png) | Pass |
 | Profile Editing | Edit customer profile information. | Updated information is saved and displayed correctly. | Updated customer information was saved and displayed correctly. | ![Profile Editing Test](documentation/features/admin_customer_update_feedback.png) | Pass |
 | Booking Modification Request | Submit a request to modify an existing booking. | The modification request is submitted successfully and confirmation is provided. | The modification request was submitted successfully and confirmation was provided. | ![Booking Modification Test](documentation/features/customer_update_feedback.png) | Pass |
-| Customer Booking Cancellation | Cancel a booking with clear feedback. | The cancellation is confirmed, the booking is cancelled and the booking status reflects this. | The cancellation request was submitted successfully and confirmation was provided. | ![Booking Cancellation Test](documentation/features/customer_booking_detail_cancellation_request_accepted.png) ![Booking Cancel Status](documentation/features/customer_booking_detail_cancel_request.png)| Pass |
+| Customer Booking Cancellation | Confirm cancellation of an existing booking. | The booking is cancelled, its status changes to `CANCELLED` and clear confirmation is displayed. | The booking was cancelled successfully and confirmation was displayed. | ![Booking Cancellation Test](documentation/features/customer_booking_detail_cancellation_request_accepted.png) ![Booking Cancel Status](documentation/features/customer_booking_detail_cancel_request.png)| Pass |
 | Admin Login | Log in using valid administrator credentials. | Administrator is authenticated and can access administrative functionality. | The administrator was authenticated and could access the administrative functionality. | ![Admin Login Test](documentation/features/login.png) | Pass |
 | Admin Access Control | Attempt to access administrator functionality as a normal customer or visitor. | Unauthorised users are prevented from accessing restricted functionality and are re-directed to index.html. | Unauthorised users were prevented from accessing restricted functionality. | ![Admin Access Test](documentation/features/index_loggedout.png) | Pass |
 | Admin Dashboard | Open the administrator dashboard. | Dashboard displays units, upcoming bookings, registered customers, unread enquiries, unavailable units and bookings per unit this month. | The dashboard displayed the unit, booking, customer and availability information. | ![Admin Dashboard Test](documentation/features/admin_dashboard.png) | Pass |
@@ -128,7 +128,30 @@ Each major feature was manually tested to ensure that it works as intended acros
 | Error Handling | Trigger common validation and booking errors. | User receives clear and understandable error messages. | Clear and understandable error messages were displayed. | ![Error Handling Test](documentation/features/customer_create_booking_name_validation.png) | Pass |
 | 404 Error Page | Navigate to a non-existent page. | A custom 404 page is displayed instead of an unhandled server error. | The custom 404 page was displayed instead of an unhandled server error. | ![404 Error Test](documentation/features/404_page.png) | Pass |
 
----
+## Defensive Programming Testing
+
+Defensive programming was partly tested throughout the feature and user-story testing, particularly through form validation, booking validation, unavailable dates, invalid inputs and error handling. This section brings those checks together to show how the application responds safely to invalid, unexpected or incomplete data.
+
+| Test | Expected Result | Actual Result | Result |
+|---|---|---|---|
+| Submit forms with missing or invalid data | Clear validation messages are displayed and invalid data is rejected. | Validation messages were displayed and invalid data was rejected. | Pass |
+| Select invalid booking dates | The booking cannot proceed. | Invalid date ranges were rejected. | Pass |
+| Attempt to book unavailable dates | The booking is prevented. | Unavailable dates could not be booked and customer error message is shown. | Pass |
+| Submit invalid guest numbers | Invalid values are rejected. | Invalid guest values were rejected and user is notified of max occupancy limit. | Pass |
+| Request a missing or invalid record | A controlled error or redirect is returned. | A custom 404 page is returned. | Pass |
+
+## Authentication and Security Testing
+
+Authentication and authorisation were partly covered in the feature and user-story testing through registration, login, logout, admin access control and protected booking pages. This section provides a consolidated overview of the additional security checks carried out to ensure that users can only access appropriate functionality and that sensitive actions are protected.
+
+| Test | Expected Result | Actual Result | Result |
+|---|---|---|---|
+| Log in with valid credentials | The correct user is authenticated. | The user logged in successfully. | Pass |
+| Log in with invalid credentials | Access is denied and an error is shown. | Invalid login attempts were rejected. | Pass |
+| Access admin pages as a normal customer | Access is denied or redirected. | Unauthorised access was prevented and user redirected to index.html. | Pass |
+| Access a customer booking belonging to another user | The booking cannot be viewed or changed. | Unauthorised access was denied and the booking could not be accessed. | Pass |
+| Submit forms without a valid CSRF token | The request is rejected. | Invalid form submissions were rejected. | Pass |
+| Log out and revisit a protected page | The user must log in again. | Protected pages required authentication, user redirected to index.html. | Pass |
 
 # 🔦 Lighthouse
 
@@ -247,11 +270,8 @@ The website was tested using the W3C HTML Validator.
 | register.html | ![Register HTML validation](documentation/code_html/register.png) |
 | login.html | ![Login HTML validation](documentation/code_html/login.png) |
 | booking_create.html | ![Booking create HTML validation](documentation/code_html/create_booking.png) |
-| booking_delete.html | N/A |
 | booking_detail.html | ![Booking detail HTML validation](documentation/code_html/booking_detail.png) |
-| booking_page.html | N/A |
 | booking_update.html | ![Booking update HTML validation](documentation/code_html/booking_update.png) |
-| calendar.html | N/A |
 | my_bookings.html | ![My bookings HTML validation](documentation/code_html/my_bookings.png) |
 | unit_detail.html | ![Unit detail Keepers Cottage HTML validation](documentation/code_html/unit_detail_kc.png) ![Unit detail Shepherds Keep HTML validation](documentation/code_html/unit_detail_sk.png) ![Unit detail Tinkers Lodge HTML validation](documentation/code_html/unit_detail_tl.png) |
 | admin_dashboard.html | ![Admin dashboard HTML validation](documentation/code_html/admin_dashboard.png) |
@@ -261,55 +281,67 @@ The website was tested using the W3C HTML Validator.
 | admin_customer_detail.html | ![Admin customer detail HTML validation](documentation/code_html/admin_customer_detail.png) |
 | admin_units_list.html | ![Admin unit list HTML validation](documentation/code_html/admin_unit_list.png) |
 | admin_unit_detail.html | ![Admin unit detail HTML validation](documentation/code_html/admin_unit_detail.png) |
-| base.html | N/A |
-| 404.html | N/A |
 
-### Result
-
-TODO – Add validation result and describe any issues found and resolved.
-
----
+All .html files passed validation table passed validation.
 
 ## CSS Validation
 
-The website was tested using the W3C CSS Validator.
+The website was tested using the W3C CSS Validator, no errors were found.
 
-![CSS Validation](file)
-
-### Result
-
-TODO – Add validation result and describe any issues found and resolved.
-
----
+![CSS Validation](documentation/code_css\css_validation.png)
 
 ## JavaScript Validation
 
-JavaScript was tested using an appropriate JavaScript validation or linting tool.
+My calendar JavaScript file was tested using JSHint, no errors were found
 
-![JavaScript Validation](file)
-
-### Result
-
-TODO – Add validation result.
-
----
+![JavaScript Validation](documentation/code_js\calendar_js.png)
 
 ## Python / Django Validation
 
 Django's built-in project checks were used to identify configuration and code issues.
 
+Python code quality was checked using the Code Institute PEP 8 Python linter. All populated Python files included in this validation were checked and passed the linting requirements. Django's built-in system check was also run to confirm that the project configuration and application structure were valid.
+
+Some Python files are intentionally empty, such as package `__init__.py` files or unused Django scaffold files. These files do not contain executable code to check, so an empty file is acceptable and does not indicate a validation failure.
+
 Example:
 
 python manage.py check
 
+| File name | Screenshot |
+|---|---|
+| manage.py | ![manage.py validation](documentation/code_python/manage.py.png) |
+| config/asgi.py | ![config/asgi.py validation](documentation/code_python/asgi.py.png) |
+| config/settings.py | ![config/settings.py validation](documentation/code_python/settings.py.png) |
+| config/urls.py | ![config/urls.py validation](documentation/code_python/urls.py.png) |
+| config/wsgi.py | ![config/wsgi.py validation](documentation/code_python/wsgi.py.png) |
+| accounts/apps.py | ![accounts/apps.py validation](documentation/code_python/accounts_apps.py.png) |
+| accounts/models.py | ![accounts/models.py validation](documentation/code_python/accounts_models.py.png) |
+| accounts/phone_validation.py | ![accounts/phone_validation.py validation](documentation/code_python/accounts_phonevalidation.py.png) |
+| accounts/urls.py | ![accounts/urls.py validation](documentation/code_python/accounts_urls.py.png) |
+| accounts/views.py | ![accounts/views.py validation](documentation/code_python/accounts_views.py.png) |
+| bookings/admin.py | ![bookings/admin.py validation](documentation/code_python/bookings_admin.py.png) |
+| bookings/apps.py | ![bookings/apps.py validation](documentation/code_python/bookings_apps.py.png) |
+| bookings/models.py | ![bookings/models.py validation](documentation/code_python/bookings_models.py.png) |
+| bookings/tests.py | ![bookings/tests.py validation](documentation/code_python/bookings_tests.py.png) |
+| bookings/urls.py | ![bookings/urls.py validation](documentation/code_python/bookings_urls.py.png) |
+| bookings/validation.py | ![bookings/validation.py validation](documentation/code_python/bookings_validation.py.png) |
+| bookings/views.py | ![bookings/views.py validation](documentation/code_python/bookings_views.py.png) |
+| adminpanel/admin.py | N/A |
+| adminpanel/apps.py | ![adminpanel/apps.py validation](documentation/code_python/adminpanel_apps.py.png) |
+| adminpanel/tests.py | ![adminpanel/tests.py validation](documentation/code_python/adminpanel_tests.py.png) |
+| adminpanel/urls.py | ![adminpanel/urls.py validation](documentation/code_python/adminpanel_urls.py.png) |
+| adminpanel/views.py | ![adminpanel/views.py validation](documentation/code_python/adminpanel_views.py.png) |
+| update_completed_bookings.py | ![update_completed_bookings.py validation](documentation/code_python/update_completed_bookings.py.png) |
+
 ## 🐞 Bugs
 
-Below is a table outlining known and resolved bugs identified during development and testing.
+During manual testing of features and user stories several bugs were discovered. These were resolved and are now operating as desired. Below is a table outlining known and resolved bugs identified.
 
-| Bug ID | Bug Description | Cause | Solution | Unresolved Bug Screenshot | Resolved Bug Screenshot | Status |
-|--------|------------------|--------|-----------|-----------------------------|----------------------------|---------|
-| 001 | Accommodation images occasionally fail to load on mobile | Slow Cloudinary response / missing responsive breakpoints | Added responsive image sizes and lazy loading | *(Insert screenshot)* | *(Insert screenshot)* | Resolved |
-| 002 | Booking form allowed stays under two nights | Missing validation logic in booking model | Added server-side validation enforcing minimum stay | *(Insert screenshot)* | *(Insert screenshot)* | Resolved |
-| 003 | Navigation links break on small screens | CSS media query conflict | Updated breakpoints and improved mobile nav styling | *(Insert screenshot)* | *(Insert screenshot)* | Resolved |
-| 004 | Form validation messages not displaying in Safari | Browser-specific form behaviour | Added custom JS validation messages | *(Insert screenshot)* | *(Insert screenshot)* | Resolved |
-| 005 | Occasional slow loading on accommodation list page | Large image payloads | Enabled Cloudinary auto‑compression and caching | *(Insert screenshot)* | *(Insert screenshot)* | Partially Resolved |
+| Bug ID | Bug Description | Cause | Solution | Status |
+|--------|------------------|--------|-----------|---------|
+| 001 | Accommodation images occasionally fail to load on mobile | Slow Cloudinary response / missing responsive breakpoints | Added responsive image sizes and lazy loading | Resolved |
+| 002 | Booking form allowed stays under two nights | Missing validation logic in booking model | Added server-side validation enforcing minimum stay | Resolved |
+| 003 | Navigation links break on small screens | CSS media query conflict | Updated breakpoints and improved mobile nav styling | Resolved |
+| 004 | Form validation messages not displaying in Safari | Browser-specific form behaviour | Added custom JS validation messages | Resolved |
+| 005 | Occasional slow loading on accommodation list page | Large image payloads | Enabled Cloudinary auto‑compression and caching | Partially Resolved |

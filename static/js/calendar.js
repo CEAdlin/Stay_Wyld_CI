@@ -1,3 +1,5 @@
+/* jshint esversion: 6 */
+
 document.addEventListener("DOMContentLoaded", function () {
     const calendarContainer = document.getElementById("availability-calendar");
 
@@ -7,8 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const bookedRanges = JSON.parse(
         document.getElementById("booked-dates").textContent
     );
-
-    const pricePerNight = parseFloat(calendarContainer.dataset.price);
 
     // Hidden fields inside booking_create.html
     const checkInField = document.querySelector("input[name='check_in']");
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 cell.style.opacity = "0.4";
                 cell.style.pointerEvents = "none";
             } else {
-                cell.addEventListener("click", () => selectDate(date));
+                cell.addEventListener("click", createDateClickHandler(date));
             }
 
             grid.appendChild(cell);
@@ -100,6 +100,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         highlightSelection();
+    }
+
+    function createDateClickHandler(date) {
+        return function () {
+            selectDate(date);
+        };
     }
 
     // -----------------------------
