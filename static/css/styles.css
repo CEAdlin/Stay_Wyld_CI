@@ -2452,9 +2452,9 @@ body #admin-availability-calendar .admin-calendar-selected {
 .fc-daygrid-day-number {
     color: var(--colour-accent);
     font-family: var(--font-secondary);
-    font-size: 15p;
+    font-size: 15px;
     font-weight: 500;
-    text-decoration: non;
+    text-decoration: none;
 }
 
 /* Remove underline on hover */
@@ -3037,7 +3037,7 @@ body #admin-availability-calendar .admin-calendar-selected {
 .admin-booking-summary .crud-btn {
     width: 100%;
     box-sizing: border-box;
-    margin: 10 auto;
+    margin: 10px auto;
 }
 
 .admin-booking-detail-page .crud-btn:hover {

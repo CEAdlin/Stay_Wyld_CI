@@ -241,7 +241,28 @@ My features & user stories testing screenshots comprehensively cover desktop dev
 
 The website was tested using the W3C HTML Validator.
 
-![HTML Validation](file)
+| page | Screenshot |
+|--|--|
+| index.html | ![Index HTML validation](documentation/code_html/index.png) |
+| register.html | ![Register HTML validation](documentation/code_html/register.png) |
+| login.html | ![Login HTML validation](documentation/code_html/login.png) |
+| booking_create.html | ![Booking create HTML validation](documentation/code_html/create_booking.png) |
+| booking_delete.html | N/A |
+| booking_detail.html | ![Booking detail HTML validation](documentation/code_html/booking_detail.png) |
+| booking_page.html | N/A |
+| booking_update.html | ![Booking update HTML validation](documentation/code_html/booking_update.png) |
+| calendar.html | N/A |
+| my_bookings.html | ![My bookings HTML validation](documentation/code_html/my_bookings.png) |
+| unit_detail.html | ![Unit detail Keepers Cottage HTML validation](documentation/code_html/unit_detail_kc.png) ![Unit detail Shepherds Keep HTML validation](documentation/code_html/unit_detail_sk.png) ![Unit detail Tinkers Lodge HTML validation](documentation/code_html/unit_detail_tl.png) |
+| admin_dashboard.html | ![Admin dashboard HTML validation](documentation/code_html/admin_dashboard.png) |
+| admin_booking_list.html | ![Admin booking list HTML validation](documentation/code_html/admin_booking_list.png) |
+| admin_booking_detail.html | ![Admin booking detail HTML validation](documentation/code_html/admin_booking_detail.png) |
+| admin_customers_list.html | ![Admin customers list HTML validation](documentation/code_html/admin_customers_list.png) |
+| admin_customer_detail.html | ![Admin customer detail HTML validation](documentation/code_html/admin_customer_detail.png) |
+| admin_units_list.html | ![Admin unit list HTML validation](documentation/code_html/admin_unit_list.png) |
+| admin_unit_detail.html | ![Admin unit detail HTML validation](documentation/code_html/admin_unit_detail.png) |
+| base.html | N/A |
+| 404.html | N/A |
 
 ### Result
 
